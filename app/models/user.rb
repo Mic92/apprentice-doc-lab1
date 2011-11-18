@@ -5,6 +5,6 @@ class User < ActiveRecord::Base
   has_many :reports
   has_many :apprenticeships, :foreign_key => "instructor_id"
   has_many :apprentices, :through => :apprenticeships
-  has_many :inverse_apprenticeships, :class_name => "Apprenticeship", :foreign_key => "apprentice_id"
-  has_one :instructor, :through => :inverse_apprenticeships
+  has_one :inverse_apprenticeship, :class_name => "Apprenticeship", :foreign_key => "apprentice_id"
+  has_one :instructor, :through => :inverse_apprenticeship
 end
