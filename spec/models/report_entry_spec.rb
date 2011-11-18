@@ -67,7 +67,8 @@ describe ReportEntry do
       @report.report_entries.build(@attr).should_not be_valid
     end
 
-    it "should require a duration" do
+    it "should require a duration greater than 0" do
+      @report.report_entries.build(@attr.merge(:duration_in_hours => 0)).should_not be_valid
       @attr.delete(:duration_in_hours)
       @report.report_entries.build(@attr).should_not be_valid
     end
