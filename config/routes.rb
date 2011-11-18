@@ -1,4 +1,30 @@
 ApprenticeDocLab1::Application.routes.draw do
+  resources :users
+
+  resources :templates
+
+  resources :statuses, :only => [ :create, :update, :destroy ]
+
+  resources :sessions, :only => [ :new, :create, :destroy ]
+
+  resources :roles, :only => [ :new, :edit, :create, :update, :destroy ]
+
+  resources :reviews, :only => [ :create, :update, :destroy ]
+
+  resources :report_entries, :only => [ :new, :edit, :create, :update, :destroy ]
+
+  resources :reports, :only => [ :index, :show, :new, :create, :update, :destroy ]
+
+  resources :passwords, :only => [ :update ]
+
+  resources :jobs
+
+  resources :ihks
+
+  resources :codes
+
+  resources :apprenticeships, :only => [ :create, :destroy ]
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
