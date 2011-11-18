@@ -11,7 +11,7 @@ ApprenticeDocLab1::Application.routes.draw do
 
   resources :reviews, :only => [ :create, :update, :destroy ]
 
-  resources :reports, :only => [ :index, :show, :new, :create, :update, :destroy ] do
+  resources :reports, :only => [ :index, :show, :new, :edit, :create, :update, :destroy ] do
     resources :report_entries, :only => [ :new, :edit, :create, :update, :destroy ]
   end
 
