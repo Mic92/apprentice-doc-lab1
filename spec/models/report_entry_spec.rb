@@ -1,4 +1,23 @@
 # encoding: utf-8
+#
+# Copyright (C) 2011, Dominik Cermak <d.cermak@arcor.de>
+#
+# This file is part of ApprenticeDocLab1, an application written for
+# buschmais GbR <http://www.buschmais.de/>.
+#
+# ApprenticeDocLab1 is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# ApprenticeDocLab1 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
+
 require 'spec_helper'
 
 describe ReportEntry do
@@ -8,12 +27,12 @@ describe ReportEntry do
   end
 
   it "should create a new instance given valid attributes" do
-    @report.report_entries.create! valid_attributes
+    @report.report_entries.create! valid_attributes_entry
   end
 
   describe "report associations" do
     before(:each) do
-      @entry = @report.report_entries.create valid_attributes
+      @entry = @report.report_entries.create valid_attributes_entry
     end
 
     it "should have a report attribute" do
@@ -28,7 +47,7 @@ describe ReportEntry do
 
   describe "validations" do
     before(:each) do
-      @attr = valid_attributes
+      @attr = valid_attributes_entry
     end
 
     it "should require a report id" do
