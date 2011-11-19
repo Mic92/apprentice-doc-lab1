@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   attr_accessor :password
-  attr_accessible :name, :forname, :zipcode, :street, :city, :email, :password
+  attr_accessible :name, :forename, :zipcode, :street, :city, :email, :password
   has_one :role
   has_many :reports
   has_many :apprenticeships, :foreign_key => "instructor_id"

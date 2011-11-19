@@ -2,33 +2,6 @@
 require 'spec_helper'
 
 describe Report do
-  def valid_attributes
-    {
-      :period_start => '2011-10-01',
-      :period_end => '2011-10-31',
-    }
-  end
-
-  def valid_attributes_user
-    {
-      :name => 'Mustermann',
-      :forename => 'Max',
-      :zipcode => '01234',
-      :street => 'Musterstraße',
-      :city => 'Musterstadt',
-      :email => 'max@mustermann.de',
-      :deleted => false
-    }
-  end
-
-  def valid_attributes_entry
-    {
-      :date => '2011-10-02 08:00:00',
-      :duration_in_hours => 1.5,
-      :text => 'Entry created.'
-    }
-  end
-
   before(:each) do
     @user = User.create valid_attributes_user
   end
@@ -67,16 +40,16 @@ describe Report do
 
     it "should require a beginning date" do
       @attr.delete(:period_start)
-      Report.new(@attr).should_not be_valid
+      @user.reports.new(@attr).should_not be_valid
     end
 
     it "should require an ending date" do
       @attr.delete(:period_end)
-      Report.new(@attr).should_not be_valid
+      @user.reports.new(@attr).should_not be_valid
     end
 
     it "should require a user id" do
-      Report.new(valid_attributes).should_not be_valid
+      @user.reports.new(valid_attributes).should_not be_valid
     end
   end
 end

@@ -2,12 +2,9 @@
 require 'spec_helper'
 
 describe ReportsController do
-  before(:all) do
-    @user = User.create valid_attributes_user
-  end
-
   describe "GET 'index'" do
     before(:each) do
+      @user = User.create valid_attributes_user
       @report1 = @user.reports.create valid_attributes_report
       @report2 = @user.reports.create valid_attributes_report
     end
@@ -19,12 +16,13 @@ describe ReportsController do
 
     it "should find all reports" do
       get 'index'
-      assigns(:reports).should eq([ @report1, @report2 ])
+      assigns(:reports).should eq(Report.all)
     end
   end
 
   describe "GET 'show'" do
     before(:each) do
+      @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
       @entry1 = @report.report_entries.create valid_attributes_entry
       @entry2 = @report.report_entries.create valid_attributes_entry
@@ -55,6 +53,7 @@ describe ReportsController do
 
   describe "GET 'edit'" do
     before(:each) do
+      @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
     end
 
@@ -113,6 +112,7 @@ describe ReportsController do
 
   describe "PUT 'update'" do
     before(:each) do
+      @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
     end
 
@@ -165,6 +165,7 @@ describe ReportsController do
 
   describe "DELETE 'destroy'" do
     before(:each) do
+      @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
     end
 
@@ -187,6 +188,7 @@ describe ReportsController do
 
   describe "authentication" do
     before(:each) do
+      @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
     end
 

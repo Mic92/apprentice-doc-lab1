@@ -54,8 +54,7 @@ RSpec.configure do |config|
       :zipcode => '01234',
       :street => 'Musterstraße',
       :city => 'Musterstadt',
-      :email => 'max@mustermann.de',
-      :deleted => false
+      :email => 'max@mustermann.de'
     }
   end
 end

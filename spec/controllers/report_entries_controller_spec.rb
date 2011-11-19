@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe ReportEntriesController do
-  before(:all) do
+  before(:each) do
     @user = User.create valid_attributes_user
     @report = @user.reports.create valid_attributes_report
   end
