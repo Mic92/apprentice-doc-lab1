@@ -2,38 +2,14 @@
 require 'spec_helper'
 
 describe ReportsController do
-  def valid_attributes
-    {
-      :period_start => '2011-10-01',
-      :period_end => '2011-10-31',
-    }
-  end
-
-  def valid_attributes_user
-    {
-      :name => 'Mustermann',
-      :forename => 'Max',
-      :zipcode => '01234',
-      :street => 'Musterstraße',
-      :city => 'Musterstadt',
-      :email => 'max@mustermann.de',
-      :deleted => false
-    }
-  end
-
-  def valid_attributes_entry
-    {
-      :date => '2011-10-02 08:00:00',
-      :duration_in_hours => 1.5,
-      :text => 'Entry created.'
-    }
+  before(:all) do
+    @user = User.create valid_attributes_user
   end
 
   describe "GET 'index'" do
     before(:each) do
-      @user = User.create valid_attributes_user
-      @report1 = @user.reports.create valid_attributes
-      @report2 = @user.reports.create valid_attributes
+      @report1 = @user.reports.create valid_attributes_report
+      @report2 = @user.reports.create valid_attributes_report
     end
 
     it "returns http success" do
@@ -49,8 +25,7 @@ describe ReportsController do
 
   describe "GET 'show'" do
     before(:each) do
-      @user = User.create valid_attributes_user
-      @report = @user.reports.create valid_attributes
+      @report = @user.reports.create valid_attributes_report
       @entry1 = @report.report_entries.create valid_attributes_entry
       @entry2 = @report.report_entries.create valid_attributes_entry
     end
@@ -78,10 +53,26 @@ describe ReportsController do
     end
   end
 
+  describe "GET 'edit'" do
+    before(:each) do
+      @report = @user.reports.create valid_attributes_report
+    end
+
+    it "returns http success" do
+      get 'edit', :id => @report
+      response.should be_success
+    end
+
+    it "should find the right report" do
+      get 'edit', :id => @report
+      assigns(:report).should eq(@report)
+    end
+  end
+
   describe "POST 'create'" do
     describe "failure" do
       before(:each) do
-        @attr = valid_attributes
+        @attr = valid_attributes_report
       end
 
       it "should not make a new report" do
@@ -104,17 +95,17 @@ describe ReportsController do
     describe "success" do
       it "should make a new report" do
         expect {
-          post 'create', :report => valid_attributes
+          post 'create', :report => valid_attributes_report
         }.to change { Report.count }.by(1)
       end
 
       it "should redirect to the reports index page" do
-        post 'create', :report => valid_attributes
+        post 'create', :report => valid_attributes_report
         response.should redirect_to(reports_path)
       end
 
       it "should have a flash message" do
-        post 'create', :report => valid_attributes
+        post 'create', :report => valid_attributes_report
         flash[:notice].should =~ /erfolgreich/i
       end
     end
@@ -122,8 +113,7 @@ describe ReportsController do
 
   describe "PUT 'update'" do
     before(:each) do
-      @user = User.create valid_attributes_user
-      @report = @user.reports.create valid_attributes
+      @report = @user.reports.create valid_attributes_report
     end
 
     it "should find the right report" do
@@ -151,7 +141,7 @@ describe ReportsController do
 
     describe "success" do
       before(:each) do
-        @attr = valid_attributes.merge(:period_start => '2011-09-01')
+        @attr = valid_attributes_report.merge(:period_start => '2011-09-01')
       end
 
       it "should change the report's attributes'" do
@@ -161,7 +151,7 @@ describe ReportsController do
         Report.find(@report).period_start.should eq(@attr.fetch(:period_start))
       end
 
-      it "should redirect to report show page" do
+      it "should redirect to the report show page" do
         put 'update', :id => @report, :report => @attr
         response.should redirect_to(@report)
       end
@@ -175,8 +165,7 @@ describe ReportsController do
 
   describe "DELETE 'destroy'" do
     before(:each) do
-      @user = User.create valid_attributes_user
-      @report = @user.reports.create valid_attributes
+      @report = @user.reports.create valid_attributes_report
     end
 
     it "should destroy the report" do
@@ -198,8 +187,7 @@ describe ReportsController do
 
   describe "authentication" do
     before(:each) do
-      @user = User.create valid_attributes_user
-      @report = @user.reports.create valid_attributes
+      @report = @user.reports.create valid_attributes_report
     end
 
     describe "for non-signed-in users" do
@@ -224,12 +212,12 @@ describe ReportsController do
       end
 
       it "should deny access to 'create'" do
-        post 'create'
+        post 'create', :report => valid_attributes_report
         response.should redirect_to(signin_path)
       end
 
       it "should deny access to 'update'" do
-        put 'update', :id => @report
+        put 'update', :id => @report, :report => valid_attributes_report
         response.should redirect_to(signin_path)
       end
 
