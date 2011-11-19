@@ -174,6 +174,11 @@ describe ReportsController do
       @report = @user.reports.create valid_attributes_report
     end
 
+    it "should find the right report" do
+      delete 'destroy', :id => @report
+      assigns(:report).should eq(@report)
+    end
+
     it "should destroy the report" do
       expect {
         delete 'destroy', :id => @report

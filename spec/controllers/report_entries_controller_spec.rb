@@ -12,6 +12,11 @@ describe ReportEntriesController do
       get 'new', :report_id => @report
       response.should be_success
     end
+
+    it "should provide a new entry record" do
+      get 'new', :report_id => @report
+      assigns(:entry).should be_new_record
+    end
   end
 
   describe "GET 'edit'" do
@@ -31,6 +36,11 @@ describe ReportEntriesController do
   end
 
   describe "POST 'create'" do
+    it "should find the right report" do
+      post 'create', :report_id => @report
+      assigns(:report).should eq(@report)
+    end
+
     describe "failure" do
       before(:each) do
         @attr = valid_attributes_entry
@@ -127,6 +137,11 @@ describe ReportEntriesController do
   describe "DELETE 'destroy'" do
     before(:each) do
       @entry = @report.report_entries.create valid_attributes_entry
+    end
+
+    it "should find the right entry" do
+      delete 'destroy', :report_id => @report, :id => @entry
+      assigns(:entry).should eq(@entry)
     end
 
     it "should destroy the entry" do
