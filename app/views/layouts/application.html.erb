@@ -1,14 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>ApprenticeDocLab1</title>
-  <%= stylesheet_link_tag    "application" %>
-  <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
-</head>
+  <head>
+    <title>ApprenticeDocLab1</title>
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "application" %>
+    <%= csrf_meta_tags %>
+  </head>
 <body>
-
-<%= yield %>
-
+  <section>
+    <p id="notice"><%= notice %></p>
+    <%= yield %>
+    <%= debug(params) if Rails.env.development? %>
+  </section>
+  <header>
+    <strong>Gruppe 11 - Ausbildungsnachweise</strong>
+    <br />
+    <em><%= @title %></em>
+  </header>
+  <nav>
+    <ul>
+      <li><%= link_to 'Startseite', '#' %></li>
+      <li><%= link_to 'Berichts-Verwaltung', '#' %></li>
+      <li><%= link_to 'Job-Verwaltung', '#' %></li>
+      <li><%= link_to 'IHK-Verwaltung', '#' %></li>
+      <li><%= link_to 'Template-Verwaltung', '#' %></li>
+      <li><%= link_to 'Benutzer-Verwaltung', '#' %></li>
+      <br />
+      <li><%= link_to 'Ausloggen', '#' %></li>
+    </ul>
+  </nav>
 </body>
 </html>
