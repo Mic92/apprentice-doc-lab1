@@ -49,6 +49,11 @@ describe ReportsController do
       get 'new'
       response.should be_success
     end
+
+    it "should provide a new report record" do
+      get 'new'
+      assigns(:report).should be_new_record
+    end
   end
 
   describe "GET 'edit'" do
@@ -148,12 +153,12 @@ describe ReportsController do
         expect {
           put 'update', :id => @report, :report => @attr
         }.to change { Report.find(@report).updated_at }
-        Report.find(@report).period_start.should eq(@attr.fetch(:period_start))
+        Report.find(@report).period_start.should eq(@attr.fetch(:period_start).to_date)
       end
 
-      it "should redirect to the report show page" do
+      it "should redirect to the reports index page" do
         put 'update', :id => @report, :report => @attr
-        response.should redirect_to(@report)
+        response.should redirect_to(reports_path)
       end
 
       it "should have a flash message" do
