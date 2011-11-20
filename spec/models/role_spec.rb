@@ -1,77 +1,112 @@
+# encoding: utf-8
+#
+# Copyright (C) 2011, Marcus Hänsch <haensch.marcus@gmail.com>
+#
+# This file is part of ApprenticeDocLab1, an application written for
+# buschmais GbR <http://www.buschmais.de/>.
+#
+# ApprenticeDocLab1 is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# ApprenticeDocLab1 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
+
 require 'spec_helper'
 
 describe Role do
 
 
-  before(:each) do
-    @user = User.create valid_attributes_user
-  end
+
   
   it "should create a new instance with valid attributes" do
-    @user.role.create! valid_attributes_role
+    Role.create! valid_attributes_role
   end  
   
-  describe "role associations" do
+  describe "user associations" do
     before(:each) do
-      @role = @user.role.create valid_attributes_role
+      @role = Role.create(@attributes)
+      @user1 = @role.users.create valid_attributes_user
+      @user2 = @role.users.create valid_attributes_user
     end
     
-    it "should be associated with one user" do
-      @user.should respond_to(:role)
+    it "should have at least one user associated" do
+      @role.should respond_to(:users)
     end
     
+    it "should have the right associated report entries" do
+      @role.users.should eq([ @user1, @user2])
+    
+    end
+    
+    it "should not destroy its users when destroyed itself" do
+      @user_count = User.all.length
+      @role.destroy
+      @user_count.should eq(User.all.length)
       
-# further association tests..
+    end
+   
+      
+    # further association tests..
 
    end
    
+   
    describe "validations" do
+   
     before(:each) do
-      @attributes = valid_attributes_role
+        @attributes = valid_attributes_role
     end
-    it "should require a level"
+
+    it "should require a valid attribute level" do
       @attributes.delete(:level)
-      @user.role.(new(@attributes).should_not be_valid
+      Role.new(@attributes).should_not be_valid
     end
     
-    it "should require a name"
+    it "should require a valid attribute name" do
       @attributes.delete(:name)
-      @user.role.(new(@attribues).should_not be_valid
+      Role.new(@attributes).should_not be_valid
     end
     
-    it "should have valid attribute read"
+    it "should require valid attribute read" do
       @attributes.delete(:read)
-      @user.role.(new(@attributes).should_not be_valid
+      Role.new(@attributes).should_not be_valid
     end
     
-    it "should have valid attribute commit"
+    it "should require valid attribute commit" do
       @attributes.delete(:commit)
-      @user.role.(new(@attributes).should_not be_valid
+      Role.new(@attributes).should_not be_valid
     end
     
-    it "should have valid attribute export"
+    it "should require valid attribute export" do
       @attributes.delete(:export)
-      @user.role.(new(@attributes).should_not be_valid
+      Role.new(@attributes).should_not be_valid
     end
     
-    it "should have valid attribute check"
+    it "should require valid attribute check" do
       @attributes.delete(:check)
-      @user.role.(new(@attributes).should_not be_valid
+      Role.new(@attributes).should_not be_valid
     end
     
-    it "should have valid attribute modify"
+    it "should require valid attribute modify" do
       @attributes.delete(:modify)
-      @user.role.(new(@attributes).should_not be_valid
+      Role.new(@attributes).should_not be_valid
     end
     
-    it "should have valid attribute admin"
+    it "should require valid attribute admin" do
       @attributes.delete(:admin)
-      @user.role.(new(@attributes).should_not be_valid
+      @user.role.new(@attributes).should_not be_valid
     end  
-   end
     
     
     
     
-  
+
+   end  
 end
