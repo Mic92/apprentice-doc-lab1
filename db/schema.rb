@@ -11,11 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111120173309) do
+ActiveRecord::Schema.define(:version => 20111120204321) do
 
   create_table "apprenticeships", :force => true do |t|
     t.integer  "instructor_id"
     t.integer  "apprentice_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "businesses", :force => true do |t|
+    t.string   "name"
+    t.string   "zipcode"
+    t.string   "street"
+    t.string   "city"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -110,8 +119,10 @@ ActiveRecord::Schema.define(:version => 20111120173309) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "role_id"
+    t.integer  "business_id"
   end
 
+  add_index "users", ["business_id"], :name => "index_users_on_business_id"
   add_index "users", ["role_id"], :name => "index_users_on_role_id"
 
 end
