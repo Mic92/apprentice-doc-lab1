@@ -1,6 +1,7 @@
 class CreateUsers < ActiveRecord::Migration
   def change
     create_table :users do |t|
+      t.references :role
       t.string :name
       t.string :forename
       t.string :zipcode
@@ -14,5 +15,6 @@ class CreateUsers < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :users, :role_id
   end
 end
