@@ -46,6 +46,20 @@ RSpec.configure do |config|
       :period_end => '2011-10-31',
     }
   end
+  
+  def valid_attributes_role
+    {
+      :name => 'Ausbilder',
+      :level => 2,
+      :read => false,
+      :commit => false,
+      :export => true,
+      :check => true,
+      :modify => true,
+      :admin => false
+      
+    }
+  end
 
   def valid_attributes_user
     {
