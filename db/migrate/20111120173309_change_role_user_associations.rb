@@ -8,6 +8,6 @@ class ChangeRoleUserAssociations < ActiveRecord::Migration
   def down
     remove_column :users, :role_id
     add_column :roles, :user_id, :integer
-    remove_index :users, :role_id
+    add_index :roles, :user_id
   end
 end
