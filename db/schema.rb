@@ -11,14 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111120204321) do
-
-  create_table "apprenticeships", :force => true do |t|
-    t.integer  "instructor_id"
-    t.integer  "apprentice_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+ActiveRecord::Schema.define(:version => 20111120210319) do
 
   create_table "businesses", :force => true do |t|
     t.string   "name"
