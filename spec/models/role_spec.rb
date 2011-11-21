@@ -36,7 +36,7 @@ describe Role do
       @user2 = @role.users.create valid_attributes_user
     end
     
-    it "should have at least one user associated" do
+    it "should have an users attribute" do
       @role.should respond_to(:users)
     end
     
@@ -64,45 +64,45 @@ describe Role do
         @attributes = valid_attributes_role
     end
 
-    it "should require a valid attribute level" do
+    it "should require attribute level" do
       @attributes.delete(:level)
       Role.new(@attributes).should_not be_valid
     end
     
-    it "should require a valid attribute name" do
+    it "should require attribute name" do
       @attributes.delete(:name)
       Role.new(@attributes).should_not be_valid
     end
     
-    it "should require valid attribute read" do
+    it "should require attribute read" do
       @attributes.delete(:read)
       Role.new(@attributes).should_not be_valid
     end
     
-    it "should require valid attribute commit" do
+    it "should require attribute commit" do
       @attributes.delete(:commit)
       Role.new(@attributes).should_not be_valid
     end
     
-    it "should require valid attribute export" do
+    it "should require attribute export" do
       @attributes.delete(:export)
       Role.new(@attributes).should_not be_valid
     end
     
-    it "should require valid attribute check" do
+    it "should require attribute check" do
       @attributes.delete(:check)
       Role.new(@attributes).should_not be_valid
     end
     
-    it "should require valid attribute modify" do
+    it "should require attribute modify" do
       @attributes.delete(:modify)
       Role.new(@attributes).should_not be_valid
     end
     
-    it "should require valid attribute admin" do
+    it "should require attribute admin" do
       @attributes.delete(:admin)
-      @user.role.new(@attributes).should_not be_valid
-    end  
+      Role.new(@attributes).should_not be_valid
+    end
     
     
     
