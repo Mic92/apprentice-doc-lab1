@@ -47,30 +47,80 @@ describe User do
       
     end
     
-    it "should destroy associated reports" do
-      @user.destroy
-      [ @report1, @report2 ].each do |report|
-        Report.find_by_id(entry.id).should be_nil
-      end
-    end   
+
   
   end
   
   describe "role associations" do
     before(:each) do
-      @user = User.create valid_attributes_user
-      @role = @user.role.create valid_attributes_role
+      @role = Role.create valid_attributes_role
+      @user = @role.users.create valid_attributes_user
     end
     
     it "should have an existing role attribute" do
-      @user.should respont_to(:reports)
-          
+      @user.should respond_to(:role)
     end
     
-    it "should not destroy the associated role" do
-      @user.destroy
-      Role.find_by_id(@role.id).should_not be_nil
+    it "should have the right associated role" do
+      @user.role.should eq(@role)
     end
+    
+  
+  end
+  
+  describe "business associations" do
+    before(:each) do
+      @busi = Business.create valid_attributes_business
+      @user = @busi.users.create valid_attributes_user
+    end
+    
+    it "should have the right associated business" do
+      @user.business.should eq(@busi)
+    end
+    
+    it "should not destroy the associated business" do
+      @user.destroy
+      Business.find_by_id(@busi.id).should_not be_nil
+    end
+  
+  end
+  
+  # apprentice / instructor tests
+  
+  
+  describe "validations" do
+  
+    before(:each) do
+      @attr = valid_attributes_user      
+    end
+    
+    it "should require attribute forename" do
+      @attr.delete(:forename)  
+      User.new(@attr).should_not be_valid
+    end
+    
+    it "should require attribute name" do
+      @attr.delete(:name)  
+      User.new(@attr).should_not be_valid
+    end
+    
+    it "should require attribute email" do
+      @attr.delete(:email)  
+      User.new(@attr).should_not be_valid
+    end
+    
+    it "should require attribute hashed_password" do
+      @attr.delete(:hashed_password)  
+      User.new(@attr).should_not be_valid
+    end
+    
+    it "should require attribute role" do
+      @attr.delete(:role)  
+      User.new(@attr).should_not be_valid
+    end
+    
+    
+  
   
   end
   

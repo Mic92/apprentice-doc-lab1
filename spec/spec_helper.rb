@@ -31,7 +31,16 @@ RSpec.configure do |config|
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
-
+  def valid_attributes_business
+    {
+      :name => 'Mustermann GmbH',
+      :zipcode => '12345',
+      :city => 'Entenhausen',
+      :street => 'Musterstraße'
+    }  
+  end
+  
+  
   def valid_attributes_entry
     {
       :date => '2011-10-02 08:00:00',
@@ -68,7 +77,9 @@ RSpec.configure do |config|
       :zipcode => '01234',
       :street => 'Musterstraße',
       :city => 'Musterstadt',
-      :email => 'max@mustermann.de'
+      :email => 'max@mustermann.de',
+      :hashed_password => 'abcdefghijklmnopqrstuvwxyz',
+      :role_id => 1
     }
   end
 end
