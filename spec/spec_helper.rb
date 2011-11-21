@@ -43,10 +43,10 @@ RSpec.configure do |config|
   def valid_attributes_report
     {
       :period_start => '2011-10-01',
-      :period_end => '2011-10-31',
+      :period_end => '2011-10-31'
     }
   end
-  
+
   def valid_attributes_role
     {
       :name => 'Ausbilder',
@@ -57,7 +57,7 @@ RSpec.configure do |config|
       :check => true,
       :modify => true,
       :admin => false
-      
+
     }
   end
 

@@ -20,14 +20,16 @@
 
 require 'spec_helper'
 
-describe "reports/new.html.erb" do
+describe "reports/edit.html.erb" do
   before(:each) do
-    assign(:report, mock_model(Report, :period_start => nil, :period_end => nil).as_new_record)
+    assign(:report, mock_model(Report,
+                               :period_start => '2011-10-01'.to_date,
+                               :period_end => '2011-10-31'.to_date))
   end
 
-  it "should state that it's creating a report" do
+  it "should state that it's updating a report" do
     render
-    rendered.should include('Bericht anlegen')
+    rendered.should include('Bericht bearbeiten')
   end
 
   it "should have a date select for period_start" do
