@@ -3,4 +3,5 @@ class Template < ActiveRecord::Base
   belongs_to :job
   belongs_to :ihk
   belongs_to :code
+  validates :name, :presence => true
 end
