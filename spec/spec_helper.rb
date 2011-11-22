@@ -82,4 +82,40 @@ RSpec.configure do |config|
       :role_id => 1
     }
   end
+
+  def valid_attributes_code
+    {
+      :code => 'Das ist langer Code......'
+    }
+  end
+  
+  def valid_attributes_job
+    {
+      :name => 'Das ist ein Name'
+    }
+  end
+
+  def valid_attributes_ihk
+    {
+      :name => 'Das ist ein Name'
+    }
+  end
+
+  def valid_attributes_template
+    {
+      :name => 'Das ist ein Name',
+      :code_id => 1,
+      :job_id => 1,
+      :ihk_id => 1
+    }
+  end
+
+  def valid_attributes_business
+    {
+      :name => 'Das ist ein Name',
+      :zipcode => '12345',
+      :street => 'Strasse',
+      :city => 'Stadt'
+    }
+  end
 end
