@@ -105,7 +105,7 @@ describe User do
       @user1.should respond_to(:apprentices)
     end
     
-    it "should have an existing attribute apprentices" do
+    it "should have the right associated apprentices" do
       @user1.apprentices.should eq([@user2, @user3])
     end
     it "should have an existing attribute instructor" do
