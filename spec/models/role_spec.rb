@@ -31,9 +31,13 @@ describe Role do
   
   describe "user associations" do
     before(:each) do
-      @role = Role.create(@attributes)
-      @user1 = @role.users.create valid_attributes_user
-      @user2 = @role.users.create valid_attributes_user
+      @role = Role.create valid_attributes_role
+      @user1 = User.create valid_attributes_role
+      @user1.role_id = @role.id
+      @user1.save
+      @user2 = User.create valid_attributes_role
+      @user2.role_id = @role.id
+      @user2.save
     end
     
     it "should have an users attribute" do
