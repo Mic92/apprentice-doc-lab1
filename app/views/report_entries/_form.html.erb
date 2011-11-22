@@ -1,0 +1,12 @@
+<%= form_for [ @report, @entry ] do |f| %>
+  <%= f.label 'Anfangszeit:' %><br />
+  <%= f.datetime_select :date %><br />
+  <%= f.label 'Dauer:' %><br />
+  <%= number_field_tag(:hours, @hours, :min => 0, :max => 24, :size => 2) %>
+  <%= f.label 'Stunden, ' %>
+  <%= number_field_tag(:minutes, @minutes, :min => 0, :max => 59, :size => 2) %>
+  <%= f.label 'Minuten' %><br />
+  <%= f.label 'Text:' %><br />
+  <%= f.text_field :text %><br />
+  <%= f.submit 'Eintrag anlegen' %>
+<% end %>

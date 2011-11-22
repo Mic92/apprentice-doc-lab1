@@ -1,0 +1,7 @@
+<%= form_for @report do |f| %>
+  <%= f.label "Von:" %><br />
+  <%= f.date_select :period_start %><br />
+  <%= f.label "Bis:" %><br />
+  <%= f.date_select :period_end %><br />
+  <%= @report.new_record? ? f.submit('Bericht anlegen') : f.submit('Änderungen speichern') %>
+<% end %>

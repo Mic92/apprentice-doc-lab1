@@ -21,16 +21,24 @@
 class ReportEntriesController < ApplicationController
   def new
     @report = Report.find(params[:report_id])
-    @entry = @report.report_entries.build
+    @entry = ReportEntry.new
   end
 
   def edit
+    @report = Report.find(params[:report_id])
     @entry = ReportEntry.find(params[:id])
+    @hours =  @entry.duration_in_hours.to_i
+    @minutes = ((@entry.duration_in_hours.hours / 1.minute) % 60).to_i
   end
 
   def create
     @report = Report.find(params[:report_id])
-    @entry = @report.report_entries.build(params[:report_entry])
+    if params[:hours] != nil && params[:minutes] != nil && params[:report_entry] != nil
+      @duration = (params[:hours].to_i.hours + params[:minutes].to_i.minutes) / 1.0.hour
+      @entry = @report.report_entries.build({ :duration_in_hours => @duration }.merge(params[:report_entry]))
+    else
+      @entry = @report.report_entries.build(params[:report_entry])
+    end
 
     if @entry.save
       redirect_to @report, :notice => 'Eintrag wurde erfolgreich erstellt.'
