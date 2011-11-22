@@ -150,11 +150,25 @@ describe User do
     end
     
     it "should require an unique email" do
-      User.new(@attr)
+      User.create(@attr)
       User.new(@attr).should_not be_valid
     end
     
-    # email format test
+    it "should not accept an incorrect email format" do
+      emails = %w[asdf@asd wasd@asd,as wasdfs asdf.was@asd.asd.ds asdf.asd@ asdf@.asd]
+      emails.each do |e|
+        test_user = User.new(@attr.merge(:email => e))
+        test_user.should_not be_valid      
+      end
+    end
+    
+    it "should accept a correct email format" do
+      emails = %w[asdf@as.df as_df@as.df as.df@as.df]
+      emails.each do |e|
+        test_user = User.new(@attr.merge(:email => e))
+        test_user.should be_valid
+      end
+    end
 
   end
   
