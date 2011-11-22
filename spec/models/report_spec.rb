@@ -32,8 +32,12 @@ describe Report do
   describe "report_entry associations" do
     before(:each) do
       @report = @user.reports.create valid_attributes_report
-      @entry1 = @report.report_entries.create valid_attributes_entry
-      @entry2 = @report.report_entries.create valid_attributes_entry
+      @entry1 = ReportEntry.new valid_attributes_entry
+      @entry1.report_id = @report.id
+      @entry1.save
+      @entry2 = ReportEntry.new valid_attributes_entry
+      @entry2.report_id = @report.id
+      @entry2.save
     end
 
     it "should have a report_entries attribute" do
