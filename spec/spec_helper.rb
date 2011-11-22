@@ -105,8 +105,8 @@ RSpec.configure do |config|
     {
       :name => 'Das ist ein Name',
       :code_id => 1,
-      :job_id => 1,
-      :ihk_id => 1
+      :job_id => 2,
+      :ihk_id => 3
     }
   end
 

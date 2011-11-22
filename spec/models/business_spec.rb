@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe Business do
+  it "should create a new instance with given valid attributes" do
+      Business.create! (valid_attributes_business)
+  end
+  
   describe "validations" do
 
     before(:each) do

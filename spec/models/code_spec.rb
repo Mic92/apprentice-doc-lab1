@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe Code do
+  it "should create a new instance with given valid attributes" do
+      Code.create! (valid_attributes_code)
+  end
+        
   describe "validations" do
 
     before(:each) do

@@ -1,8 +1,12 @@
 require 'spec_helper'
 
 describe Ihk do
-  describe "validations" do
+  
+  it "should create a new instance with given valid attributes" do
+      Ihk.create! (valid_attributes_ihk)
+  end
 
+  describe "validations" do
     before(:each) do
       @attributes = valid_attributes_ihk
     end
