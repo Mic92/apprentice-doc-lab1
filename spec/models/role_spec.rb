@@ -104,6 +104,16 @@ describe Role do
       Role.new(@attributes).should_not be_valid
     end
     
+    it "should require a unique name" do
+      Role.create(@attributes)
+      Role.new(@attributes).should_not be_valid
+    end
+    
+    it "should require a unique level" do
+      Role.create(@attributes)
+      Role.new(@attributes).should_not be_valid
+    end
+    
     
     
     
