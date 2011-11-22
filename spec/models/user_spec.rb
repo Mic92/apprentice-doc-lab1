@@ -33,8 +33,13 @@ describe User do
   describe "report associations" do
     before(:each) do
       @user = User.create valid_attributes_user
-      @report1 = @user.reports.create valid_attributes_report
-      @report2 = @user.reports.create valid_attributes_report
+      @report1 = Report.create valid_attributes_report
+      @report1.user_id = @user.id
+      @report1.save
+      
+      @report2 = Report.create valid_attributes_report
+      @report2.user_id = @user.id
+      @report2.save
     end
     
     it "should have an existing report attribute" do
@@ -47,8 +52,6 @@ describe User do
       
     end
     
-
-  
   end
   
   describe "role associations" do
@@ -74,19 +77,46 @@ describe User do
       @user = @busi.users.create valid_attributes_user
     end
     
+    it "should have an existing business attribute" do
+      @user.should respond_to(:business)
+    
+    end
+    
+    
     it "should have the right associated business" do
       @user.business.should eq(@busi)
     end
     
-    it "should not destroy the associated business" do
-      @user.destroy
-      Business.find_by_id(@busi.id).should_not be_nil
-    end
-  
   end
   
-  # apprentice / instructor tests
   
+  describe "apprentice/instructor associations" do
+    before(:each) do
+      @user1 = User.create valid_attributes_user
+      @user2 = User.create valid_attributes_user
+      @user2.instructor_id = @user1.id
+      @user2.save
+      @user3 = User.create valid_attributes_user
+      @user3.instructor_id = @user1.id
+      @user3.save
+    end
+    
+    it "should have an existing apprentices attribute" do
+      @user1.should respond_to(:apprentices)
+    end
+    
+    it "should have an existing attribute apprentices" do
+      @user1.apprentices.should eq([@user2, @user3])
+    end
+    it "should have an existing attribute instructor" do
+      @user2.should respond_to(:instructor)
+      @user3.should respond_to(:instructor)
+    end
+    
+    it "should have the same instructor attribute" do
+      @user2.instructor.should eq(@user3.instructor)
+    end
+  end
   
   describe "validations" do
   
@@ -119,10 +149,13 @@ describe User do
       User.new(@attr).should_not be_valid
     end
     
+    it "should require an unique email" do
+      User.new(@attr)
+      User.new(@attr).should_not be_valid
+    end
     
-  
-  
+    # email format test
+
   end
-  
   
 end
