@@ -118,4 +118,14 @@ RSpec.configure do |config|
       :city => 'Stadt'
     }
   end
+
+  def valid_attributes_status
+    {
+      :report => 1,
+      :stype => 1,
+      :date => '2011-10-01',
+      :comment => 'Das ist ein Kommentar eines Ausbilders zum Report in :report'
+    }
+  end
+
 end
