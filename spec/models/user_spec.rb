@@ -1,6 +1,8 @@
-# encoding: utf-8
+﻿# encoding: utf-8
 #
-# Copyright (C) 2011, Marcus Hänsch <haensch.marcus@gmail.com>
+# Copyright (C) 2011, 
+# Marcus Hänsch <haensch.marcus@gmail.com> and 
+# Sascha Peukert <sascha.peukert@gmail.com>
 #
 # This file is part of ApprenticeDocLab1, an application written for
 # buschmais GbR <http://www.buschmais.de/>.
@@ -181,8 +183,16 @@ describe User do
       @user.hashed_password.should_not be_blank
     end
 	
+	#describe "method make_salt and secure_hash(string)" do   # Spaeter unnoetig, weil dann Privat. nur zum testen
 	
-	describe "method 'has_password?'" do
+	#  it "should make salt" do
+	#    salt = nil
+	#	salt = @user.make_salt
+	#	salt.should_not be_nil
+	#  end
+	#end
+	
+	describe "has_password? method" do
 	  
 	  it "should be true if the passwords are matching" do
         @user.has_password?(@attr[:password]).should be_true
