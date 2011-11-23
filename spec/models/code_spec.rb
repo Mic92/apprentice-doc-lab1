@@ -11,6 +11,11 @@ describe Code do
       @attributes = valid_attributes_code
     end
 
+    it "should require attribute name" do
+      @attributes.delete(:name)
+      Code.new(@attributes).should_not be_valid
+    end
+
     it "should require attribute code" do
       @attributes.delete(:code)
       Code.new(@attributes).should_not be_valid

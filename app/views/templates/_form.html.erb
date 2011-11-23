@@ -1,0 +1,35 @@
+<%= form_for(@template) do |f| %>
+  <% if @template.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@template.errors.count, "error") %> verhinderte, dass dieses Template gespeichert werden konnte: :</h2>
+
+      <ul>
+      <% @template.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+
+  <%= @jobs %> <br />
+  <%= @ihks %> <br />
+  <%= @codes %> <br />
+  <%= f.label :job %><br />
+  <%= f.collection_select(:job_id, @jobs, :id, :name, :prompt => true) %>
+  <br />
+  <%= f.label :ihk, 'IHK' %> <br />
+  <%= f.collection_select(:ihk_id, @ihks, :id, :name, :prompt => true) %>
+  <br />
+  <%= f.label :code %> <br />
+  <%= f.collection_select(:code_id, @codes, :id, :name, :prompt => true) %>
+  <br />
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
