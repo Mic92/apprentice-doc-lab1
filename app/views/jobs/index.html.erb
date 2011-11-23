@@ -1,2 +1,17 @@
-<h1>Jobs#index</h1>
-<p>Find me in app/views/jobs/index.html.erb</p>
+<table>
+<tr>
+<th>Name</th>
+</tr>
+
+<% @jobs.each do |job| %>
+<tr>
+<td><%= job.name %></td>
+<td><%= link_to 'Details', job %></td>
+<td><%= link_to 'Bearbeiten', edit_job_path(job) %></td>
+<td><%= link_to 'Löschen', job, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
+</tr>
+<% end %>
+</table>
+<br />
+
+<%= link_to 'Neuer Job', new_job_path %>

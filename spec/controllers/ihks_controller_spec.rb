@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe IhKsController do
+describe IhksController do
 
   describe "GET 'index'" do
     it "returns http success" do
