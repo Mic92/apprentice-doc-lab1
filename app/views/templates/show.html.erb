@@ -1,2 +1,20 @@
-<h1>Templates#show</h1>
-<p>Find me in app/views/templates/show.html.erb</p>
+<p>
+  <b>Name:</b>
+  <%= @template.name %>
+  <br />
+  <b>IHK:</b>
+  <%= @template.ihk.name %>
+  <br />
+  <b>Job:</b>
+  <%= @template.job.name %>
+  <br />
+  <b>Code:</b>
+  <br />
+  <%= @template.code.code %>
+  <br />
+</p>
+
+
+<%= link_to 'Bearbeiten', edit_template_path(@template) %> |
+<%= link_to 'Zurück', templates_path %>
+

@@ -1,4 +1,5 @@
 class Code < ActiveRecord::Base
+  attr_accessible :name, :code
   has_many :templates
-  validates :code, :presence => true
+  validates :code, :name, :presence => true
 end

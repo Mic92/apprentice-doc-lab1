@@ -13,9 +13,9 @@ describe Template do
       @template.save
     end
  
-#    it "should create a new instance with given valid attributes" do
-#      Template.create! (valid_attributes_template)
-#    end
+    it "should create a new instance with given valid attributes" do
+      Template.create! (valid_attributes_template)
+    end
  
     it 'should have a job attribute' do
       @template.should respond_to(:job)
