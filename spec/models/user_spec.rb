@@ -203,6 +203,24 @@ describe User do
       end
 	end
 	
+	describe "set_password method" do
+	  it "should set a different password" do
+	    old_pw = @user.hashed_password
+		@user.set_password("TestfaellemachenSpass")
+		@user.hashed_password.should_not eq(old_pw)
+	  end
+	end
+	
+	describe "randompw method" do
+	  
+	  it "should produce a different hashed_password" do
+	    old_pw = @user.hashed_password
+	    @user.randompw
+	    new_pw = @user.hashed_password
+	    old_pw.should_not eq(new_pw)
+	  end
+	end
+	
 	describe "authenticate method" do
 
       it "should return nil on email/password mismatch" do
