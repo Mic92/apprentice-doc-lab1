@@ -1,2 +1,17 @@
-<h1>Codes#index</h1>
-<p>Find me in app/views/codes/index.html.erb</p>
+<table>
+<tr>
+<th>Code</th>
+</tr>
+
+<% @codes.each do |code| %>
+<tr>
+<td><%= code.code %></td>
+<td><%= link_to 'Details', code %></td>
+<td><%= link_to 'Bearbeiten', edit_code_path(code) %></td>
+<td><%= link_to 'Löschen', code, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
+</tr>
+<% end %>
+</table>
+<br />
+
+<%= link_to 'Neuer Code', new_code_path %>
