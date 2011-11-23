@@ -16,9 +16,6 @@
     <%= f.text_field :name %>
   </div>
 
-  <%= @jobs %> <br />
-  <%= @ihks %> <br />
-  <%= @codes %> <br />
   <%= f.label :job %><br />
   <%= f.collection_select(:job_id, @jobs, :id, :name, :prompt => true) %>
   <br />

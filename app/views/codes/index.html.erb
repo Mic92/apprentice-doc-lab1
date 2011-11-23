@@ -1,13 +1,11 @@
 <table>
 <tr>
 <th>Name</th>
-<th>Code</th>
 </tr>
 
 <% @codes.each do |code| %>
 <tr>
 <td><%= code.name %></td>
-<td><%= code.code %></td>
 <td><%= link_to 'Details', code %></td>
 <td><%= link_to 'Bearbeiten', edit_code_path(code) %></td>
 <td><%= link_to 'Löschen', code, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
