@@ -215,8 +215,7 @@ describe User do
 	  
 	  it "should produce a different hashed_password" do
 	    old_pw = @user.hashed_password
-	    @user.randompw
-	    new_pw = @user.hashed_password
+	    new_pw = @user.randompw
 	    old_pw.should_not eq(new_pw)
 	  end
 	end
