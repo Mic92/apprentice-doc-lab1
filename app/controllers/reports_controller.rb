@@ -19,6 +19,8 @@
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
 
 class ReportsController < ApplicationController
+  before_filter :authenticate
+
   def index
     @reports = Report.all
   end

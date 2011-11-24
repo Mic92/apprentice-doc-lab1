@@ -26,6 +26,7 @@ describe ReportsController do
       @user = User.create valid_attributes_user
       @report1 = @user.reports.create valid_attributes_report
       @report2 = @user.reports.create valid_attributes_report
+      test_sign_in(@user)
     end
 
     it "returns http success" do
@@ -45,6 +46,7 @@ describe ReportsController do
       @report = @user.reports.create valid_attributes_report
       @entry1 = @report.report_entries.create valid_attributes_entry
       @entry2 = @report.report_entries.create valid_attributes_entry
+      test_sign_in(@user)
     end
 
     it "returns http success" do
@@ -64,6 +66,10 @@ describe ReportsController do
   end
 
   describe "GET 'new'" do
+    before(:each) do
+      @user = User.create valid_attributes_user
+      test_sign_in(@user)
+    end
     it "returns http success" do
       get 'new'
       response.should be_success
@@ -79,6 +85,7 @@ describe ReportsController do
     before(:each) do
       @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
+      test_sign_in(@user)
     end
 
     it "returns http success" do
@@ -93,6 +100,10 @@ describe ReportsController do
   end
 
   describe "POST 'create'" do
+    before(:each) do
+      @user = User.create valid_attributes_user
+      test_sign_in(@user)
+    end
     describe "failure" do
       before(:each) do
         @attr = valid_attributes_report
@@ -109,9 +120,9 @@ describe ReportsController do
 
       it "should render the 'new' page" do
         post 'create', :report => { :period_start => '', :period_end => '' }
-        response.should render_template('report/new')
+        response.should render_template('reports/new')
         post 'create', :report => nil
-        response.should render_template('report/new')
+        response.should render_template('reports/new')
       end
     end
 
@@ -138,6 +149,7 @@ describe ReportsController do
     before(:each) do
       @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
+      test_sign_in(@user)
     end
 
     it "should find the right report" do
@@ -191,6 +203,7 @@ describe ReportsController do
     before(:each) do
       @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
+      test_sign_in(@user)
     end
 
     it "should find the right report" do
