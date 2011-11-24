@@ -157,7 +157,7 @@ describe User do
     end
     
     it "should not accept an incorrect email format" do
-      emails = %w[asdf@asd wasd@asd,as wasdfs asdf.was@asd.asd.ds asdf.asd@ asdf@.asd]
+      emails = %w[asdf@asd wasd@asd,as wasdfs asdf.asd@ asdf@.asd]
       emails.each do |e|
         test_user = User.new(@attr.merge(:email => e))
         test_user.should_not be_valid      

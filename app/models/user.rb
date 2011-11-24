@@ -30,7 +30,11 @@ class User < ActiveRecord::Base
   has_many :apprentices, :class_name => "User", :foreign_key => "instructor_id"
   
   validates :role_id, :name, :forename, :presence => true
-  validates :email, :uniqueness => true, :presence => true
+  validates :email, :uniqueness => true, :presence => true,
+            :format => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
+            :length => { :in => 5..40}
+  
+  
   validates :password, :confirmation => true, :length => { :in => 8..40 }, :presence => true
   
   before_save :encrypt_new_password
