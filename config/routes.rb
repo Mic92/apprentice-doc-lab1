@@ -25,6 +25,8 @@ ApprenticeDocLab1::Application.routes.draw do
 
   resources :apprenticeships, :only => [ :create, :destroy ]
 
+  match '/signin', :to => 'sessions#new'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
