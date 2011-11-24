@@ -21,7 +21,7 @@
 
 require 'spec_helper'
 
-describe RoleController do
+describe RolesController do
    
   describe "method tests for signed in admin" do
     #creating signed in user with admin right
