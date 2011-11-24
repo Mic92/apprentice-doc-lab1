@@ -95,10 +95,10 @@ describe User do
   describe "apprentice/instructor associations" do
     before(:each) do
       @user1 = User.create valid_attributes_user
-      @user2 = User.create valid_attributes_user
+      @user2 = User.create valid_attributes_user.merge(:email => 'asdf@blub.de')
       @user2.instructor_id = @user1.id
       @user2.save
-      @user3 = User.create valid_attributes_user
+      @user3 = User.create valid_attributes_user.merge(:email => 'test@test.de')
       @user3.instructor_id = @user1.id
       @user3.save
     end
@@ -141,9 +141,18 @@ describe User do
       User.new(@attr).should_not be_valid
     end
     
-    it "should require attribute hashed_password" do
-      @attr.delete(:hashed_password)  
+    it "should require attribute password" do
+      @attr.delete(:password)  
       User.new(@attr).should_not be_valid
+    end
+    
+    it "should require a password confirmation" do
+      @attr.delete(:password_confirmation)
+      User.new(@attr).should_not be_valid
+    end
+    
+    it "should require a matching password confirmation" do
+      User.new(@attr.merge(:password => 'asdfasdf', :password_confirmation => 'blubblub')).should_not be_valid
     end
     
     it "should require attribute role" do
