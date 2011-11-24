@@ -29,7 +29,7 @@ describe Status do
   describe "report associations" do
     before(:each) do
       @report = Report.create valid_attributes_report
-      @stauts = @report.status
+      @status = @report.status
     end
     
     it "should have an report attribute" do
@@ -37,15 +37,13 @@ describe Status do
     end
     
     it "should have the right associated reports" do
-      @report.status.should eq(@status)
-    
+      @status.report.should eq(@report)
     end
     
     it "should not destroy its reports when destroyed itself" do
-      @report_count = Report.all.length
-      @status.destroy
-      @report_count.should eq(Report.all.length)
-      
+      expect {
+        @status.destroy
+      }.not_to change { Report.count }
     end
 
    end
