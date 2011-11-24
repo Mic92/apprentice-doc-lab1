@@ -21,15 +21,16 @@
 
 class User < ActiveRecord::Base
   attr_accessor :password
-  attr_accessible :name, :forename, :zipcode, :street, :city, :email, :hashed_password, :salt
+  attr_accessible :name, :forename, :zipcode, :street, :city, :email
   belongs_to :role
   belongs_to :business
   belongs_to :instructor, :class_name => "User", :foreign_key => "instructor_id"
   has_many :reports
   has_many :apprentices, :class_name => "User", :foreign_key => "instructor_id"
   
-  validates :hashed_password, :salt, :role_id, :name, :forename, :presence => true
+  validates :role_id, :name, :forename, :presence => true
   validates :email, :uniqueness => true, :presence => true
+  validates :password, :confirmation => true, :length => { :within 8..40 }
   
   before_save :encrypt_new_password
   
