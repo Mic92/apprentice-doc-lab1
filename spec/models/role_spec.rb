@@ -32,10 +32,10 @@ describe Role do
   describe "user associations" do
     before(:each) do
       @role = Role.create valid_attributes_role
-      @user1 = User.create valid_attributes_role
+      @user1 = User.new(valid_attributes_user)
       @user1.role_id = @role.id
       @user1.save
-      @user2 = User.create valid_attributes_role
+      @user2 = User.new(valid_attributes_user.merge(:email => 'asdf@blub.de'))
       @user2.role_id = @role.id
       @user2.save
     end
@@ -44,7 +44,7 @@ describe Role do
       @role.should respond_to(:users)
     end
     
-    it "should have the right associated report entries" do
+    it "should have the right associated users" do
       @role.users.should eq([ @user1, @user2])
     
     end

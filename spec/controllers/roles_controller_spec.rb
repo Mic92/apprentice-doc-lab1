@@ -61,7 +61,7 @@ describe RolesController do
       
       it "should find the right role" do
         get 'edit', :id => @role
-        response.should eq(@role)
+        assigns(:role).should eq(@role)
       end
     end
 

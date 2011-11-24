@@ -82,7 +82,8 @@ RSpec.configure do |config|
       :city => 'Musterstadt',
       :email => 'max@mustermann.de',
       :hashed_password => 'abcdefghijklmnopqrstuvwxyz',
-      :role_id => 1
+      :role_id => 1,
+      :salt => Digest::SHA2.hexdigest("#{Time.now.utc}")
     }
   end
 

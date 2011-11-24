@@ -1,4 +1,7 @@
 class RolesController < ApplicationController
+  
+  before_filter :authenticate
+  
   def new
     @role = Role.new
   end

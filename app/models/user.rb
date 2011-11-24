@@ -28,6 +28,8 @@ class User < ActiveRecord::Base
   has_many :reports
   has_many :apprentices, :class_name => "User", :foreign_key => "instructor_id"
   
+  validates :hashed_password, :salt, :role_id, :name, :forename, :presence => true
+  validates :email, :uniqueness => true, :presence => true
   
   before_save :encrypt_new_password
   
