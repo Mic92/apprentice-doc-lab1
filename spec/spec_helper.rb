@@ -83,7 +83,7 @@ RSpec.configure do |config|
       :email => 'max@mustermann.de',
       :password => 'unknackbarespasswort',
       :password_confirmation => 'unknackbarespasswort',
-      :role_id => 1,
+      :role_id => 1
     }
   end
 

@@ -21,7 +21,7 @@
 
 class User < ActiveRecord::Base
   attr_accessor :password
-  attr_accessible :name, :forename, :zipcode, :street, :city, :email
+  attr_accessible :name, :forename, :zipcode, :street, :city, :email, :password, :role_id
   belongs_to :role
   belongs_to :business
   belongs_to :instructor, :class_name => "User", :foreign_key => "instructor_id"
@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
   
   validates :role_id, :name, :forename, :presence => true
   validates :email, :uniqueness => true, :presence => true
-  validates :password, :confirmation => true, :length => { :within 8..40 }
+  validates :password, :confirmation => true, :length => { :in => 8..40 }, :presence => true
   
   before_save :encrypt_new_password
   
