@@ -1,3 +1,24 @@
+# encoding: utf-8
+#
+# Copyright (C) 2011, 
+# Sascha Peukert <sascha.peukert@gmail.com>
+#
+# This file is part of ApprenticeDocLab1, an application written for
+# buschmais GbR <http://www.buschmais.de/>.
+#
+# ApprenticeDocLab1 is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# ApprenticeDocLab1 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
+
 class User < ActiveRecord::Base
   attr_accessor :password
   attr_accessible :name, :forename, :zipcode, :street, :city, :email, :hashed_password, :salt
@@ -19,6 +40,11 @@ class User < ActiveRecord::Base
     user = find_by_email(email)
     return nil  if user.nil?
     return user if user.has_password?(submitted_pwd)		
+  end
+  
+  def self.authenticate_with_salt(id, cookie_salt)
+    user = find_by_id(id)
+    (user && user.salt == cookie_salt) ? user : nil  #If-Else Operator 
   end
   
   private

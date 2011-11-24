@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include SessionsHelper
+  
   def title
     base_title = ""
     if @title.nil?
