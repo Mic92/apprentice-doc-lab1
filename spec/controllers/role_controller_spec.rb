@@ -1,10 +1,31 @@
+# encoding: utf-8
+#
+# Copyright (C) 2011, Marcus Hänsch <haensch.marcus@gmail.com>
+#
+# This file is part of ApprenticeDocLab1, an application written for
+# buschmais GbR <http://www.buschmais.de/>.
+#
+# ApprenticeDocLab1 is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# ApprenticeDocLab1 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
+
+
 require 'spec_helper'
 
 describe RoleController do
-  
-  
+   
   describe "method tests for signed in admin" do
     #creating signed in user with admin right
+    
     before(:each) do
     @user = User.create valid_attributes_user
     @role_admin = Role.create valid_attributes_role
@@ -15,20 +36,19 @@ describe RoleController do
     
     end  
     
-    
+    #single method testing
         
     describe "GET 'new'" do   
 
-        it "returns http success" do
-          get 'new'
-          response.should be_success
-        end
-        
-        it "should provide a new role record" do
-          get 'new'
-          assigns(:role).should be_new_record
-        end
+      it "returns http success" do
+        get 'new'
+        response.should be_success
+      end
       
+      it "should provide a new role record" do
+        get 'new'
+        assigns(:role).should be_new_record
+      end  
     end
 
     describe "GET 'edit'" do
@@ -45,7 +65,6 @@ describe RoleController do
         get 'edit', :id => @role
         response.should eq(@role)
       end
-
     end
 
     describe "POST 'create'" do
@@ -68,7 +87,6 @@ describe RoleController do
           post 'create', :role => valid_attributes_role
           flash[:notice].should =~ /erfolgreich/i
         end
-
       end
       
       describe "failure" do
@@ -136,8 +154,6 @@ describe RoleController do
           flash[:notice].should =~ /erfolgreich/i
         end
       end
-      
-      
     end
 
     describe "delete 'destroy'" do
@@ -169,11 +185,11 @@ describe RoleController do
         delete 'destroy', :id => @role
         flash[:notice].should =~ /erfolgreich/i
       end
-      
-      
-      
     end
   end
+  
+  #testing the authentication for sign-in and admin right
+  
   describe "authentication" do
     before(:each) do
       @role = Role.create valid_role_attributes
