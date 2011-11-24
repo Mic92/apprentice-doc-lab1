@@ -25,8 +25,8 @@ class SessionsController < ApplicationController
 
   def create
   
-    user = User.authenticate(params[:session][:email],
-                           params[:session][:password])
+    user = User.authenticate(params[:session][:email], params[:session][:password])
+	
     if user.nil?
       # Fehlermeldung
       flash.now[:error] = "Inkorrekte Email/Passwort Kombination"
