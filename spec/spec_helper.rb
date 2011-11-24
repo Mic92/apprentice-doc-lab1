@@ -31,16 +31,20 @@ RSpec.configure do |config|
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
+
+  def test_sign_in(user)
+    controller.sign_in(user)
+  end
+
   def valid_attributes_business
     {
       :name => 'Mustermann GmbH',
       :zipcode => '12345',
       :city => 'Entenhausen',
       :street => 'Musterstraße'
-    }  
+    }
   end
-  
-  
+
   def valid_attributes_entry
     {
       :date => '2011-10-02 08:00:00',
@@ -66,7 +70,6 @@ RSpec.configure do |config|
       :check => true,
       :modify => true,
       :admin => false
-
     }
   end
 
@@ -89,7 +92,7 @@ RSpec.configure do |config|
       :code => 'Das ist langer Code......'
     }
   end
-  
+
   def valid_attributes_job
     {
       :name => 'Das ist ein Name'
@@ -111,15 +114,6 @@ RSpec.configure do |config|
     }
   end
 
-  def valid_attributes_business
-    {
-      :name => 'Das ist ein Name',
-      :zipcode => '12345',
-      :street => 'Strasse',
-      :city => 'Stadt'
-    }
-  end
-
   def valid_attributes_status
     {
       :report => 1,
@@ -128,5 +122,4 @@ RSpec.configure do |config|
       :comment => 'Das ist ein Kommentar eines Ausbilders zum Report in :report'
     }
   end
-
 end
