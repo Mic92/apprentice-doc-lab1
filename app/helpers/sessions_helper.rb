@@ -47,7 +47,7 @@ module SessionsHelper
   end
 
   def deny_access
-    redirect_to signin_path, :notice => "Sie müssen angemeldet sein um auf diese Seite zuzugreifen."
+    redirect_to root_path, :notice => "Sie müssen angemeldet sein um auf diese Seite zuzugreifen."
   end
 
   private
