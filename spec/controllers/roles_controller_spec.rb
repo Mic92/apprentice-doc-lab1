@@ -28,9 +28,7 @@ describe RolesController do
     
     before(:each) do
     @user = User.create valid_attributes_user
-    @role_admin = Role.create valid_attributes_role
-    @role_admin.admin = true
-    @role_admin.save
+    @role_admin = Role.create valid_attributes_role.merge(:admin => true, :level => 1, :name => 'Admin')
     @user.role_id = @role_admin.id
     test_sign_in(@user)
     
@@ -198,7 +196,7 @@ describe RolesController do
   
   describe "authentication" do
     before(:each) do
-      @role = Role.create valid_attributes_role
+      @role = Role.create valid_attributes_role.merge(:level => 3, :name => 'no admin')
     end
     
     describe "testing non-signed-in users" do
@@ -231,9 +229,7 @@ describe RolesController do
     describe "testing signed-in users without admin right" do
       before(:each) do
         @user = User.create valid_attributes_user
-        @role_no_admin = Role.create valid_attributes_role
-        @role_no_admin.admin = true
-        @role_no_admin.save
+        @role_no_admin = Role.create valid_attributes_role.merge(:admin => false, :level => 4, :name => 'no admin')
         @user.role_id = @role_no_admin.id
         test_sign_in(@user)
       end

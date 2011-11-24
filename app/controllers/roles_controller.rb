@@ -20,7 +20,7 @@ class RolesController < ApplicationController
   def update
     @role = Role.find(params[:id])
     
-    if params[:role] != nil && @report.update_attributes(params[:role])
+    if params[:role] != nil && @role.update_attributes(params[:role])
       redirect_to welcome_path, :notice => "Das Rechte-Profil #{@role.name} wurde erfolgreich bearbeitet."
     else  
       render 'edit'
@@ -28,7 +28,7 @@ class RolesController < ApplicationController
   end
 
   def destroy
-    @role
+  
   end
 
 end
