@@ -97,7 +97,7 @@ describe RolesController do
         
         it "should render the 'new' page" do
           post 'create', :role => nil
-          response.should render_template('role/new')
+          response.should render_template('roles/new')
         end
       end
     end
@@ -105,11 +105,6 @@ describe RolesController do
     describe "PUT 'update'" do
       before(:each) do
       @role = Role.create valid_attributes_role
-      end
-      
-      it "returns http success" do
-        put 'update'
-        response.should be_success
       end
       
       it "should find the right role" do
@@ -126,7 +121,7 @@ describe RolesController do
         
         it "should render the 'edit' page" do
           put 'update', :id => @role, :role => nil
-          response.should render_template('role/edit')
+          response.should render_template('roles/edit')
         end
       end
       
@@ -139,7 +134,7 @@ describe RolesController do
           expect {
             put 'update', :id => @role, :role => @attributes
                  }.to change {Role.find(@role).updated_at }
-          Role.find(@role).export.should eq(@attr.fetch(:export))
+          Role.find(@role).export.should eq(@attr.export)
         end
         
         it "should redirect to the welcome page" do
@@ -157,10 +152,6 @@ describe RolesController do
     describe "delete 'destroy'" do
       before(:each) do
         @role = Role.create valid_attributes_role
-      end
-      it "returns http success" do
-        delete 'destroy'
-        response.should be_success
       end
       
       it "should find the right role" do
@@ -202,27 +193,27 @@ describe RolesController do
     describe "testing non-signed-in users" do
       it "should deny access to 'new'" do
         get 'new'
-        response.should redirect_to(signin_path)
+        response.should redirect_to(root_path)
       end
       
       it "should deny access to 'edit'" do
         get 'edit', :id => @role
-        response.should redirect_to(signin_path)
+        response.should redirect_to(root_path)
       end
       
       it "should deny access to 'create'" do
         post 'create', :role => valid_attributes_role
-        response.should redirect_to(signin_path)
+        response.should redirect_to(root_path)
       end
       
       it "should deny access to 'update'" do
         put 'update', :id => @role, :role => valid_attributes_role
-        response.should redirect_to(signin_path)      
+        response.should redirect_to(root_path)      
       end
       
       it "should deny access to 'destroy'" do
         delete 'destroy', :id => @role
-        response.should redirect_to(signin_path)
+        response.should redirect_to(root_path)
       end
     end
     
