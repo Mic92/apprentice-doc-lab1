@@ -170,6 +170,12 @@ describe RoleController do
         assigns(:role).should eq(@role)
       end
       
+      it "should not destroy a role with associated users" do
+        @role.users.create valid_attributes_user
+        expect {
+          delete 'destroy', :id => @role
+               }.to_not change {Role.count}        
+      end
       it "should destroy the role" do
         expect {
           delete 'destroy', :id => @role
@@ -192,7 +198,7 @@ describe RoleController do
   
   describe "authentication" do
     before(:each) do
-      @role = Role.create valid_role_attributes
+      @role = Role.create valid_attributes_role
     end
     
     describe "testing non-signed-in users" do
