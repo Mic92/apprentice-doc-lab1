@@ -145,7 +145,9 @@ describe User do
       @attr.delete(:password)  
       User.new(@attr).should_not be_valid
     end
-    
+    it "should require a password length of 8" do
+      User.new(@attr.merge(:password => 'asdfasd', :password_confirmation => 'asdfasd')).should_not be_valid
+    end
     it "should require a password confirmation" do
       @attr.delete(:password_confirmation)
       User.new(@attr).should_not be_valid
