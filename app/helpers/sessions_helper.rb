@@ -42,12 +42,8 @@ module SessionsHelper
     self.current_user = nil
   end
 
-  def authenticate
-    deny_access unless signed_in?
-  end
-
-  def deny_access
-    redirect_to root_path, :notice => "Sie müssen angemeldet sein um auf diese Seite zuzugreifen."
+  def authenticate(destination, notice)
+    redirect_to destination, :notice => notice unless signed_in?
   end
 
   private

@@ -19,7 +19,7 @@
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
 
 class ReportsController < ApplicationController
-  before_filter :authenticate
+  before_filter { |c| c.authenticate root_path, "Sie müssen angemeldet sein um auf diese Seite zuzugreifen." }
 
   def index
     @reports = Report.all
