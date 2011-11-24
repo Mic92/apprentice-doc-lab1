@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2011, 
 # Sascha Peukert <sascha.peukert@gmail.com>
+# Marcus Hänsch >haensch.marcus@googlemail.com>
 #
 # This file is part of ApprenticeDocLab1, an application written for
 # buschmais GbR <http://www.buschmais.de/>.

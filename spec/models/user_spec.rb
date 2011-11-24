@@ -147,7 +147,7 @@ describe User do
     end
     
     it "should require attribute role" do
-      @attr.delete(:role)  
+      @attr.delete(:role_id)  
       User.new(@attr).should_not be_valid
     end
     
