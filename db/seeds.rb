@@ -5,3 +5,53 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+adminRole = Role.create(
+  :name   => 'Administrator',
+  :level  => 1,
+  :read   => true,
+  :commit => true,
+  :export => true,
+  :check  => true,
+  :modify => true,
+  :admin  => true
+)
+
+Role.create(
+  :name   => 'Ausbilder',
+  :level  => 2,
+  :read   => true,
+  :commit => false,
+  :export => true,
+  :check  => true,
+  :modify => true,
+  :admin  => false
+)
+
+Role.create(
+  :name   => 'Azubi',
+  :level  => 3,
+  :read   => true,
+  :commit => true,
+  :export => true,
+  :check  => false,
+  :modify => true,
+  :admin  => false
+)
+
+business = Business.create(
+  :name     => 'Buschmais',
+  :zipcode  => '01234',
+  :street   => 'TheStreet 1',
+  :city     => 'Dresden'
+)
+
+admin = User.create(
+  :name     => 'Administrator',
+  :forename => 'Admin',
+  :email    => 'admin@swt.de',
+  :password => '12345678',
+  :password_confirmation => '12345678',
+  :role_id  => adminRole.id,
+  :business_id => business.id
+)

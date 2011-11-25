@@ -64,7 +64,7 @@ RSpec.configure do |config|
     {
       :name => 'Ausbilder',
       :level => 2,
-      :read => false,
+      :read => true,
       :commit => false,
       :export => true,
       :check => true,
