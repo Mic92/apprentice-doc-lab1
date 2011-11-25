@@ -1,6 +1,7 @@
 # encoding: utf-8
 #
 # Copyright (C) 2011, Marcus Hänsch <haensch.marcus@gmail.com>
+# Copyright (C) 2011, Dominik Cermak <d.cermak@arcor.de>
 #
 # This file is part of ApprenticeDocLab1, an application written for
 # buschmais GbR <http://www.buschmais.de/>.
@@ -22,11 +23,11 @@ class RolesController < ApplicationController
 
   before_filter :authenticate
   before_filter :admin
-  
+
   def index
     @roles = Role.all
   end
-  
+
   def new
     @role = Role.new
   end

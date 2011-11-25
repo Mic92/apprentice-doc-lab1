@@ -133,6 +133,12 @@ describe ReportsController do
         }.to change { Report.count }.by(1)
       end
 
+      it "should make a status for the report" do
+        expect {
+          post 'create', :report => valid_attributes_report
+        }.to change { Status.count }.by(1)
+      end
+
       it "should redirect to the reports index page" do
         post 'create', :report => valid_attributes_report
         response.should redirect_to(reports_path)

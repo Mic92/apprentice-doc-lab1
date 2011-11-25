@@ -40,6 +40,7 @@ class ReportsController < ApplicationController
 
   def create
     @report = current_user.reports.build(params[:report])
+    @report.build_status(:stype => 0)
 
     if @report.save
       redirect_to reports_path, :notice => 'Bericht wurde erfolgreich erstellt.'
