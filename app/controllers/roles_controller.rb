@@ -22,7 +22,11 @@ class RolesController < ApplicationController
 
   before_filter :authenticate
   before_filter :admin
-
+  
+  def index
+    @roles = Role.all
+  end
+  
   def new
     @role = Role.new
   end
