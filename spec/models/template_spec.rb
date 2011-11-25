@@ -7,9 +7,9 @@ describe Template do
       @code = Code.create valid_attributes_code
       @ihk = Ihk.create valid_attributes_ihk
       @template = Template.new valid_attributes_template
-      @template.job_id = @job.id
-      @template.ihk_id = @ihk.id
-      @template.code_id = @code.id
+      @job.templates << @template
+      @ihk.templates << @template
+      @code.templates << @template
       @template.save
     end
  

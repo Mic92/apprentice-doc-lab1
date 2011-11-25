@@ -61,10 +61,4 @@ class RolesController < ApplicationController
     end
 
   end
-
-  private
-    def admin
-      redirect_to welcome_path unless current_user.role.admin?
-    end
-
 end
