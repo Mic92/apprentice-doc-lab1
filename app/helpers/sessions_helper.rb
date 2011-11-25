@@ -50,6 +50,10 @@ module SessionsHelper
     redirect_to root_path, :notice => "Sie müssen angemeldet sein um auf diese Seite zuzugreifen."
   end
 
+  def admin
+    redirect_to welcome_path unless current_user.role.admin?
+  end
+
   private
 
     def user_from_remember_token
