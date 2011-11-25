@@ -23,7 +23,9 @@ require 'spec_helper'
 describe Status do
 
   it "should create a new instance with valid attributes" do
-    Status.create valid_attributes_status
+    @user = User.create valid_attributes_user
+    @report = @user.reports.create valid_attributes_report
+    @report.create_status! valid_attributes_status
   end
 
   describe "report associations" do
