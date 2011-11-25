@@ -36,7 +36,22 @@ describe RolesController do
     end
 
     #single method testing
-
+    
+    describe "GET 'index'" do
+      before(:each) do
+      @role = Role.create valid_attributes_role
+      end
+      
+      it "returns http success" do
+        get 'index'
+        response.should be_success
+      end
+      
+      it "should find all roles" do
+        get 'index'
+        assigns(:roles).should eq(Role.all)
+      end
+    end
     describe "GET 'new'" do
 
       it "returns http success" do
@@ -192,6 +207,12 @@ describe RolesController do
     end
 
     describe "testing non-signed-in users" do
+      
+      it "should deny access to 'index'" do
+        get 'index'
+        response.should redirect_to(root_path)
+      end
+      
       it "should deny access to 'new'" do
         get 'new'
         response.should redirect_to(root_path)
@@ -224,6 +245,11 @@ describe RolesController do
         @role_no_admin = Role.create valid_attributes_role.merge(:admin => false, :level => 4, :name => 'no admin')
         @role_no_admin.users << @user
         test_sign_in(@user)
+      end
+      
+      it "should deny access to 'index'" do
+        get 'index'
+        response.should redirect_to(welcome_path)
       end
 
       it "should deny access to 'new'" do
