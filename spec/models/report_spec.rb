@@ -95,6 +95,12 @@ describe Report do
       @user.reports.new(@attr).should_not be_valid
     end
 
+    it "should require an ending date greater than the beginning date" do
+      @user.reports.new(@attr.merge(:period_start => Date.today,
+                                    :period_end => Date.yesterday)
+                       ).should_not be_valid
+    end
+
     it "should require a user id" do
       Report.new(valid_attributes_report).should_not be_valid
     end
