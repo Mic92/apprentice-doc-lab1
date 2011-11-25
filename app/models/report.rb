@@ -23,7 +23,7 @@ class Report < ActiveRecord::Base
 
   belongs_to :user
   has_many :report_entries, :dependent => :destroy
-  has_one :status
+  has_one :status, :dependent => :destroy
 
   validates :period_start, :presence => true
   validates :period_end, :presence => true

@@ -56,6 +56,28 @@ describe Report do
     end
   end
 
+    describe "status associations" do
+    before(:each) do
+      @report = @user.reports.create valid_attributes_report
+      @status = Status.create valid_attributes_status
+      @status.report = @report
+      @status.save
+    end
+
+    it "should have a status attribute" do
+      @report.should respond_to(:status)
+    end
+
+    it "should have the right associated status" do
+      @report.status.should eq(@status)
+    end
+
+    it "should destroy the associated status" do
+      @report.destroy
+      ReportEntry.find_by_id(@status.id).should be_nil
+    end
+  end
+
   describe "validations" do
     before(:each) do
       @attr = valid_attributes_report
