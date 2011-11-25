@@ -23,13 +23,15 @@ require 'spec_helper'
 describe Status do
 
   it "should create a new instance with valid attributes" do
-    Status.create! valid_attributes_status
+    Status.create valid_attributes_status
   end
 
   describe "report associations" do
     before(:each) do
       @report = Report.create valid_attributes_report
-      @status = @report.status
+      @status = Status.create valid_attributes_status
+      @report.status = @status
+      @status.report = @report
     end
     
     it "should have an report attribute" do
