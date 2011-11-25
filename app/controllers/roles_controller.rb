@@ -19,9 +19,10 @@
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
 
 class RolesController < ApplicationController
-  
-  before_filter { |c| c.authenticate root_path, "Sie müssen angemeldet sein um auf diese Seite zuzugreifen." }
-  
+
+  before_filter :authenticate
+  before_filter :admin
+
   def new
     @role = Role.new
   end
@@ -32,33 +33,38 @@ class RolesController < ApplicationController
 
   def create
     @role = Role.new(params[:role])
-    
+
       if @role.save
-        redirect_to welcome_path, :notice => "Das Rechte-Profil #{@role.name} wurde erfolgreich erstellt."
+        redirect_to roles_path, :notice => "Das Rechte-Profil #{@role.name} wurde erfolgreich erstellt."
       else
-        render 'new' 
+        render 'new'
       end
   end
 
   def update
     @role = Role.find(params[:id])
-    
+
     if params[:role] != nil && @role.update_attributes(params[:role])
-      redirect_to welcome_path, :notice => "Das Rechte-Profil #{@role.name} wurde erfolgreich bearbeitet."
-    else  
+      redirect_to roles_path, :notice => "Das Rechte-Profil #{@role.name} wurde erfolgreich bearbeitet."
+    else
       render 'edit'
     end
   end
 
   def destroy
     @role = Role.find(params[:id])
-    if @role.users.length == 0
+    if @role.users.lenght == 0
       @role.destroy
-      redirect_to welcome_path, :notice => "Das Rechte-Profil wurde erfolgreich entfernt."
+      redirect_to roles_path, :notice => "Das Rechte-Profil wurde erfolgreich entfernt."
     else
-      redirect_to welcome_path, :notice => "Das Rechte-Profil konnte nicht entfernt werden, da ihm Benutzer zugewiesen sind."
+      redirect_to roles_path, :notice => "Das Rechte-Profil konnte nicht entfernt werden, da ihm Benutzer zugewiesen sind."
     end
-  
+
   end
+
+  private
+    def admin
+      redirect_to welcome_path unless current_user.role.admin?
+    end
 
 end

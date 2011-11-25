@@ -7,7 +7,7 @@ ApprenticeDocLab1::Application.routes.draw do
 
   resources :sessions, :only => [ :new, :create, :destroy ]
 
-  resources :roles, :only => [ :new, :edit, :create, :update, :destroy ]
+  resources :roles, :only => [ :index, :new, :edit, :create, :update, :destroy ]
 
   resources :reviews, :only => [ :create, :update, :destroy ]
 
