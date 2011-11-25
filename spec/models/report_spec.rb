@@ -56,10 +56,10 @@ describe Report do
     end
   end
 
-    describe "status associations" do
+  describe "status associations" do
     before(:each) do
       @report = @user.reports.create valid_attributes_report
-      @status = Status.create valid_attributes_status
+      @status = Status.new valid_attributes_status
       @status.report = @report
       @status.save
     end
@@ -73,8 +73,10 @@ describe Report do
     end
 
     it "should destroy the associated status" do
-      @report.destroy
-      ReportEntry.find_by_id(@status.id).should be_nil
+      expect {
+        @report.destroy
+      }.to change { Status.count }.by(-1)
+      Status.find_by_id(@status.id).should be_nil
     end
   end
 
