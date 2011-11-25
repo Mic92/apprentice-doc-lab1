@@ -53,7 +53,7 @@ class RolesController < ApplicationController
 
   def destroy
     @role = Role.find(params[:id])
-    if @role.users.lenght == 0
+    if @role.users == []
       @role.destroy
       redirect_to roles_path, :notice => "Das Rechte-Profil wurde erfolgreich entfernt."
     else

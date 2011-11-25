@@ -161,7 +161,7 @@ describe RolesController do
       end
 
       it "should not destroy a role with associated users" do
-        @role.users.create valid_attributes_user
+        @role.users.create valid_attributes_user.merge(:email => 'rofl@copter.de')
         expect {
           delete 'destroy', :id => @role
                }.not_to change { Role.count }
