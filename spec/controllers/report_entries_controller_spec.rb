@@ -98,6 +98,11 @@ describe ReportEntriesController do
         expect {
           post 'create', :report_id => @report, :report_entry => valid_attributes_entry
         }.to change { ReportEntry.count }.by(1)
+        @attr = valid_attributes_entry
+        @attr.delete(:duration_in_hours)
+        expect {
+          post 'create', :report_id => @report, :report_entry => @attr, :hours => 10, :minutes => 45
+        }.to change { ReportEntry.count }.by(1)
       end
 
       it "should redirect to the report show page" do
@@ -149,6 +154,11 @@ describe ReportEntriesController do
       it "should change the entry's attributes" do
         expect {
           put 'update', :report_id => @report, :id => @entry, :report_entry => @attr
+        }.to change { ReportEntry.find(@entry).updated_at }
+        ReportEntry.find(@entry).text.should eq(@attr.fetch(:text))
+        @attr.delete(:duration_in_hours)
+        expect {
+          put 'update', :report_id => @report, :id => @entry, :report_entry => @attr, :hours => 10, :minutes => 45
         }.to change { ReportEntry.find(@entry).updated_at }
         ReportEntry.find(@entry).text.should eq(@attr.fetch(:text))
       end

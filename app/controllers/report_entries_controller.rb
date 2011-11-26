@@ -67,7 +67,14 @@ class ReportEntriesController < ApplicationController
   def update
     @entry = ReportEntry.find(params[:id])
 
-    if params[:report_entry] != nil && @entry.update_attributes(params[:report_entry])
+    if params[:hours] != nil && params[:minutes] != nil && params[:report_entry] != nil
+      @duration = (params[:hours].to_i.hours + params[:minutes].to_i.minutes) / 1.0.hour
+      @attr = { :duration_in_hours => @duration }.merge(params[:report_entry])
+    else
+      @attr = params[:report_entry]
+    end
+
+    if @attr != nil && @entry.update_attributes(@attr)
       redirect_to @entry.report, :notice => 'Eintrag wurde erfolgreich bearbeitet.'
     else
       render 'edit'
