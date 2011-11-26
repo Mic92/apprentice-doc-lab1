@@ -1,5 +1,5 @@
 # encoding: utf-8
-#
+#--
 # Copyright (C) 2011, Dominik Cermak <d.cermak@arcor.de>
 #
 # This file is part of ApprenticeDocLab1, an application written for
@@ -17,13 +17,25 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
+#++
 
+# Ist für die Interaktion mit Einträgen zuständig.
+#
+# Nur eingeloggte Benutzer können seine Funktionalität nutzen,
+# des weiteren benötigen sie das Freigeben-Recht (commit) für alle Aktionen.
 class ReportEntriesController < ApplicationController
+  before_filter :authenticate
+  before_filter :correct_user
+  before_filter :commit
+
+  # Zeigt das Formular zum Erstellen eines neuen Eintrags.
   def new
     @report = Report.find(params[:report_id])
     @entry = ReportEntry.new
   end
 
+  # Zeigt das Formular zum Bearbeiten eines vorhandenen Eintrags. Wandelt die Dauer von Stunden in
+  # Stunden und Minuten um.
   def edit
     @report = Report.find(params[:report_id])
     @entry = ReportEntry.find(params[:id])
@@ -31,6 +43,9 @@ class ReportEntriesController < ApplicationController
     @minutes = ((@entry.duration_in_hours.hours / 1.minute) % 60).to_i
   end
 
+  # Legt einen neuen Eintrag an. Wandelt die Dauer von Stunden und Minuten in Stunden um.
+  # Leitet auf ReportsController#show weiter. Ist der Eintrag nicht valid, so wird das Formular
+  # erneut angezeigt.
   def create
     @report = Report.find(params[:report_id])
     if params[:hours] != nil && params[:minutes] != nil && params[:report_entry] != nil
@@ -47,6 +62,8 @@ class ReportEntriesController < ApplicationController
     end
   end
 
+  # Ändert die Attribute des Eintrags und leitet auf ReportsController#show weiter.
+  # Sind die Attribute nicht valid, so wird das Formular erneut angezeigt.
   def update
     @entry = ReportEntry.find(params[:id])
 
@@ -57,6 +74,7 @@ class ReportEntriesController < ApplicationController
     end
   end
 
+  # Löschte einen Eintrag aus dem System und leitet auf ReportsController#show weiter.
   def destroy
     @entry = ReportEntry.find(params[:id])
     @report = @entry.report
@@ -64,4 +82,11 @@ class ReportEntriesController < ApplicationController
 
     redirect_to @report, :notice => 'Eintrag wurde erfolgreich gelöscht.'
   end
+
+  private
+    # Leitet den Benutzer auf die Willkommen-Seite, falls er nicht der Besitzer des Berichts ist.
+    def correct_user
+      @user = Report.find(params[:report_id]).user
+      redirect_to welcome_path unless current_user?(@user)
+    end
 end

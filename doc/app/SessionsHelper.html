@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+<title>Module: SessionsHelper</title>
+
+<link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script type="text/javascript" charset="utf-8" src="./js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/navigation.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search_index.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/search.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/searcher.js"></script>
+<script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
+
+
+<body id="top" class="module">
+<nav id="metadata">
+  <nav id="home-section" class="section">
+  <h3 class="section-header">
+    <a href="./index.html">Home</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </h3>
+</nav>
+
+
+  <nav id="search-section" class="section project-section" class="initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <h3 class="section-header">
+      <input type="text" name="search" placeholder="Search" id="search-field"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </h3>
+  </form>
+
+  <ul id="search-results" class="initially-hidden"></ul>
+</nav>
+
+
+  <div id="file-metadata">
+    <nav id="file-list-section" class="section">
+  <h3 class="section-header">Defined In</h3>
+  <ul>
+    <li>app/helpers/sessions_helper.rb
+  </ul>
+</nav>
+
+    
+  </div>
+
+  <div id="class-metadata">
+    
+    
+    
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
+    
+    <li><a href="#method-i-admin">#admin</a>
+    
+    <li><a href="#method-i-authenticate">#authenticate</a>
+    
+    <li><a href="#method-i-commit">#commit</a>
+    
+    <li><a href="#method-i-current_user">#current_user</a>
+    
+    <li><a href="#method-i-current_user-3D">#current_user=</a>
+    
+    <li><a href="#method-i-current_user-3F">#current_user?</a>
+    
+    <li><a href="#method-i-deny_access">#deny_access</a>
+    
+    <li><a href="#method-i-read">#read</a>
+    
+    <li><a href="#method-i-right_notice">#right_notice</a>
+    
+    <li><a href="#method-i-sign_in">#sign_in</a>
+    
+    <li><a href="#method-i-sign_out">#sign_out</a>
+    
+    <li><a href="#method-i-signed_in-3F">#signed_in?</a>
+    
+  </ul>
+</nav>
+
+  </div>
+
+  <div id="project-metadata">
+    <nav id="fileindex-section" class="section project-section">
+  <h3 class="section-header">Pages</h3>
+
+  <ul>
+  
+    <li class="file"><a href="./doc/README_FOR_APP.html">README_FOR_APP</a>
+  
+  </ul>
+</nav>
+
+    <nav id="classindex-section" class="section project-section">
+  <h3 class="section-header">Class and Module Index</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./ApplicationController.html">ApplicationController</a>
+  
+    <li><a href="./ApplicationHelper.html">ApplicationHelper</a>
+  
+    <li><a href="./ApprenticeshipsController.html">ApprenticeshipsController</a>
+  
+    <li><a href="./ApprenticeshipsHelper.html">ApprenticeshipsHelper</a>
+  
+    <li><a href="./Business.html">Business</a>
+  
+    <li><a href="./Code.html">Code</a>
+  
+    <li><a href="./CodesController.html">CodesController</a>
+  
+    <li><a href="./CodesHelper.html">CodesHelper</a>
+  
+    <li><a href="./Ihk.html">Ihk</a>
+  
+    <li><a href="./IhksController.html">IhksController</a>
+  
+    <li><a href="./IhksHelper.html">IhksHelper</a>
+  
+    <li><a href="./Job.html">Job</a>
+  
+    <li><a href="./JobsController.html">JobsController</a>
+  
+    <li><a href="./JobsHelper.html">JobsHelper</a>
+  
+    <li><a href="./PasswordController.html">PasswordController</a>
+  
+    <li><a href="./PasswordHelper.html">PasswordHelper</a>
+  
+    <li><a href="./Report.html">Report</a>
+  
+    <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
+  
+    <li><a href="./ReportEntriesHelper.html">ReportEntriesHelper</a>
+  
+    <li><a href="./ReportEntry.html">ReportEntry</a>
+  
+    <li><a href="./ReportsController.html">ReportsController</a>
+  
+    <li><a href="./ReportsHelper.html">ReportsHelper</a>
+  
+    <li><a href="./ReviewsController.html">ReviewsController</a>
+  
+    <li><a href="./ReviewsHelper.html">ReviewsHelper</a>
+  
+    <li><a href="./Role.html">Role</a>
+  
+    <li><a href="./RolesController.html">RolesController</a>
+  
+    <li><a href="./RolesHelper.html">RolesHelper</a>
+  
+    <li><a href="./SessionsController.html">SessionsController</a>
+  
+    <li><a href="./SessionsHelper.html">SessionsHelper</a>
+  
+    <li><a href="./Status.html">Status</a>
+  
+    <li><a href="./StatusesController.html">StatusesController</a>
+  
+    <li><a href="./StatusesHelper.html">StatusesHelper</a>
+  
+    <li><a href="./Template.html">Template</a>
+  
+    <li><a href="./TemplatesController.html">TemplatesController</a>
+  
+    <li><a href="./TemplatesHelper.html">TemplatesHelper</a>
+  
+    <li><a href="./User.html">User</a>
+  
+    <li><a href="./UsersController.html">UsersController</a>
+  
+    <li><a href="./UsersHelper.html">UsersHelper</a>
+  
+  </ul>
+</nav>
+
+  </div>
+</nav>
+
+<div id="documentation">
+  <h1 class="module">module SessionsHelper</h1>
+
+  <div id="description" class="description">
+    
+<p>Stellt Methoden zur Session-Verwaltung und Authentifizierung zur Verfügung.</p>
+
+  </div><!-- description -->
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    <!-- Methods -->
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-admin" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">admin</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Leitet den Benuter auf die Willkommen-Seite, falls er kein Admin-Recht hat.
+Gibt den Hinweis <a
+href="SessionsHelper.html#method-i-right_notice">#right_notice</a> aus.</p>
+          
+
+          
+          <div class="method-source-code" id="admin-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 77</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">admin</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">right_notice</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- admin-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- admin-method -->
+
+    
+      <div id="method-i-authenticate" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">authenticate</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Ruft <a href="SessionsHelper.html#method-i-deny_access">#deny_access</a>
+auf, falls der Benutzer nicht eingeloggt ist.</p>
+          
+
+          
+          <div class="method-source-code" id="authenticate-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 52</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">authenticate</span>
+  <span class="ruby-identifier">deny_access</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">signed_in?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- authenticate-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- authenticate-method -->
+
+    
+      <div id="method-i-commit" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">commit</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Leitet den Benuter auf die Willkommen-Seite, falls er kein Freigeben-Recht
+hat. Gibt den Hinweis <a
+href="SessionsHelper.html#method-i-right_notice">#right_notice</a> aus.</p>
+          
+
+          
+          <div class="method-source-code" id="commit-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 72</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">commit</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">right_notice</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">commit?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- commit-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- commit-method -->
+
+    
+      <div id="method-i-current_user" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">current_user</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="current_user-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">current_user</span>
+  <span class="ruby-ivar">@current_user</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">user_from_remember_token</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- current_user-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- current_user-method -->
+
+    
+      <div id="method-i-current_user-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">current_user=</span><span
+            class="method-args">(user)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="current_user-3D-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">current_user=</span>(<span class="ruby-identifier">user</span>)
+  <span class="ruby-ivar">@current_user</span> = <span class="ruby-identifier">user</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- current_user-3D-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- current_user-3D-method -->
+
+    
+      <div id="method-i-current_user-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">current_user?</span><span
+            class="method-args">(user)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Prüft, ob der eingeloggte Benutzer (<a
+href="SessionsHelper.html#method-i-current_user">#current_user</a>) der
+übergebenen Benutzer ist.</p>
+          
+
+          
+          <div class="method-source-code" id="current_user-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 38</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">current_user?</span>(<span class="ruby-identifier">user</span>)
+  <span class="ruby-identifier">user</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">current_user</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- current_user-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- current_user-3F-method -->
+
+    
+      <div id="method-i-deny_access" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">deny_access</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Leitet den Benutzer auf die Wurzel-Seite (Login), gibt einen Hinweis aus.</p>
+          
+
+          
+          <div class="method-source-code" id="deny_access-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 57</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">deny_access</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Sie müssen angemeldet sein um auf diese Seite zuzugreifen.'</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- deny_access-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- deny_access-method -->
+
+    
+      <div id="method-i-read" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">read</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Leitet den Benuter auf die Willkommen-Seite, falls er kein Lesen-Recht hat.
+Gibt den Hinweis <a
+href="SessionsHelper.html#method-i-right_notice">#right_notice</a> aus.</p>
+          
+
+          
+          <div class="method-source-code" id="read-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 67</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">read</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">right_notice</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">read?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- read-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- read-method -->
+
+    
+      <div id="method-i-right_notice" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">right_notice</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Definiert den Hinweis, der bei fehlenden Rechten ausgegeben wird.</p>
+          
+
+          
+          <div class="method-source-code" id="right_notice-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 62</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">right_notice</span>
+  <span class="ruby-string">'Sie haben nicht die benötigten Rechte für diese Aktion.'</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- right_notice-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- right_notice-method -->
+
+    
+      <div id="method-i-sign_in" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">sign_in</span><span
+            class="method-args">(user)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="sign_in-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 24</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sign_in</span>(<span class="ruby-identifier">user</span>)
+  <span class="ruby-identifier">cookies</span>.<span class="ruby-identifier">permanent</span>.<span class="ruby-identifier">signed</span>[<span class="ruby-value">:remember_token</span>] = [<span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">user</span>.<span class="ruby-identifier">salt</span>]
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">current_user</span> = <span class="ruby-identifier">user</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- sign_in-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- sign_in-method -->
+
+    
+      <div id="method-i-sign_out" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">sign_out</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="sign_out-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 46</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">sign_out</span>
+  <span class="ruby-identifier">cookies</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value">:remember_token</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">current_user</span> = <span class="ruby-keyword">nil</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- sign_out-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- sign_out-method -->
+
+    
+      <div id="method-i-signed_in-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">signed_in?</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="signed_in-3F-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 42</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">signed_in?</span>
+  <span class="ruby-operator">!</span><span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">nil?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- signed_in-3F-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- signed_in-3F-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
+  </section><!-- 5Buntitled-5D -->
+
+</div><!-- documentation -->
+
+
+<footer id="validator-badges">
+  <p><a href="http://validator.w3.org/check/referer">[Validate]</a>
+  <p>Generated by <a href="https://github.com/rdoc/rdoc">RDoc</a> 3.11.
+  <p>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish Rdoc Generator</a> 3.
+</footer>
+

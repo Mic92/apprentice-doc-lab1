@@ -23,10 +23,16 @@ require 'spec_helper'
 describe ReportEntriesController do
   before(:each) do
     @user = User.create valid_attributes_user
+    @role = Role.create valid_attributes_role_azubi
+    @role.users << @user
     @report = @user.reports.create valid_attributes_report
   end
 
   describe "GET 'new'" do
+    before(:each) do
+      test_sign_in(@user)
+    end
+
     it "returns http success" do
       get 'new', :report_id => @report
       response.should be_success
@@ -41,6 +47,7 @@ describe ReportEntriesController do
   describe "GET 'edit'" do
     before(:each) do
       @entry = @report.report_entries.create valid_attributes_entry
+      test_sign_in(@user)
     end
 
     it "returns http success" do
@@ -55,6 +62,10 @@ describe ReportEntriesController do
   end
 
   describe "POST 'create'" do
+    before(:each) do
+      test_sign_in(@user)
+    end
+
     it "should find the right report" do
       post 'create', :report_id => @report
       assigns(:report).should eq(@report)
@@ -104,6 +115,7 @@ describe ReportEntriesController do
   describe "PUT 'update'" do
     before(:each) do
       @entry = @report.report_entries.create valid_attributes_entry
+      test_sign_in(@user)
     end
 
     it "should find the right entry" do
@@ -156,6 +168,7 @@ describe ReportEntriesController do
   describe "DELETE 'destroy'" do
     before(:each) do
       @entry = @report.report_entries.create valid_attributes_entry
+      test_sign_in(@user)
     end
 
     it "should find the right entry" do
@@ -188,27 +201,92 @@ describe ReportEntriesController do
     describe "for non-signed-in users" do
       it "should deny access to 'new'" do
         get 'new', :report_id => @report
-        response.should redirect_to(signin_path)
+        response.should redirect_to(root_path)
       end
 
       it "should deny access to 'edit'" do
         get 'edit', :report_id => @report, :id => @entry
-        response.should redirect_to(signin_path)
+        response.should redirect_to(root_path)
       end
 
       it "should deny access to 'create'" do
         post 'create', :report_id => @report, :report_entry => valid_attributes_entry
-        response.should redirect_to(signin_path)
+        response.should redirect_to(root_path)
       end
 
       it "should deny access to 'update'" do
         put 'update', :report_id => @report, :id => @entry, :report_entry => valid_attributes_entry
-        response.should redirect_to(signin_path)
+        response.should redirect_to(root_path)
       end
 
       it "should deny access to 'destroy'" do
         delete 'destroy', :report_id => @report, :id => @entry
-        response.should redirect_to(signin_path)
+        response.should redirect_to(root_path)
+      end
+    end
+
+    describe "for signed-in users" do
+      before(:each) do
+        @wrong_user = User.create valid_attributes_user.merge(:email => 'wrong@user.de')
+        test_sign_in(@wrong_user)
+      end
+
+      it "should require matching users for 'new'" do
+        get 'new', :report_id => @report
+        response.should redirect_to(welcome_path)
+      end
+
+      it "should require matching users for 'edit'" do
+        get 'edit', :report_id => @report, :id => @entry
+        response.should redirect_to(welcome_path)
+      end
+
+      it "should require matching users for 'create'" do
+        post 'create', :report_id => @report
+        response.should redirect_to(welcome_path)
+      end
+
+      it "should require matching users for 'update'" do
+        put 'update', :report_id => @report, :id => @entry
+        response.should redirect_to(welcome_path)
+      end
+
+      it "should require matching users for 'destroy'" do
+        delete 'destroy', :report_id => @report, :id => @entry
+        response.should redirect_to(welcome_path)
+      end
+
+      describe "without the commit right" do
+        before(:each) do
+          @no_commit_role = Role.create valid_attributes_role.merge(:commit => false)
+          @no_commit_role.users << @user
+          test_sign_in(@user)
+        end
+
+        it "should deny access to 'new'" do
+          get 'new', :report_id => @report
+          response.should redirect_to(welcome_path)
+        end
+
+        it "should deny access to 'edit'" do
+          get 'edit', :report_id => @report, :id => @entry
+          response.should redirect_to(welcome_path)
+        end
+
+        it "should deny access to 'create'" do
+          post 'create', :report_id => @report
+          response.should redirect_to(welcome_path)
+        end
+
+        it "should deny access to 'update'" do
+          put 'update', :report_id => @report, :id => @entry
+          response.should redirect_to(welcome_path)
+        end
+
+        it "should deny access to 'destroy'" do
+          delete 'destroy', :report_id => @report, :id => @entry
+          response.should redirect_to(welcome_path)
+        end
       end
     end
   end

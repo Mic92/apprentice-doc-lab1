@@ -1,5 +1,5 @@
 # encoding: utf-8
-#
+#--
 # Copyright (C) 2011, Dominik Cermak <d.cermak@arcor.de>
 #
 # This file is part of ApprenticeDocLab1, an application written for
@@ -17,7 +17,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
+#--
 
+# == Eintrag
+#
+# <b>Attribute:</b>
+# * Datum: date
+# * Dauer in Stunden: duration_in_hours
+# * Text: text
+#
+# <b>Assoziation (gehört zu)</b>
+# * einem Report : report
 class ReportEntry < ActiveRecord::Base
   attr_accessible :date, :duration_in_hours, :text
 

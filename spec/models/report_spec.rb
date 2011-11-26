@@ -56,6 +56,30 @@ describe Report do
     end
   end
 
+  describe "status associations" do
+    before(:each) do
+      @report = @user.reports.create valid_attributes_report
+      @status = Status.new valid_attributes_status
+      @status.report = @report
+      @status.save
+    end
+
+    it "should have a status attribute" do
+      @report.should respond_to(:status)
+    end
+
+    it "should have the right associated status" do
+      @report.status.should eq(@status)
+    end
+
+    it "should destroy the associated status" do
+      expect {
+        @report.destroy
+      }.to change { Status.count }.by(-1)
+      Status.find_by_id(@status.id).should be_nil
+    end
+  end
+
   describe "validations" do
     before(:each) do
       @attr = valid_attributes_report
@@ -69,6 +93,12 @@ describe Report do
     it "should require an ending date" do
       @attr.delete(:period_end)
       @user.reports.new(@attr).should_not be_valid
+    end
+
+    it "should require an ending date greater than the beginning date" do
+      @user.reports.new(@attr.merge(:period_start => Date.today,
+                                    :period_end => Date.yesterday)
+                       ).should_not be_valid
     end
 
     it "should require a user id" do
