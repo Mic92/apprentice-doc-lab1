@@ -160,7 +160,6 @@ RSpec.configure do |config|
     {
       :report => 1,
       :stype => 1,
-      :date => '2011-10-01',
       :comment => 'Das ist ein Kommentar eines Ausbilders zum Report in :report'
     }
   end

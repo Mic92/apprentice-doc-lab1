@@ -19,10 +19,9 @@
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
 
 class Status < ActiveRecord::Base
-  attr_accessible :date, :comment, :stype
+  attr_accessible :comment, :stype
   belongs_to :report
 
   validates :stype, :presence => true
   validates :report, :presence => true
-  validates :date, :presence => true
 end

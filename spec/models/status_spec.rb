@@ -30,10 +30,9 @@ describe Status do
 
   describe "report associations" do
     before(:each) do
-      @report = Report.create valid_attributes_report
-      @status = Status.create valid_attributes_status
-      @report.status = @status
-      @status.report = @report
+      @user = User.create valid_attributes_user
+      @report = @user.reports.create valid_attributes_report
+     @status = @report.create_status valid_attributes_status
     end
     
     it "should have an report attribute" do
@@ -65,11 +64,6 @@ describe Status do
     
     it "should require attribute report" do
       @attributes.delete(:report)
-      Status.new(@attributes).should_not be_valid
-    end
-
-    it "should require attribute date" do
-      @attributes.delete(:date)
       Status.new(@attributes).should_not be_valid
     end
 
