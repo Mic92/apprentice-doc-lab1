@@ -28,11 +28,16 @@ class ApprenticeshipsController < ApplicationController
   before_filter :check
 
   # Weist dem eingeloggten Benuter den übergebenen Benutzer als Auszubildenden zu und
-  # leitet auf UsersController#index weiter.
+  # leitet auf UsersController#index weiter. Benuter mit Prüfen-Recht (check) oder
+  # Admin-Recht (admin) können nicht zugewiesen werden.
   def create
     if @apprentice = User.find_by_id(params[:apprentice_id])
-      current_user.apprentices << @apprentice
-      redirect_to users_path, :notice => 'Der Auszubildende wurde zugewiesen.'
+      if @apprentice.role.check || @apprentice.role.admin
+        redirect_to users_path, :notice => 'Der Benutzer ist kein Auszubildender.'
+      else
+        current_user.apprentices << @apprentice
+        redirect_to users_path, :notice => 'Der Auszubildende wurde zugewiesen.'
+      end
     else
       redirect_to users_path, :notice => 'Der Auszubildende konnte nicht zugewiesen werden.'
     end

@@ -70,6 +70,21 @@ describe ApprenticeshipsController do
         @instructor.apprentices.should eq([ @apprentice ])
       end
 
+      it "should only assign users without admin right" do
+        @admin_role = Role.create valid_attributes_role_admin
+        @admin_role.users << @apprentice
+        expect {
+          post 'create', :apprentice_id => @apprentice
+        }.not_to change { User.find(@instructor).apprentices.count }
+      end
+
+      it "should only assign users without check right" do
+        @instructor_role.users << @apprentice
+        expect {
+          post 'create', :apprentice_id => @apprentice
+        }.not_to change { User.find(@instructor).apprentices.count }
+      end
+
       it "should redirect to the users index page" do
         post 'create', :apprentice_id => @apprentice
         response.should redirect_to(users_path)
