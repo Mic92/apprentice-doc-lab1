@@ -221,16 +221,21 @@ benötigen sie das Prüfen-Recht (check) für alle Aktionen.</p>
           <p>Weist dem eingeloggten Benuter den übergebenen Benutzer als Auszubildenden
 zu und leitet auf <a
 href="UsersController.html#method-i-index">UsersController#index</a>
-weiter.</p>
+weiter. Benuter mit Prüfen-Recht (check) oder Admin-Recht (admin) können
+nicht zugewiesen werden.</p>
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 31</span>
+            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 32</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@apprentice</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:apprentice_id</span>])
-    <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@apprentice</span>
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Auszubildende wurde zugewiesen.'</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@apprentice</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@apprentice</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Benutzer ist kein Auszubildender.'</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@apprentice</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Auszubildende wurde zugewiesen.'</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Auszubildende konnte nicht zugewiesen werden.'</span>
   <span class="ruby-keyword">end</span>
@@ -264,7 +269,7 @@ weiter.</p>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 42</span>
+            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 47</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@apprentice</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-ivar">@apprentice</span>)
