@@ -34,6 +34,7 @@ describe UsersController do
       @azubi = User.create valid_attributes_user.merge(:email => 'azubi@blub.de' )
       @role2 = Role.create valid_attributes_role_azubi
       @role2.users << @azubi
+      @ausbilder.apprentices << @azubi
   
   end
 
@@ -286,6 +287,12 @@ describe UsersController do
                  }.to change {User.count}.by(1)
         end
         
+        it "should make a new apprentice associated to its instructor" do
+          expect {
+            post 'create', :user => @azubi.merge(:email => 'new@email.de')
+                 }.to change {@ausbilder.apprentices.count}.by(1)
+        end
+        
         it "should redirect to the users index page" do
           post 'create', :user => @azubi.merge(:email => 'new@email.de')
           response.should redirect_to(users_path)
@@ -323,9 +330,9 @@ describe UsersController do
                  }.to change {User.find(@ausbilder).updated_at}
         end
         
-        it "should redirect to the welcome page" do
+        it "should redirect to the users page" do
           put 'update', :id => @ausbilder, :user => @ausbilder.merge(:email => 'new@email.de')
-          response.should redirect_to(welcome_path)
+          response.should redirect_to(users_path)
         end
         
         it "should have a flash message" do
@@ -345,18 +352,84 @@ describe UsersController do
           delete 'destroy', :id => @azubi
                }.not_to change {User.count}
       end
+      
+      it "should set its own attribute deleted to true" do
+        expect {
+          delete 'destroy', :id => @ausbilder
+               }.to change {User.find(@ausbilder).deleted.from(false).to(true)}
+      end
+      
       it "should set the apprentice's attribute deleted to true" do
         expect {
           delete 'destroy', :id => @azubi
                }.to change {User.find(@azubi).deleted.from(false).to(true)}
       end
       
+      it "should NOT destroy a non-associated apprentice" do
+        @azubi1 = User.create valid_attributes_user.merge(:email => 'azubi1@test.de')
+        @role2 << @azubi1
+        delete 'destroy', :id => @azubi1
+        response.should redirect_to(welcome_path)
+      end 
+      
       it "should deny access when destroying an admin or instructor" do
        delete 'destroy', :id => @admin
-       response.should redirect_to(welcome_path) 
-       delete 'destroy', :id => @ausbilder
        response.should redirect_to(welcome_path)
       end
     end    
+  end
+  describe "method tests for signed in apprentices" do
+    before(:each) do
+      test_sign_in(@azubi)
+    end
+    describe "GET 'index'" do
+      it "should deny access to index" do
+        get 'index'
+        response.should redirect_to(welcome_path)
+      end
+    end
+    describe "GET 'show'" do
+      it "should find the own attributes" do
+        get 'show', :id => @azubi
+        assigns(:user).should eq(@azubi)
+      end
+      it "should deny access to show other users" do
+        get 'show', :id => @ausbilder
+        response.should redirect_to(welcome_path)
+        get 'show', :id => @admin
+        response.should redirect_to(welcome_path)
+      end
+    end
+    describe "GET 'edit'" do
+      it "should find itself" do
+        get 'edit', :id => @azubi
+        assigns(:user).should eq(@azubi)
+      end
+      
+      it "should NOT find other users" do
+        get 'edit', :id => @admin
+        response.should redirect_to(welcome_path)
+        get 'edit', :id => @ausbilder
+        response.should redirect_to(welcome_path)
+      end
+    end
+    describe "POST 'create'" do
+      it "should deny access to create users" do
+        post 'create', :user => valid_attributes_user.merge(:email => 'new@azubi.de')
+        response.should redirect_to(welcome_path)
+      end
+    end
+    describe "DELETE 'destroy'" do
+      it "should set its own attribute deleted to true" do
+        expect {
+          delete 'destroy', :id => @azubi
+               }.to change {User.find(@azubi).deleted.from(false).to(true)}
+      end
+      
+      it "should deny access to delete other users" do
+        destroy 'delete', :id => @ausbilder
+        response.should redirect_to(welcome_path)
+      end
+    end
   end
 end
