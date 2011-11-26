@@ -19,6 +19,10 @@
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
 
 class ReportEntriesController < ApplicationController
+  before_filter :authenticate
+  before_filter :correct_user
+  before_filter :commit
+
   def new
     @report = Report.find(params[:report_id])
     @entry = ReportEntry.new
@@ -64,4 +68,10 @@ class ReportEntriesController < ApplicationController
 
     redirect_to @report, :notice => 'Eintrag wurde erfolgreich gelöscht.'
   end
+
+  private
+    def correct_user
+      @user = Report.find(params[:report_id]).user
+      redirect_to welcome_path unless current_user?(@user)
+    end
 end

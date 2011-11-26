@@ -21,9 +21,14 @@
 require 'spec_helper'
 
 describe ReportsController do
+  before(:each) do
+    @user = User.create valid_attributes_user
+    @role = Role.create valid_attributes_role_azubi
+    @role.users << @user
+  end
+
   describe "GET 'index'" do
     before(:each) do
-      @user = User.create valid_attributes_user
       @report1 = @user.reports.create valid_attributes_report
       @report2 = @user.reports.create valid_attributes_report
       test_sign_in(@user)
@@ -42,7 +47,6 @@ describe ReportsController do
 
   describe "GET 'show'" do
     before(:each) do
-      @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
       @entry1 = @report.report_entries.create valid_attributes_entry
       @entry2 = @report.report_entries.create valid_attributes_entry
@@ -67,7 +71,6 @@ describe ReportsController do
 
   describe "GET 'new'" do
     before(:each) do
-      @user = User.create valid_attributes_user
       test_sign_in(@user)
     end
     it "returns http success" do
@@ -83,7 +86,6 @@ describe ReportsController do
 
   describe "GET 'edit'" do
     before(:each) do
-      @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
       test_sign_in(@user)
     end
@@ -101,7 +103,6 @@ describe ReportsController do
 
   describe "POST 'create'" do
     before(:each) do
-      @user = User.create valid_attributes_user
       test_sign_in(@user)
     end
     describe "failure" do
@@ -153,7 +154,6 @@ describe ReportsController do
 
   describe "PUT 'update'" do
     before(:each) do
-      @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
       test_sign_in(@user)
     end
@@ -207,7 +207,6 @@ describe ReportsController do
 
   describe "DELETE 'destroy'" do
     before(:each) do
-      @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
       test_sign_in(@user)
     end
@@ -236,7 +235,6 @@ describe ReportsController do
 
   describe "authentication" do
     before(:each) do
-      @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
     end
 
@@ -267,13 +265,81 @@ describe ReportsController do
       end
 
       it "should deny access to 'update'" do
-        put 'update', :id => @report, :report => valid_attributes_report
+        put 'update', :id => @report, :report => valid_attributes_report.merge(:period_start => '2011-09-01')
         response.should redirect_to(root_path)
       end
 
       it "should deny access to 'destroy'" do
         delete 'destroy', :id => @report
         response.should redirect_to(root_path)
+      end
+    end
+
+    describe "for signed-in users" do
+      before(:each) do
+        @wrong_user = User.create valid_attributes_user.merge(:email => 'wrong@user.de')
+        test_sign_in(@wrong_user)
+      end
+
+      it "should require matching users for 'edit'" do
+        get 'edit', :id => @report
+        response.should redirect_to(welcome_path)
+      end
+
+      it "should require matching users for 'update'" do
+        put 'update', :id => @report, :report => valid_attributes_report.merge(:period_start => '2011-09-01')
+        response.should redirect_to(welcome_path)
+      end
+
+      it "should require matching users for 'destroy'" do
+        delete 'destroy', :id => @report
+        response.should redirect_to(welcome_path)
+      end
+
+      describe "without the read right" do
+        before(:each) do
+          @no_read_role = Role.create valid_attributes_role.merge(:read => false)
+          @no_read_role.users << @user
+          test_sign_in(@user)
+        end
+
+        it "should deny access to 'index'" do
+          get 'index'
+          response.should redirect_to(welcome_path)
+        end
+
+        it "should deny access to 'show'" do
+          get 'show', :id => @report
+          response.should redirect_to(welcome_path)
+        end
+      end
+
+      describe "without the commit right" do
+        before(:each) do
+          @no_commit_role = Role.create valid_attributes_role.merge(:commit => false)
+          @no_commit_role.users << @user
+          test_sign_in(@user)
+        end
+
+        it "should deny access to 'new'" do
+          get 'new'
+          response.should redirect_to(welcome_path)
+        end
+
+        it "should deny access to 'create'" do
+          post 'create', :report => valid_attributes_report
+          response.should redirect_to(welcome_path)
+        end
+
+        it "should deny access to 'update'" do
+          put 'update', :id => @report, :report => valid_attributes_report.merge(:period_start => '2011-09-01')
+          response.should redirect_to(welcome_path)
+        end
+
+        it "should deny access to 'destroy'" do
+          delete 'destroy', :id => @report
+          response.should redirect_to(welcome_path)
+        end
       end
     end
   end

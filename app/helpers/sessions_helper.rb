@@ -33,6 +33,10 @@ module SessionsHelper
     @current_user ||= user_from_remember_token
   end
 
+  def current_user?(user)
+    user == current_user
+  end
+
   def signed_in?
     !current_user.nil?
   end
@@ -47,11 +51,23 @@ module SessionsHelper
   end
 
   def deny_access
-    redirect_to root_path, :notice => "Sie müssen angemeldet sein um auf diese Seite zuzugreifen."
+    redirect_to root_path, :notice => 'Sie müssen angemeldet sein um auf diese Seite zuzugreifen.'
+  end
+
+  def right_notice
+    'Sie haben nicht die benötigten Rechte für diese Aktion.'
+  end
+
+  def read
+    redirect_to welcome_path, :notice => right_notice unless current_user.role.read?
+  end
+
+  def commit
+    redirect_to welcome_path, :notice => right_notice unless current_user.role.commit?
   end
 
   def admin
-    redirect_to welcome_path unless current_user.role.admin?
+    redirect_to welcome_path, :notice => right_notice unless current_user.role.admin?
   end
 
   private

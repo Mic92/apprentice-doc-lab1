@@ -20,6 +20,9 @@
 
 class ReportsController < ApplicationController
   before_filter :authenticate
+  before_filter :correct_user, :only => [ :edit, :update, :destroy ]
+  before_filter :read, :only => [ :index, :show ]
+  before_filter :commit, :only => [ :new, :create, :update, :destroy ]
 
   def index
     @reports = Report.all
@@ -65,4 +68,10 @@ class ReportsController < ApplicationController
 
     redirect_to reports_path, :notice => 'Bericht wurde erfolgreich gelöscht.'
   end
+
+  private
+    def correct_user
+      @user = Report.find(params[:id]).user
+      redirect_to welcome_path unless current_user?(@user)
+    end
 end
