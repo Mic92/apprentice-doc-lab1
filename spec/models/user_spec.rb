@@ -1,7 +1,7 @@
 ﻿# encoding: utf-8
 #
-# Copyright (C) 2011, 
-# Marcus Hänsch <haensch.marcus@gmail.com> and 
+# Copyright (C) 2011,
+# Marcus Hänsch <haensch.marcus@gmail.com> and
 # Sascha Peukert <sascha.peukert@gmail.com>
 #
 # This file is part of ApprenticeDocLab1, an application written for
@@ -24,74 +24,74 @@
 require 'spec_helper'
 
 describe User do
-  
-  
-  
-  
+
+
+
+
   it "should create a new instance with given valid attributes" do
     User.create! (valid_attributes_user)
   end
-  
+
   describe "report associations" do
     before(:each) do
       @user = User.create valid_attributes_user
       @report1 = Report.create valid_attributes_report
       @report1.user_id = @user.id
       @report1.save
-      
+
       @report2 = Report.create valid_attributes_report
       @report2.user_id = @user.id
       @report2.save
     end
-    
+
     it "should have an existing report attribute" do
       @user.should respond_to(:reports)
-      
+
     end
-    
+
     it "should have the right associated reports" do
       @user.reports.should eq([ @report1, @report2 ])
-      
+
     end
-    
+
   end
-  
+
   describe "role associations" do
     before(:each) do
       @role = Role.create valid_attributes_role
       @user = @role.users.create valid_attributes_user
     end
-    
+
     it "should have an existing role attribute" do
       @user.should respond_to(:role)
     end
-    
+
     it "should have the right associated role" do
       @user.role.should eq(@role)
     end
-    
-  
+
+
   end
-  
+
   describe "business associations" do
     before(:each) do
       @busi = Business.create valid_attributes_business
       @user = @busi.users.create valid_attributes_user
     end
-    
+
     it "should have an existing business attribute" do
       @user.should respond_to(:business)
-    
+
     end
-    
-    
+
+
     it "should have the right associated business" do
       @user.business.should eq(@busi)
     end
-    
+
   end
-  
-  
+
+
   describe "apprentice/instructor associations" do
     before(:each) do
       @user1 = User.create valid_attributes_user
@@ -102,11 +102,11 @@ describe User do
       @user3.instructor_id = @user1.id
       @user3.save
     end
-    
+
     it "should have an existing apprentices attribute" do
       @user1.should respond_to(:apprentices)
     end
-    
+
     it "should have the right associated apprentices" do
       @user1.apprentices.should eq([@user2, @user3])
     end
@@ -114,35 +114,35 @@ describe User do
       @user2.should respond_to(:instructor)
       @user3.should respond_to(:instructor)
     end
-    
+
     it "should have the same instructor attribute" do
       @user2.instructor.should eq(@user3.instructor)
     end
   end
-  
+
   describe "validations" do
-  
+
     before(:each) do
-      @attr = valid_attributes_user      
+      @attr = valid_attributes_user
     end
-    
+
     it "should require attribute forename" do
-      @attr.delete(:forename)  
+      @attr.delete(:forename)
       User.new(@attr).should_not be_valid
     end
-    
+
     it "should require attribute name" do
-      @attr.delete(:name)  
+      @attr.delete(:name)
       User.new(@attr).should_not be_valid
     end
-    
+
     it "should require attribute email" do
-      @attr.delete(:email)  
+      @attr.delete(:email)
       User.new(@attr).should_not be_valid
     end
-    
+
     it "should require attribute password" do
-      @attr.delete(:password)  
+      @attr.delete(:password)
       User.new(@attr).should_not be_valid
     end
     it "should require a password length of 8" do
@@ -152,29 +152,29 @@ describe User do
       @attr.delete(:password_confirmation)
       User.new(@attr).should_not be_valid
     end
-    
+
     it "should require a matching password confirmation" do
       User.new(@attr.merge(:password => 'asdfasdf', :password_confirmation => 'blubblub')).should_not be_valid
     end
-    
+
     it "should require attribute role" do
-      @attr.delete(:role_id)  
+      @attr.delete(:role_id)
       User.new(@attr).should_not be_valid
     end
-    
+
     it "should require an unique email" do
       User.create(@attr)
       User.new(@attr).should_not be_valid
     end
-    
+
     it "should not accept an incorrect email format" do
       emails = %w[asdf@asd wasd@asd,as wasdfs asdf.asd@ asdf@.asd]
       emails.each do |e|
         test_user = User.new(@attr.merge(:email => e))
-        test_user.should_not be_valid      
+        test_user.should_not be_valid
       end
     end
-    
+
     it "should accept a correct email format" do
       emails = %w[asdf@as.df as_df@as.df as.df@as.df]
       emails.each do |e|
@@ -184,79 +184,38 @@ describe User do
     end
 
   end
-  
+
   describe "password encryption" do
     before(:each) do
       @user = User.create valid_attributes_user
-	  @attr = valid_attributes_user 
     end
-    
-	it "should set the encrypted password" do
+
+    it "should set the encrypted password" do
       @user.hashed_password.should_not be_blank
     end
-	
-	#describe "method make_salt and secure_hash(string)" do   # Spaeter unnoetig, weil dann Privat. nur zum testen
-	
-	#  it "should make salt" do
-	#    salt = nil
-	#	salt = @user.make_salt
-	#	salt.should_not be_nil
-	#  end
-	#end
-	
-	describe "has_password? method" do
-	  
-	  before(:each) do
-        @user = User.create valid_attributes_user
-		@attr = valid_attributes_user 
+
+#     describe "method make_salt and secure_hash(string)" do   # Spaeter unnoetig, weil dann Privat. nur zum testen
+#       it "should make salt" do
+#         salt = nil
+#         salt = @user.make_salt
+#         salt.should_not be_nil
+#       end
+#     end
+
+    describe "has_password? method" do
+      it "should be true if the passwords are matching" do
+        @user.has_password?(valid_attributes_user.fetch(:password)).should be_true
       end
-	  
-	  it "should be true if the passwords are matching" do
-        @user.has_password?('unknackbarespasswort').should be_true  
-      end    
 
       it "should be false if the passwords don't match" do
         @user.has_password?("invalid").should be_false
       end
-	end
-	
-	describe "set_password method" do
-	  
-	  before(:each) do
-        @user = User.create valid_attributes_user
-		@attr = valid_attributes_user 
-      end
-	  
-	  it "should set a different password" do
-	    old_pw = @user.hashed_password
-		@user.set_password("TestfaellemachenSpass")
-		@user.hashed_password.should_not eq(old_pw)
-	  end
-	end
-	
-	describe "randompw method" do
-	  
-	  before(:each) do
-        @user = User.create valid_attributes_user
-		@attr = valid_attributes_user 
-      end
-	  
-	  it "should produce a different hashed_password" do
-	    old_pw = @user.hashed_password
-	    new_pw = @user.randompw
-	    old_pw.should_not eq(new_pw)
-	  end
-	end
-	
-	describe "authenticate method" do
-      before(:each) do
-        @user = User.create valid_attributes_user
-		@attr = valid_attributes_user 
-      end
-      
-	  it "should return nil on email/password mismatch" do
-        wrongpassword_user = User.authenticate(@attr[:email], "wrongpassword")
-        wrongpassword_user.should be_nil
+    end
+
+    describe "authenticate method" do
+      it "should return nil on email/password mismatch" do
+        wrong_password_user = User.authenticate(valid_attributes_user.fetch(:email), "wrongpassword")
+        wrong_password_user.should be_nil
       end
 
       it "should return nil when getting an email address with no user" do
@@ -265,13 +224,9 @@ describe User do
       end
 
       it "should return the user on email/password match" do
-        matching_user = User.authenticate(@attr[:email], @attr[:password])
-
-        matching_user.hashed_password.should eq(@user.hashed_password)
-		matching_user.email.should eq(@user.email)
+        matching_user = User.authenticate(valid_attributes_user.fetch(:email), valid_attributes_user.fetch(:password))
+        matching_user.should eq(@user)
       end
     end
-	
   end
-  
 end
