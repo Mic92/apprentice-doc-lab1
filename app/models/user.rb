@@ -35,8 +35,8 @@ class User < ActiveRecord::Base
             :length => { :in => 5..40}
 
 
-  validates :password, :confirmation => true, :length => { :in => 8..40 }, :presence => true
-  validates :password_confirmation, :presence => true
+  validates :password, :confirmation => true, :length => { :in => 8..40 }, :presence => true, :if => :password_required?
+  validates :password_confirmation, :presence => true, :if => :password_required?
 
   before_save :encrypt_new_password
 
@@ -75,5 +75,7 @@ class User < ActiveRecord::Base
       Digest::SHA2.hexdigest(string)
     end
 
-
+    def password_required?
+      hashed_password.blank? || password.present?
+    end
 end
