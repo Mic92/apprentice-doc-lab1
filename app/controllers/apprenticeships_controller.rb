@@ -20,7 +20,13 @@
 #++
 
 # Ist für die Zuweisung von Azubis zu Ausbildern zuständig.
+#
+# Nur eingeloggte Benutzer können seine Funktionalität nutzen,
+# des weiteren benötigen sie das Prüfen-Recht (check) für alle Aktionen.
 class ApprenticeshipsController < ApplicationController
+  before_filter :authenticate
+  before_filter :check
+
   # Weist dem eingeloggten Benuter den übergebenen Benutzer als Auszubildenden zu und
   # leitet auf UsersController#index weiter.
   def create

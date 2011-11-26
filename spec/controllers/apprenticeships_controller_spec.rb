@@ -133,4 +133,42 @@ describe ApprenticeshipsController do
       end
     end
   end
+
+  describe "authentication" do
+    before(:each) do
+      @apprentice = User.create valid_attributes_user.merge(:email => 'azubi@business.de')
+      @apprentice_role = Role.create valid_attributes_role_azubi
+      @apprentice_role.users << @apprentice
+    end
+
+    describe "for non-signed-in users" do
+      it "should deny access to 'create'" do
+        post 'create', :apprentice_id => @apprentice
+        response.should redirect_to(root_path)
+      end
+
+      it "should deny access to 'destroy'" do
+        delete 'destroy', :id => @apprentice
+        response.should redirect_to(root_path)
+      end
+    end
+
+    describe "for signed-in users without the check right" do
+      before(:each) do
+        @no_check_role = Role.create valid_attributes_role.merge(:check => false)
+        @no_check_role.users << @instructor
+        test_sign_in(@instructor)
+      end
+
+      it "should deny access to 'create'" do
+        post 'create', :apprentice_id => @apprentice
+        response.should redirect_to(welcome_path)
+      end
+
+      it "should deny access to 'destroy'" do
+        delete 'destroy', :id => @apprentice
+        response.should redirect_to(welcome_path)
+      end
+    end
+  end
 end

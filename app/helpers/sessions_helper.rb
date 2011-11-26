@@ -74,6 +74,11 @@ module SessionsHelper
     redirect_to welcome_path, :notice => right_notice unless current_user.role.commit?
   end
 
+  # Leitet den Benuter auf die Willkommen-Seite, falls er kein Prüfen-Recht hat. Gibt den Hinweis right_notice aus.
+  def check
+    redirect_to welcome_path, :notice => right_notice unless current_user.role.check?
+  end
+
   # Leitet den Benuter auf die Willkommen-Seite, falls er kein Admin-Recht hat. Gibt den Hinweis right_notice aus.
   def admin
     redirect_to welcome_path, :notice => right_notice unless current_user.role.admin?

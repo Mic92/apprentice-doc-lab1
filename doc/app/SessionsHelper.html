@@ -68,6 +68,8 @@
     
     <li><a href="#method-i-authenticate">#authenticate</a>
     
+    <li><a href="#method-i-check">#check</a>
+    
     <li><a href="#method-i-commit">#commit</a>
     
     <li><a href="#method-i-current_user">#current_user</a>
@@ -236,7 +238,7 @@ href="SessionsHelper.html#method-i-right_notice">#right_notice</a> aus.</p>
 
           
           <div class="method-source-code" id="admin-source">
-            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 77</span>
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 82</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">admin</span>
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">right_notice</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -279,6 +281,38 @@ auf, falls der Benutzer nicht eingeloggt ist.</p>
 
         
       </div><!-- authenticate-method -->
+
+    
+      <div id="method-i-check" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">check</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Leitet den Benuter auf die Willkommen-Seite, falls er kein Prüfen-Recht
+hat. Gibt den Hinweis <a
+href="SessionsHelper.html#method-i-right_notice">#right_notice</a> aus.</p>
+          
+
+          
+          <div class="method-source-code" id="check-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 77</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">check</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">right_notice</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- check-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- check-method -->
 
     
       <div id="method-i-commit" class="method-detail ">

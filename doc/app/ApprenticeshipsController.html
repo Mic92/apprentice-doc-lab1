@@ -184,6 +184,9 @@
     
 <p>Ist für die Zuweisung von Azubis zu Ausbildern zuständig.</p>
 
+<p>Nur eingeloggte Benutzer können seine Funktionalität nutzen, des weiteren
+benötigen sie das Prüfen-Recht (check) für alle Aktionen.</p>
+
   </div><!-- description -->
 
   
@@ -223,7 +226,7 @@ weiter.</p>
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 25</span>
+            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@apprentice</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:apprentice_id</span>])
     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@apprentice</span>
@@ -261,7 +264,7 @@ weiter.</p>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 36</span>
+            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 42</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@apprentice</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-ivar">@apprentice</span>)
