@@ -1,5 +1,5 @@
 # encoding: utf-8
-#
+#--
 # Copyright (C) 2011, Dominik Cermak <d.cermak@arcor.de>
 #
 # This file is part of ApprenticeDocLab1, an application written for
@@ -17,7 +17,20 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
+#++
 
+# == Bericht
+#
+# <b>Attribute:</b>
+# * Anfangsdatum: period_start
+# * Enddatum: period_end
+#
+# <b>Assoziationen (hat):</b>
+# * beliebig viele Einträge: report_entries
+# * einen Status : status
+#
+# <b>Assoziation (gehört zu):</b>
+# * einem User : user
 class Report < ActiveRecord::Base
   attr_accessible :period_start, :period_end
 

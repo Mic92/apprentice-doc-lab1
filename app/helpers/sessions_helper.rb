@@ -1,5 +1,5 @@
 # encoding: utf-8
-#
+#--
 # Copyright (C) 2011, Sascha Peukert <sascha.peukert@gmail.com>
 # Copyright (C) 2011, Dominik Cermak <d.cermak@arcor.de>
 #
@@ -18,7 +18,9 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
+#++
 
+# Stellt Methoden zur Session-Verwaltung und Authentifizierung zur Verfügung.
 module SessionsHelper
   def sign_in(user)
     cookies.permanent.signed[:remember_token] = [user.id, user.salt]
@@ -33,6 +35,7 @@ module SessionsHelper
     @current_user ||= user_from_remember_token
   end
 
+  # Prüft, ob der eingeloggte Benutzer (current_user) der übergebenen Benutzer ist.
   def current_user?(user)
     user == current_user
   end
@@ -46,26 +49,32 @@ module SessionsHelper
     self.current_user = nil
   end
 
+  # Ruft deny_access auf, falls der Benutzer nicht eingeloggt ist.
   def authenticate
     deny_access unless signed_in?
   end
 
+  # Leitet den Benutzer auf die Wurzel-Seite (Login), gibt einen Hinweis aus.
   def deny_access
     redirect_to root_path, :notice => 'Sie müssen angemeldet sein um auf diese Seite zuzugreifen.'
   end
 
+  # Definiert den Hinweis, der bei fehlenden Rechten ausgegeben wird.
   def right_notice
     'Sie haben nicht die benötigten Rechte für diese Aktion.'
   end
 
+  # Leitet den Benuter auf die Willkommen-Seite, falls er kein Lesen-Recht hat. Gibt den Hinweis right_notice aus.
   def read
     redirect_to welcome_path, :notice => right_notice unless current_user.role.read?
   end
 
+  # Leitet den Benuter auf die Willkommen-Seite, falls er kein Freigeben-Recht hat. Gibt den Hinweis right_notice aus.
   def commit
     redirect_to welcome_path, :notice => right_notice unless current_user.role.commit?
   end
 
+  # Leitet den Benuter auf die Willkommen-Seite, falls er kein Admin-Recht hat. Gibt den Hinweis right_notice aus.
   def admin
     redirect_to welcome_path, :notice => right_notice unless current_user.role.admin?
   end
