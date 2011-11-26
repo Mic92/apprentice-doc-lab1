@@ -246,8 +246,117 @@ describe UsersController do
       it "should find itself" do
         get 'edit', :id => @ausbilder
         assigns(:user).should eq(@ausbilder)
+      end
       
+      it "should NOT find other users" do
+        get 'edit', :id => @admin
+        response.should redirect_to(welcome_path)
+        get 'edit', :id => @azubi
+        response.should redirect_to(welcome_path)
       end
     end
+    
+    describe "POST 'create'" do
+      describe "failure" do
+        it "should NOT make a new user" do
+          expect {
+            post 'create', :user => nil
+                 }.not_to change {User.count}
+        end
+        
+        it "should NOT make a new instructor or admin" do
+          expect {
+            post 'create', :user => @admin.merge(:email => 'new@email.de')
+                 }.not_to change {User.count}
+          expect {
+            post 'create', :user => @ausbilder.merge(:email => 'new@email.de')
+                 }.not_to change {User.count}
+        end
+        
+        it "should redner the 'new' page " do
+          post 'create', :user => nil
+          response.should render_template('users/new')
+        end        
+      end
+      
+      describe "success" do
+        it "should make a new apprentice" do
+          expect {
+            post 'create', :user => @azubi.merge(:email => 'new@email.de')
+                 }.to change {User.count}.by(1)
+        end
+        
+        it "should redirect to the users index page" do
+          post 'create', :user => @azubi.merge(:email => 'new@email.de')
+          response.should redirect_to(users_path)
+        end
+        
+        it "should have a flash message" do
+          post 'create', :user => @azubi.merge(:email => 'new@email.de')
+          flash[:notice].should =~ /erfolgreich/i
+        end
+      end
+    end
+    
+    describe "PUT 'update'" do
+      describe "failure" do
+        it "should not change the users attributes" do
+          expect {
+            put 'update', :id => @ausbilder, :user => nil
+                 }.not_to change {User.find(@ausbilder).updated_at}
+        end
+        
+        it "should render the 'edit' page" do
+          put 'update', :id => @ausbilder, :user => nil
+          response.should render_template('users/edit')
+        end
+        
+        it "should not change others users attributes" do
+          put 'update', :id => @azubi, :user => @azubi.merge(:email => 'new@email.de')
+          response.should redirect_to(welcome_path)
+        end      
+      end
+      describe "success" do
+        it "should change the own attributes" do
+          expect {
+            put 'update', :id => @ausbilder, :user => @ausbilder.merge(:email => 'new@email.de')
+                 }.to change {User.find(@ausbilder).updated_at}
+        end
+        
+        it "should redirect to the welcome page" do
+          put 'update', :id => @ausbilder, :user => @ausbilder.merge(:email => 'new@email.de')
+          response.should redirect_to(welcome_path)
+        end
+        
+        it "should have a flash message" do
+          put 'update', :id => @ausbilder, :user => @ausbilder.merge(:email => 'new@email.de')
+          flash[:notice].should =~ /erfolgreich/i
+        end
+      end    
+    end
+    describe "DELETE 'destroy'" do
+      it "should find the right apprentice" do
+        delete 'destroy', :id => @azubi
+        assigns(:user).should eq(@azubi)
+      end
+      
+      it "should NOT destroy a user" do
+        expect {
+          delete 'destroy', :id => @azubi
+               }.not_to change {User.count}
+      end
+      it "should set the apprentice's attribute deleted to true" do
+        expect {
+          delete 'destroy', :id => @azubi
+               }.to change {User.find(@azubi).deleted.from(false).to(true)}
+      end
+      
+      it "should deny access when destroying an admin or instructor" do
+       delete 'destroy', :id => @admin
+       response.should redirect_to(welcome_path) 
+       delete 'destroy', :id => @ausbilder
+       response.should redirect_to(welcome_path)
+      end
+    end    
   end
 end
