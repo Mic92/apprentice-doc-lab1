@@ -1,4 +1,7 @@
 class TemplatesController < ApplicationController
+  before_filter :authenticate
+  before_filter :admin
+
   def index
     @templates = Template.all
     @title = "Vorlagenliste"

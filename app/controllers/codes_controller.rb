@@ -1,4 +1,7 @@
 class CodesController < ApplicationController
+  before_filter :authenticate
+  before_filter :admin
+
   def index
     @codes = Code.all
     @title = "Code Liste"

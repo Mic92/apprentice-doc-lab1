@@ -1,4 +1,7 @@
 class IhksController < ApplicationController
+  before_filter :authenticate
+  before_filter :admin
+
   def index
     @ihks = Ihk.all
     @title = "IHK Liste"

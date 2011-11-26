@@ -1,4 +1,7 @@
 class JobsController < ApplicationController
+  before_filter :authenticate
+  before_filter :admin
+
   def index
     @jobs = Job.all
     @title = "Job Liste"
