@@ -187,7 +187,8 @@ describe User do
   
   describe "password encryption" do
     before(:each) do
-      @user = User.create!(@attr)
+      @user = User.create valid_attributes_user
+	  @attr = valid_attributes_user 
     end
     
 	it "should set the encrypted password" do
@@ -205,8 +206,13 @@ describe User do
 	
 	describe "has_password? method" do
 	  
+	  before(:each) do
+        @user = User.create valid_attributes_user
+		@attr = valid_attributes_user 
+      end
+	  
 	  it "should be true if the passwords are matching" do
-        @user.has_password?(@attr[:password]).should be_true
+        @user.has_password?('unknackbarespasswort').should be_true  
       end    
 
       it "should be false if the passwords don't match" do
@@ -215,6 +221,12 @@ describe User do
 	end
 	
 	describe "set_password method" do
+	  
+	  before(:each) do
+        @user = User.create valid_attributes_user
+		@attr = valid_attributes_user 
+      end
+	  
 	  it "should set a different password" do
 	    old_pw = @user.hashed_password
 		@user.set_password("TestfaellemachenSpass")
@@ -224,6 +236,11 @@ describe User do
 	
 	describe "randompw method" do
 	  
+	  before(:each) do
+        @user = User.create valid_attributes_user
+		@attr = valid_attributes_user 
+      end
+	  
 	  it "should produce a different hashed_password" do
 	    old_pw = @user.hashed_password
 	    new_pw = @user.randompw
@@ -232,20 +249,26 @@ describe User do
 	end
 	
 	describe "authenticate method" do
-
-      it "should return nil on email/password mismatch" do
+      before(:each) do
+        @user = User.create valid_attributes_user
+		@attr = valid_attributes_user 
+      end
+      
+	  it "should return nil on email/password mismatch" do
         wrongpassword_user = User.authenticate(@attr[:email], "wrongpassword")
         wrongpassword_user.should be_nil
       end
 
       it "should return nil when getting an email address with no user" do
-        nonexistent_user = User.authenticate("fehler@tud.de", @attr[:password])
+        nonexistent_user = User.authenticate("fehler@tud.de", "123456789")
         nonexistent_user.should be_nil
       end
 
       it "should return the user on email/password match" do
         matching_user = User.authenticate(@attr[:email], @attr[:password])
-        matching_user.should == @user
+
+        matching_user.hashed_password.should eq(@user.hashed_password)
+		matching_user.email.should eq(@user.email)
       end
     end
 	

@@ -81,6 +81,8 @@ RSpec.configure do |config|
       :street => 'Musterstraße',
       :city => 'Musterstadt',
       :email => 'max@mustermann.de',
+	  :salt => '1700b3ac65a142efb7af2db02a1d4c403b1ea1fd854baedc8fb29626347871fd',
+	  :hashed_password => '7ebdd167b29f4ae742ab7b18995b2c14a9c5f96f3ede1988e4531451cfc54658', 
       :password => 'unknackbarespasswort',
       :password_confirmation => 'unknackbarespasswort',
       :role_id => 1
