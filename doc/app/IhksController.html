@@ -133,9 +133,9 @@
   
     <li><a href="./JobsHelper.html">JobsHelper</a>
   
-    <li><a href="./PasswordController.html">PasswordController</a>
+    <li><a href="./PasswordsController.html">PasswordsController</a>
   
-    <li><a href="./PasswordHelper.html">PasswordHelper</a>
+    <li><a href="./PasswordsHelper.html">PasswordsHelper</a>
   
     <li><a href="./Report.html">Report</a>
   
@@ -228,7 +228,7 @@
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 36</span>
+            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-ivar">@ihk</span> = <span class="ruby-constant">Ihk</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:ihk</span>])
   
@@ -267,7 +267,7 @@
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 61</span>
+            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 64</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-ivar">@ihk</span> = <span class="ruby-constant">Ihk</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@ihk</span>.<span class="ruby-identifier">destroy</span>
@@ -302,7 +302,7 @@
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 19</span>
+            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
   <span class="ruby-ivar">@ihk</span> = <span class="ruby-constant">Ihk</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;IHK bearbeiten&quot;</span>
@@ -337,7 +337,7 @@
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 2</span>
+            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
   <span class="ruby-ivar">@ihks</span> = <span class="ruby-constant">Ihk</span>.<span class="ruby-identifier">all</span>
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;IHK Liste&quot;</span>
@@ -372,7 +372,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 28</span>
+            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@ihk</span> = <span class="ruby-constant">Ihk</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;IHK anlegen&quot;</span>
@@ -406,7 +406,7 @@
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 11</span>
+            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 14</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-ivar">@ihk</span> = <span class="ruby-constant">Ihk</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;IHK anzeigen&quot;</span>
@@ -440,7 +440,7 @@
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 49</span>
+            <pre><span class="ruby-comment"># File app/controllers/ihks_controller.rb, line 52</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-ivar">@ihk</span> = <span class="ruby-constant">Ihk</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 

@@ -135,9 +135,9 @@
   
     <li><a href="./JobsHelper.html">JobsHelper</a>
   
-    <li><a href="./PasswordController.html">PasswordController</a>
+    <li><a href="./PasswordsController.html">PasswordsController</a>
   
-    <li><a href="./PasswordHelper.html">PasswordHelper</a>
+    <li><a href="./PasswordsHelper.html">PasswordsHelper</a>
   
     <li><a href="./Report.html">Report</a>
   
@@ -230,7 +230,7 @@
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 46</span>
+            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 49</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-ivar">@template</span> = <span class="ruby-constant">Template</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:template</span>])
   
@@ -269,7 +269,7 @@
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 71</span>
+            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 74</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-ivar">@template</span> = <span class="ruby-constant">Template</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@template</span>.<span class="ruby-identifier">destroy</span>
@@ -304,7 +304,7 @@
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 26</span>
+            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 29</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
   <span class="ruby-ivar">@template</span> = <span class="ruby-constant">Template</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;Vorlage bearbeiten&quot;</span>
@@ -340,7 +340,7 @@
 
           
           <div class="method-source-code" id="fetchJobIhkCode-source">
-            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 20</span>
+            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 23</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">fetchJobIhkCode</span>
   <span class="ruby-ivar">@jobs</span> = <span class="ruby-constant">Job</span>.<span class="ruby-identifier">all</span>
   <span class="ruby-ivar">@ihks</span> = <span class="ruby-constant">Ihk</span>.<span class="ruby-identifier">all</span>
@@ -372,7 +372,7 @@
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 2</span>
+            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
   <span class="ruby-ivar">@templates</span> = <span class="ruby-constant">Template</span>.<span class="ruby-identifier">all</span>
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;Vorlagenliste&quot;</span>
@@ -407,7 +407,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 36</span>
+            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@template</span> = <span class="ruby-constant">Template</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;Vorlage anlegen&quot;</span>
@@ -443,7 +443,7 @@
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 11</span>
+            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 14</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-ivar">@template</span> = <span class="ruby-constant">Template</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;Vorlage anzeigen&quot;</span>
@@ -478,7 +478,7 @@
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 59</span>
+            <pre><span class="ruby-comment"># File app/controllers/templates_controller.rb, line 62</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-ivar">@template</span> = <span class="ruby-constant">Template</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 

@@ -129,9 +129,9 @@
   
     <li><a href="./JobsHelper.html">JobsHelper</a>
   
-    <li><a href="./PasswordController.html">PasswordController</a>
+    <li><a href="./PasswordsController.html">PasswordsController</a>
   
-    <li><a href="./PasswordHelper.html">PasswordHelper</a>
+    <li><a href="./PasswordsHelper.html">PasswordsHelper</a>
   
     <li><a href="./Report.html">Report</a>
   
@@ -276,7 +276,7 @@ weiter.</p>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/report_entries_controller.rb, line 77</span>
+            <pre><span class="ruby-comment"># File app/controllers/report_entries_controller.rb, line 84</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-ivar">@entry</span> = <span class="ruby-constant">ReportEntry</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@report</span> = <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">report</span>
@@ -382,7 +382,14 @@ angezeigt.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-ivar">@entry</span> = <span class="ruby-constant">ReportEntry</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:report_entry</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:report_entry</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:hours</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:minutes</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:report_entry</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-ivar">@duration</span> = (<span class="ruby-identifier">params</span>[<span class="ruby-value">:hours</span>].<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">hours</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:minutes</span>].<span class="ruby-identifier">to_i</span>.<span class="ruby-identifier">minutes</span>) <span class="ruby-operator">/</span> <span class="ruby-value">1.0</span>.<span class="ruby-identifier">hour</span>
+    <span class="ruby-ivar">@attr</span> = { <span class="ruby-value">:duration_in_hours</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@duration</span> }.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:report_entry</span>])
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@attr</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:report_entry</span>]
+  <span class="ruby-keyword">end</span>
+
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@attr</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-ivar">@attr</span>)
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">report</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Eintrag wurde erfolgreich bearbeitet.'</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
