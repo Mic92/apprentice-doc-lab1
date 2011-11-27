@@ -19,6 +19,22 @@
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
 
 class Status < ActiveRecord::Base
+  def self.personal
+    0
+  end
+
+  def self.commited
+    1
+  end
+
+  def self.rejected
+    2
+  end
+
+  def self.accepted
+    3
+  end
+
   attr_accessible :comment, :stype
   belongs_to :report
 

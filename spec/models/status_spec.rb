@@ -32,7 +32,7 @@ describe Status do
     before(:each) do
       @user = User.create valid_attributes_user
       @report = @user.reports.create valid_attributes_report
-     @status = @report.create_status valid_attributes_status
+      @status = @report.create_status valid_attributes_status
     end
     
     it "should have an report attribute" do

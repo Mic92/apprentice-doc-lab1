@@ -159,7 +159,7 @@ RSpec.configure do |config|
   def valid_attributes_status
     {
       :report => 1,
-      :stype => 1,
+      :stype => Status.personal,
       :comment => 'Das ist ein Kommentar eines Ausbilders zum Report in :report'
     }
   end
