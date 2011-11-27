@@ -22,6 +22,9 @@
 
 # Ist für das zurücksetzen von Passwörtern zuständig.
 class PasswordsController < ApplicationController
+  before_filter :authenticate
+  before_filter :admin
+
   # Setzt das Passwort des übergebenen Benutzers auf ein zufälliges neues.
   def update
     @user = User.find(params[:id])
@@ -31,7 +34,7 @@ class PasswordsController < ApplicationController
     @user.password_confirmation = @password
     @user.save
 
-    redirect_to welcome_path, :notice => 'Ein zufälliges Passwort wurde erstellt.'
+    redirect_to users_path, :notice => 'Ein zufälliges Passwort wurde erstellt.'
   end
 
   private

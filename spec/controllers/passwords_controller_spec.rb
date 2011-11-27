@@ -22,12 +22,19 @@ require 'spec_helper'
 
 describe PasswordsController do
   before(:each) do
-    @user = User.create valid_attributes_user
+    @admin = User.create valid_attributes_user
+    @admin_role = Role.create valid_attributes_role_admin
+    @admin_role.users << @admin
+    @user = User.create valid_attributes_user.merge(:email => 'azubi@business.de')
     @role = Role.create valid_attributes_role
     @role.users << @user
   end
 
   describe "PUT 'update'" do
+    before(:each) do
+      test_sign_in(@admin)
+    end
+
     it "should find the right user" do
       put 'update', :id => @user
       assigns(:user).should eq(@user)
@@ -45,14 +52,36 @@ describe PasswordsController do
       }.to change { User.find(@user).hashed_password }
     end
 
-    it "should redirect to the welcome page" do
+    it "should redirect to the users index page" do
       put 'update', :id => @user
-      response.should redirect_to(welcome_path)
+      response.should redirect_to(users_path)
     end
 
     it "should have a flash message" do
       put 'update', :id => @user
       flash[:notice] =~ /zufällig/i
+    end
+  end
+
+  describe "authentication" do
+    describe "for non-signed-in users" do
+      it "should deny access to 'update'" do
+        put 'update', :id => @user
+        response.should redirect_to(root_path)
+      end
+    end
+
+    describe "for signed-in users without the admin right" do
+      before(:each) do
+        @no_admin_role = Role.create valid_attributes_role_azubi.merge(:admin => false)
+        @no_admin_role.users << @admin
+        test_sign_in(@admin)
+      end
+
+      it "should deny access to 'update'" do
+        put 'update', :id => @user
+        response.should redirect_to(welcome_path)
+      end
     end
   end
 end
