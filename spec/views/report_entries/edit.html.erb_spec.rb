@@ -47,7 +47,7 @@ describe "report_entries/edit.html.erb" do
 
   it "should have input fields for duration_in_hours" do
     render
-    rendered.should include('id="duration_hours"', 'id="duration_minutes"')
+    rendered.should include('id="hours"', 'id="minutes"')
   end
 
   it "should have a text field for text" do

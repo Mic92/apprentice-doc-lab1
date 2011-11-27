@@ -30,8 +30,8 @@ describe "reports/index.html.erb" do
     @instructor = mock_model(User, :name => 'Ausbilder',
                              :forename => 'One',
                              :role  => @check_role)
-    @report1 = mock_model(Report, :period_start => '2011-10-01', :period_end => '2011-10-31', :user => @apprentice)
-    @report2 = mock_model(Report, :period_start => '2011-11-01', :period_end => '2011-11-30', :user => @apprentice)
+    @report1 = mock_model(Report, :period_start => '2011-10-01'.to_date, :period_end => '2011-10-31'.to_date, :user => @apprentice)
+    @report2 = mock_model(Report, :period_start => '2011-11-01'.to_date, :period_end => '2011-11-30'.to_date, :user => @apprentice)
     assign(:reports, [ @report1, @report2 ])
     assign(:current_user, @apprentice)
   end
