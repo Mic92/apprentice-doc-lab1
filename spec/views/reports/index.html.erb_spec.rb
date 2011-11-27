@@ -22,9 +22,18 @@ require 'spec_helper'
 
 describe "reports/index.html.erb" do
   before(:each) do
-    @report1 = mock_model(Report, :period_start => '2011-10-01', :period_end => '2011-10-31')
-    @report2 = mock_model(Report, :period_start => '2011-11-01', :period_end => '2011-11-30')
+    @commit_role = mock_model(Role, :read? => true, :commit? => true, :check? => false)
+    @check_role = mock_model(Role, :read? => true, :commit? => false, :check? => true)
+    @apprentice = mock_model(User, :name => 'Azubi',
+                             :forename => 'One',
+                             :role  => @commit_role)
+    @instructor = mock_model(User, :name => 'Ausbilder',
+                             :forename => 'One',
+                             :role  => @check_role)
+    @report1 = mock_model(Report, :period_start => '2011-10-01', :period_end => '2011-10-31', :user => @apprentice)
+    @report2 = mock_model(Report, :period_start => '2011-11-01', :period_end => '2011-11-30', :user => @apprentice)
     assign(:reports, [ @report1, @report2 ])
+    assign(:current_user, @apprentice)
   end
 
   it "should display the beginning dates" do
@@ -35,5 +44,28 @@ describe "reports/index.html.erb" do
   it "should display the ending dates" do
     render
     rendered.should include(@report1.period_end.to_s, @report2.period_end.to_s)
+  end
+
+  describe "for users with commit right" do
+    it "should have a link to create a new report" do
+      render
+      rendered.should include('href="/reports/new"')
+    end
+
+    it "should have links to delete the reports" do
+      render
+      rendered.should include("href=\"/reports/#{@report1.id}\"", "href=\"/reports/#{@report2.id}\"")
+    end
+  end
+
+  describe "for users with check right" do
+    before(:each) do
+      assign(:current_user, @instructor)
+    end
+
+    it "should display the apprentices names" do
+      render
+      rendered.should include(@apprentice.forename, @apprentice.name)
+    end
   end
 end
