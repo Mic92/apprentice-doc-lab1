@@ -1,2 +1,19 @@
-<h1>Reports#show</h1>
-<p>Find me in app/views/reports/show.html.erb</p>
+<h1>Bericht vom <%= @report.period_start %> bis zum <%= @report.period_end %></h1>
+
+<table>
+  <tr>
+    <th>Datum/Uhrzeit</th>
+    <th>Dauer</th>
+    <th>Text</th>
+  </tr>
+  <% @entries.each do |entry| %>
+    <tr>
+      <td class="center"><%= entry.date.to_formatted_s(:short) %></td>
+      <td class="center"><%= entry.duration_in_hours.to_i %> Stunden <%= (entry.duration_in_hours.hours / 1.minute % 60).to_i %> Minuten</td>
+      <td><%= entry.text %></td>
+      <td><%= link_to 'Löschen', report_report_entry_path(@report, entry), :confirm => "Sind Sie sicher?", :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<%= link_to 'Eintrag anlegen.', new_report_report_entry_path(@report) %>
