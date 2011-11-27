@@ -31,6 +31,11 @@ describe ReportsController do
     before(:each) do
       @report1 = @user.reports.create valid_attributes_report
       @report2 = @user.reports.create valid_attributes_report
+      @instructor = User.create valid_attributes_user.merge(:email => 'user2@reports.controller')
+      @instructor_role = Role.create valid_attributes_role_ausbilder
+      @instructor_role.users << @instructor
+      @report3 = @instructor.reports.create valid_attributes_report
+      @instructor.apprentices << @user
       test_sign_in(@user)
     end
 
@@ -39,9 +44,24 @@ describe ReportsController do
       response.should be_success
     end
 
-    it "should find all reports" do
-      get 'index'
-      assigns(:reports).should eq(Report.all)
+    describe "for users with commit right" do
+      it "should only find all reports associated with the user" do
+        get 'index'
+        assigns(:reports).should eq(@user.reports)
+      end
+    end
+
+    describe "for users with check right" do
+      before(:each) do
+        test_sign_in(@instructor)
+      end
+
+      it "should only find all reports associated with assigned apprentices" do
+        @apprentices = []
+        @instructor.apprentices.each { |a| @apprentices << a.id }
+        get 'index'
+        assigns(:reports).should eq(Report.where(:user_id => @apprentices))
+      end
     end
   end
 

@@ -30,9 +30,18 @@ class ReportsController < ApplicationController
   before_filter :read, :only => [ :index, :show ]
   before_filter :commit, :only => [ :new, :create, :update, :destroy ]
 
-  # Listet alle Berichte auf.
+  # Listet Berichte auf. Welche Bericht angezeigt werden hängt von den Rechten des
+  # Benutzers ab:
+  # * Freigeben (commit): alle Berichte des Benutzers
+  # * Prüfen (check): alle Berichte der dem Benutzer zugewiesenen Azubis
   def index
-    @reports = Report.all
+    if current_user.role.commit?
+      @reports = current_user.reports
+    elsif current_user.role.check?
+      @apprentices = []
+      current_user.apprentices.each { |a| @apprentices << a.id }
+      @reports = Report.where(:user_id => @apprentices)
+    end
   end
 
   # Zeigt die Einträge eines Berichts.

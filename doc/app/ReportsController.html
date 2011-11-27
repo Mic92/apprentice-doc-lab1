@@ -243,7 +243,7 @@ Bericht nicht valid, so wird das Formular erneut gezeigt.</p>
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 55</span>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 64</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">reports</span>.<span class="ruby-identifier">build</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:report</span>])
   <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">build_status</span>(<span class="ruby-value">:stype</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>)
@@ -281,7 +281,7 @@ href="ReportsController.html#method-i-index">#index</a> weiter.</p>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 79</span>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 88</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">destroy</span>
@@ -314,7 +314,7 @@ href="ReportsController.html#method-i-index">#index</a> weiter.</p>
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 49</span>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 58</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 <span class="ruby-keyword">end</span></pre>
@@ -339,14 +339,26 @@ href="ReportsController.html#method-i-index">#index</a> weiter.</p>
 
         <div class="method-description">
           
-          <p>Listet alle Berichte auf.</p>
+          <p>Listet Berichte auf. Welche Bericht angezeigt werden hängt von den Rechten
+des Benutzers ab:</p>
+<ul><li>
+<p>Freigeben (commit): alle Berichte des Benutzers</p>
+</li><li>
+<p>Prüfen (check): alle Berichte der dem Benutzer zugewiesenen Azubis</p>
+</li></ul>
           
 
           
           <div class="method-source-code" id="index-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 33</span>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 36</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
-  <span class="ruby-ivar">@reports</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">all</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">commit?</span>
+    <span class="ruby-ivar">@reports</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">reports</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span>
+    <span class="ruby-ivar">@apprentices</span> = []
+    <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">a</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@apprentices</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">a</span>.<span class="ruby-identifier">id</span> }
+    <span class="ruby-ivar">@reports</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:user_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@apprentices</span>)
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- index-source -->
           
@@ -374,7 +386,7 @@ href="ReportsController.html#method-i-index">#index</a> weiter.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 44</span>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 53</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">new</span>
 <span class="ruby-keyword">end</span></pre>
@@ -404,7 +416,7 @@ href="ReportsController.html#method-i-index">#index</a> weiter.</p>
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 38</span>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 47</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@entries</span> = <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">report_entries</span>
@@ -437,7 +449,7 @@ Attribute nicht valid, so wird das Formular erneut gezeigt.</p>
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 68</span>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 77</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 
