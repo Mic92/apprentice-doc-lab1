@@ -2,7 +2,7 @@
 
 <table>
   <tr>
-    <th>Von</th>
+    <th>Vom</th>
     <th>Bis</th>
     <% if current_user.role.check? %>
       <th>Azubi</th>
@@ -10,8 +10,8 @@
   </tr>
   <% @reports.each do |report| %>
     <tr>
-      <td class="center"><%= report.period_start %></td>
-      <td class="center"><%= report.period_end %></td>
+      <td class="center"><%= l report.period_start %></td>
+      <td class="center"><%= l report.period_end %></td>
       <% if current_user.role.check? %>
         <td class="center"><%= report.user.forename + ' ' + report.user.name %></td>
       <% end %>

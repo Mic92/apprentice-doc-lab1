@@ -1,4 +1,4 @@
-<h1>Bericht vom <%= @report.period_start %> bis zum <%= @report.period_end %></h1>
+<h1>Bericht vom <%= l @report.period_start, :format => :long %> bis zum <%= l @report.period_end, :format => :long %></h1>
 
 <table>
   <tr>
@@ -8,7 +8,7 @@
   </tr>
   <% @entries.each do |entry| %>
     <tr>
-      <td class="center"><%= entry.date.to_formatted_s(:short) %></td>
+      <td class="center"><%= l entry.date, :format => :short %></td>
       <td class="center"><%= entry.duration_in_hours.to_i %> Stunden <%= (entry.duration_in_hours.hours / 1.minute % 60).to_i %> Minuten</td>
       <td><%= entry.text %></td>
       <td><%= link_to 'Löschen', report_report_entry_path(@report, entry), :confirm => "Sind Sie sicher?", :method => :delete %></td>
