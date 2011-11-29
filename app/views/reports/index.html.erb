@@ -19,6 +19,9 @@
       <% if current_user.role.commit? %>
         <td><%= link_to 'Löschen', report_path(report), :confirm => "Sind Sie sicher?", :method => :delete %></td>
       <% end %>
+      <% if current_user.role.export? %>
+        <td><%= link_to 'Druckansicht', print_report_path(report)%></td>
+      <% end %>
     </tr>
   <% end %>
 </table>
