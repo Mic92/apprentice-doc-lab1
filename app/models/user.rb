@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
   belongs_to :instructor, :class_name => "User", :foreign_key => "instructor_id"
   has_many :reports
   has_many :apprentices, :class_name => "User", :foreign_key => "instructor_id"
+  belongs_to :template
 
   validates :role_id, :name, :forename, :presence => true
   validates :email, :uniqueness => true, :presence => true,
