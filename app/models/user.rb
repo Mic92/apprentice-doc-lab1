@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
   has_many :apprentices, :class_name => "User", :foreign_key => "instructor_id"
   belongs_to :template
 
-  validates :role_id, :name, :forename, :presence => true
+  validates :role_id, :name, :forename, :template_id, :presence => true
   validates :email, :uniqueness => true, :presence => true,
             :format => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
             :length => { :in => 5..40}

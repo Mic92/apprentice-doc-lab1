@@ -13,10 +13,10 @@ class PrintReportsController < ApplicationController
   end
 
   def show
-    #TODO hier noch aufpassen, dass der Nutzer den Report auch lesen darf
     @report = Report.find(params[:id])
     @title = 'Report Druckansicht'
-    @rawCode = @report.user.template.code.code
+    @code = @report.user.template.code
+    @rawCode = @code.code
     
     self.handleRawCode
 

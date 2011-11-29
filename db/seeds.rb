@@ -56,7 +56,26 @@ job = Job.create(
 
 code = Code.create(
   :name => 'Code 1',
-  :code => 'Hallo [v]userforename[/v] [v]username[/v]<br /> [e]entry[0].text[e]<br />[e]entry[1].text[e]<br />'
+  :codegroup => 3,
+  :code => 'Hallo [v]userforename[/v] [v]username[/v]<br /> 
+  Woche 1:<br />
+  [e]entry[0][0].text[e]<br />
+  [e]entry[0][1].text[e]<br />
+  [e]entry[0][2].text[e]<br />
+  [e]entry[0][3].text[e]<br />
+
+  Woche 2:<br />
+  [e]entry[1][0].text[e]<br />
+  [e]entry[1][1].text[e]<br />
+  [e]entry[1][2].text[e]<br />
+  [e]entry[1][3].text[e]<br />
+
+  Woche 3:<br />
+
+  [e]entry[2][0].text[e]<br />
+  [e]entry[2][1].text[e]<br />
+  [e]entry[2][2].text[e]<br />
+  [e]entry[2][3].text[e]<br />'
 )
 
 template = Template.create(

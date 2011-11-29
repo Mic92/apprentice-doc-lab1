@@ -131,6 +131,7 @@ RSpec.configure do |config|
   def valid_attributes_code
     {
       :name => 'Testcode',
+      :codegroup => 3,
       :code => 'Das ist langer Code......'
     }
   end

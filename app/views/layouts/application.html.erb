@@ -22,7 +22,7 @@
   <nav>
     <ul>
       <% if signed_in? %>
-        <% @role = Role.find_by_level(current_user.role_id) %>
+        <% @role = current_user.role %>
         <li><%= link_to 'Startseite', welcome_path %></li>
         <% if @role.read == true or @role.commit == true or @role.export == true or @role.check == true %>
           <li><%= link_to 'Berichts-Verwaltung', reports_path %></li>
