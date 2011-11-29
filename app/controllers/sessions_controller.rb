@@ -34,7 +34,8 @@ class SessionsController < ApplicationController
       render 'new'
 	else
       # Einloggen und zur Reportuebersichtsseite leiten
-	  sign_in user
+      sign_in user
+      #UserMailer.testmail(user).deliver  #NUR TEST
       redirect_to welcome_path
     end
   
