@@ -1,6 +1,8 @@
 ApprenticeDocLab1::Application.routes.draw do
   resources :users
 
+  resources :printreports, :only => [ :show ]
+
   resources :templates
 
   resources :statuses, :only => [ :create, :update, :destroy ]

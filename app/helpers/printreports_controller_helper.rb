@@ -1,0 +1,2 @@
+module PrintreportsControllerHelper
+end
