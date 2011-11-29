@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111129114551) do
+ActiveRecord::Schema.define(:version => 20111129163208) do
 
   create_table "apprenticeships", :force => true do |t|
     t.integer  "instructor_id"
@@ -72,12 +72,12 @@ ActiveRecord::Schema.define(:version => 20111129114551) do
   create_table "roles", :force => true do |t|
     t.string   "name"
     t.integer  "level"
-    t.boolean  "read"
-    t.boolean  "commit"
-    t.boolean  "export"
-    t.boolean  "check"
-    t.boolean  "modify"
-    t.boolean  "admin"
+    t.boolean  "read",       :default => false
+    t.boolean  "commit",     :default => false
+    t.boolean  "export",     :default => false
+    t.boolean  "check",      :default => false
+    t.boolean  "modify",     :default => false
+    t.boolean  "admin",      :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
