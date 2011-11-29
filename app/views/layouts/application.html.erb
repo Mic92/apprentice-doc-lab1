@@ -20,16 +20,29 @@
     <em><%= @title %></em>
   </header>
   <nav>
-    <ul>
-      <li><%= link_to 'Startseite', root_path %></li>
-      <li><%= link_to 'Berichts-Verwaltung', '#' %></li>
-      <li><%= link_to 'Job-Verwaltung', jobs_path %></li>
-      <li><%= link_to 'IHK-Verwaltung', ihks_path %></li>
-      <li><%= link_to 'Code-Verwaltung', codes_path %></li>
-      <li><%= link_to 'Template-Verwaltung', templates_path %></li>
-      <li><%= link_to 'Benutzer-Verwaltung', users_path %></li>
-      <br />
-      <li><%= link_to 'Ausloggen', '#' %></li>
+    <ul>		
+	  <% if signed_in? %>
+	    <% @role = Role.find_by_level(current_user.role_id) %>
+	    <li><%= link_to 'Startseite', welcome_path %></li>
+		<% if @role.read == true or @role.commit == true or @role.export == true or @role.check == true %>
+	      <li><%= link_to 'Berichts-Verwaltung', '#' %></li>  
+		<% end %>
+		<% if @role.modify == true or @role.admin == true %>
+		  <li><%= link_to 'Benutzer-Verwaltung', users_path %></li>
+		<% end %>
+		<% if @role.admin == true %>
+		  <li><%= link_to 'Job-Verwaltung', jobs_path %></li>
+          <li><%= link_to 'IHK-Verwaltung', ihks_path %></li>
+          <li><%= link_to 'Code-Verwaltung', codes_path %></li>
+          <li><%= link_to 'Template-Verwaltung', templates_path %></li>
+		<% end %>
+		<br>   
+	    <li><%= link_to "Ausloggen", signout_path %></li>
+	  <% else %>
+	  <li><%= link_to "Einloggen", sessions_path, :method => :new %></li>
+	  <% end %>
+	
+      
     </ul>
   </nav>
 </body>

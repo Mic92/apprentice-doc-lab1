@@ -28,14 +28,14 @@ Role.create(
   :admin  => false
 )
 
-Role.create(
+azubiRole = Role.create(
   :name   => 'Azubi',
   :level  => 3,
   :read   => true,
   :commit => true,
   :export => true,
   :check  => false,
-  :modify => true,
+  :modify => false,
   :admin  => false
 )
 
@@ -53,5 +53,15 @@ admin = User.create(
   :password => '12345678',
   :password_confirmation => '12345678',
   :role_id  => adminRole.id,
+  :business_id => business.id
+)
+
+azubi = User.create(
+  :name     => 'Auszubildender',
+  :forename => 'Azubi',
+  :email    => 'azubi@swt.de',
+  :password => '12345678',
+  :password_confirmation => '12345678',
+  :role_id  => azubiRole.id,
   :business_id => business.id
 )

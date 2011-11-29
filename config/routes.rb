@@ -5,7 +5,7 @@ ApprenticeDocLab1::Application.routes.draw do
 
   resources :statuses, :only => [ :create, :update, :destroy ]
 
-  resources :sessions, :only => [ :new, :create, :destroy ]
+  resources :sessions, :only => [ :new, :create, :destroy, :show ]
 
   resources :roles, :only => [ :index, :new, :edit, :create, :update, :destroy ]
 
@@ -28,6 +28,7 @@ ApprenticeDocLab1::Application.routes.draw do
   root :to => 'sessions#new'
 
   match '/welcome', :to => 'sessions#show'
+  match '/signout', :to => 'sessions#destroy'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

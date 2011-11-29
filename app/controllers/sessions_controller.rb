@@ -35,11 +35,16 @@ class SessionsController < ApplicationController
 	else
       # Einloggen und zur Reportuebersichtsseite leiten
 	  sign_in user
-      redirect_to report
+      redirect_to welcome_path
     end
   
   end
-
+  
+  def show
+  #Rechte abfragen und seite anzeigen
+	render 'show'
+  end
+  
   def destroy
     sign_out
     redirect_to root_path
