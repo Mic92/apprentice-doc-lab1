@@ -93,7 +93,7 @@ describe UsersController do
       end
       
       it "should find itself" do
-        get 'edit', :id => @dmin
+        get 'edit', :id => @admin
         assigns(:user).should eq(@admin)
       end
       
@@ -131,7 +131,7 @@ describe UsersController do
           
         end
         
-        it "should redirect to the user index page" do
+        it "should redirect to the users page" do
           post 'create', :user => valid_attributes_user.merge(:email => 'test@test.de')
           response.should redirect_to(users_path)
         end
@@ -163,7 +163,7 @@ describe UsersController do
         
         it "should not change others attributes" do
           expect {
-            put 'update', :id => @azubi, :user => @azubi.merge(:email => 'test@test.de')
+            put 'update', :id => @azubi, :user => valid_attributes_user.merge(:email => 'new@email.de', :role_id => 3)
                  }.not_to change { @azubi.updated_at }       
         end
       end
@@ -171,17 +171,17 @@ describe UsersController do
       describe "success" do
         it "should change the user attributes" do
           expect {
-          put 'update', :id => @admin, :user => @admin.merge(:email => 'test@test.de')
-                 }.to change {Report.find.(@admin).updated_at}
+          put 'update', :id => @admin, :user => valid_attributes_user.merge(:email => 'new@email.de')
+                 }.to change {User.find(@admin).updated_at}
         end
         
-        it "should redirect to the user index page" do
-          put 'update', :id => @admin, :user => @admin.merge(:email => 'test@test.de')
-          response.should redirect_to(users_path)
+        it "should redirect to the welcome page" do
+          put 'update', :id => @admin, :user => valid_attributes_user.merge(:email => 'new@email.de')
+          response.should redirect_to(welcome_path)
         end
         
         it "should have a flash message" do
-          put 'update', :id => @admin, :user => @admin.merge(:email => 'test@test.de')
+          put 'update', :id => @admin, :user => valid_attributes_user.merge(:email => 'new@email.de')
           flash[:notice].should =~ /erfolgreich/i
         end
       end
@@ -196,7 +196,7 @@ describe UsersController do
       it "should set the delete attribute to TRUE" do
         expect {
         delete 'destroy', :id => @azubi
-               }.to change {@azubi.deleted.from(false).to(true)}
+               }.to change {User.find(@azubi).deleted}.from(false).to(true)
       end
       
       it "should NOT destroy the user" do
@@ -258,6 +258,10 @@ describe UsersController do
     end
     
     describe "POST 'create'" do
+    
+      before(:each) do
+        
+      end
       describe "failure" do
         it "should NOT make a new user" do
           expect {
@@ -267,10 +271,10 @@ describe UsersController do
         
         it "should NOT make a new instructor or admin" do
           expect {
-            post 'create', :user => @admin.merge(:email => 'new@email.de')
+            post 'create', :user => valid_attributes_user.merge(:email => 'new@email.de', :role_id => 1)
                  }.not_to change {User.count}
           expect {
-            post 'create', :user => @ausbilder.merge(:email => 'new@email.de')
+            post 'create', :user => valid_attributes_user.merge(:email => 'new@email.de', :role_id => 2)
                  }.not_to change {User.count}
         end
         
@@ -283,23 +287,23 @@ describe UsersController do
       describe "success" do
         it "should make a new apprentice" do
           expect {
-            post 'create', :user => @azubi.merge(:email => 'new@email.de')
+            post 'create', :user => valid_attributes_user.merge(:email => 'new@email.de', :role_id => 3)
                  }.to change {User.count}.by(1)
         end
         
         it "should make a new apprentice associated to its instructor" do
           expect {
-            post 'create', :user => @azubi.merge(:email => 'new@email.de')
+            post 'create', :user => valid_attributes_user.merge(:email => 'new@email.de', :role_id => 3)
                  }.to change {@ausbilder.apprentices.count}.by(1)
         end
         
         it "should redirect to the users index page" do
-          post 'create', :user => @azubi.merge(:email => 'new@email.de')
+          post 'create', :user => valid_attributes_user.merge(:email => 'new@email.de', :role_id => 3)
           response.should redirect_to(users_path)
         end
         
         it "should have a flash message" do
-          post 'create', :user => @azubi.merge(:email => 'new@email.de')
+          post 'create', :user => valid_attributes_user.merge(:email => 'new@email.de', :role_id => 3)
           flash[:notice].should =~ /erfolgreich/i
         end
       end
@@ -319,24 +323,24 @@ describe UsersController do
         end
         
         it "should not change others users attributes" do
-          put 'update', :id => @azubi, :user => @azubi.merge(:email => 'new@email.de')
+          put 'update', :id => @azubi, :user => valid_attributes_user.merge(:email => 'new@email.de', :role_id => 3)
           response.should redirect_to(welcome_path)
         end      
       end
       describe "success" do
         it "should change the own attributes" do
           expect {
-            put 'update', :id => @ausbilder, :user => @ausbilder.merge(:email => 'new@email.de')
+            put 'update', :id => @ausbilder, :user => valid_attributes_user.merge(:email => 'new@email.de', :role_id => 3)
                  }.to change {User.find(@ausbilder).updated_at}
         end
         
-        it "should redirect to the users page" do
-          put 'update', :id => @ausbilder, :user => @ausbilder.merge(:email => 'new@email.de')
-          response.should redirect_to(users_path)
+        it "should redirect to the welcome page" do
+          put 'update', :id => @ausbilder, :user => valid_attributes_user.merge(:email => 'new@email.de', :role_id => 3)
+          response.should redirect_to(welcome_path)
         end
         
         it "should have a flash message" do
-          put 'update', :id => @ausbilder, :user => @ausbilder.merge(:email => 'new@email.de')
+          put 'update', :id => @ausbilder, :user => valid_attributes_user.merge(:email => 'new@email.de', :role_id => 3)
           flash[:notice].should =~ /erfolgreich/i
         end
       end    
@@ -356,18 +360,18 @@ describe UsersController do
       it "should set its own attribute deleted to true" do
         expect {
           delete 'destroy', :id => @ausbilder
-               }.to change {User.find(@ausbilder).deleted.from(false).to(true)}
+               }.to change {User.find(@ausbilder).deleted}.from(false).to(true)
       end
       
       it "should set the apprentice's attribute deleted to true" do
         expect {
           delete 'destroy', :id => @azubi
-               }.to change {User.find(@azubi).deleted.from(false).to(true)}
+               }.to change {User.find(@azubi).deleted}.from(false).to(true)
       end
       
       it "should NOT destroy a non-associated apprentice" do
         @azubi1 = User.create valid_attributes_user.merge(:email => 'azubi1@test.de')
-        @role2 << @azubi1
+        @role2.users << @azubi1
         delete 'destroy', :id => @azubi1
         response.should redirect_to(welcome_path)
       end 
@@ -423,13 +427,52 @@ describe UsersController do
       it "should set its own attribute deleted to true" do
         expect {
           delete 'destroy', :id => @azubi
-               }.to change {User.find(@azubi).deleted.from(false).to(true)}
+               }.to change {User.find(@azubi).deleted}.from(false).to(true)
       end
       
       it "should deny access to delete other users" do
-        destroy 'delete', :id => @ausbilder
+        delete 'destroy', :id => @ausbilder
         response.should redirect_to(welcome_path)
       end
+    end
+  end
+  
+  describe "method tests for non-signed-in users" do
+        
+    it "should deny access to 'index'" do
+      get 'index'
+      response.should redirect_to(root_path)
+    end
+    
+    it "should deny access to 'show'" do
+      get 'show', :id => @azubi
+      response.should redirect_to(root_path)
+    end
+    
+    
+    it "should deny access to 'new'" do
+      get 'new'
+      response.should redirect_to(root_path)
+    end
+
+    it "should deny access to 'edit'" do
+      get 'edit', :id => @azubi
+      response.should redirect_to(root_path)
+    end
+
+    it "should deny access to 'create'" do
+      post 'create', :user => valid_attributes_user.merge(:email => 'new@email.de')
+      response.should redirect_to(root_path)
+    end
+
+    it "should deny access to 'update'" do
+      put 'update', :id => @azubi, :user => valid_attributes_user.merge(:email => 'new@email.de')
+      response.should redirect_to(root_path)
+    end
+
+    it "should deny access to 'destroy'" do
+      delete 'destroy', :id => @azubi
+      response.should redirect_to(root_path)
     end
   end
 end

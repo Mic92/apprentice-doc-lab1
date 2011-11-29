@@ -69,6 +69,18 @@ ActiveRecord::Schema.define(:version => 20111129114551) do
 
   add_index "reports", ["user_id"], :name => "index_reports_on_user_id"
 
+  create_table "rights", :force => true do |t|
+    t.integer  "user_id"
+    t.boolean  "read"
+    t.boolean  "commit"
+    t.boolean  "export"
+    t.boolean  "check"
+    t.boolean  "modify"
+    t.boolean  "admin"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "roles", :force => true do |t|
     t.string   "name"
     t.integer  "level"
@@ -115,7 +127,7 @@ ActiveRecord::Schema.define(:version => 20111129114551) do
     t.string   "email"
     t.string   "hashed_password"
     t.string   "salt"
-    t.boolean  "deleted"
+    t.boolean  "deleted",         :default => false
     t.integer  "instructor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
