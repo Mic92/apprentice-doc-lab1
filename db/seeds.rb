@@ -46,6 +46,26 @@ business = Business.create(
   :city     => 'Dresden'
 )
 
+ihk = Ihk.create(
+  :name => 'Dresden'
+)
+
+job = Job.create(
+  :name => 'Fachinformatiker'
+)
+
+code = Code.create(
+  :name => 'Code 1',
+  :code => 'Hallo [v]userforename[/v] [v]username[/v]<br /> [e]entry[0].text[e]<br />[e]entry[1].text[e]<br />'
+)
+
+template = Template.create(
+  :name => 'Vorlage 1',
+  :code_id => code.id,
+  :job_id => job.id,
+  :ihk_id => ihk.id
+)
+
 admin = User.create(
   :name     => 'Administrator',
   :forename => 'Admin',
@@ -53,7 +73,8 @@ admin = User.create(
   :password => '12345678',
   :password_confirmation => '12345678',
   :role_id  => adminRole.id,
-  :business_id => business.id
+  :business_id => business.id,
+  :template_id => template.id
 )
 
 azubi = User.create(
@@ -63,5 +84,6 @@ azubi = User.create(
   :password => '12345678',
   :password_confirmation => '12345678',
   :role_id  => azubiRole.id,
-  :business_id => business.id
+  :business_id => business.id,
+  :template_id => template.id
 )

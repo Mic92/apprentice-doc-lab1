@@ -7,6 +7,7 @@ module PrintReportsHelper
     @simpleFunctions = Hash.new
     @simpleFunctions['username'] = :username
     @simpleFunctions['userforename'] = :userforename
+    @simpleFunctions['jobname'] = :jobname
     #...
 
     @entryFunctions = Hash.new
@@ -17,10 +18,12 @@ module PrintReportsHelper
 
   def handleRawCode
     self.init
+    #replace simple values
     @simpleFunctions.each { |key, value|
       @displayCode.gsub!("[v]#{key}[/v]",self.send(value))
     }
 
+    #replace complex values
     @splitted = @displayCode.split("[e]")
     @displayCode.clear
     @splitted.each do |splitVal|
@@ -44,6 +47,10 @@ module PrintReportsHelper
 
   def userforename
     @user.forename ||= ''
+  end
+
+  def jobname
+    @user.template.job.name ||= ''
   end
 
   def entry(number, value)
