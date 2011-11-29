@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(:version => 20111129114551) do
     t.string   "email"
     t.string   "hashed_password"
     t.string   "salt"
-    t.boolean  "deleted"
+    t.boolean  "deleted",         :default => false
     t.integer  "instructor_id"
     t.datetime "created_at"
     t.datetime "updated_at"
