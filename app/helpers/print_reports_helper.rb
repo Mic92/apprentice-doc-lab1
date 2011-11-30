@@ -78,8 +78,7 @@ module PrintReportsHelper
     @splitted.each do |splitVal|
       value = splitVal
       #check if value is like entries[<number>][<number>].<attribute>
-      #TODO matching does not work correctly
-      if splitVal.match('entry[/^\[\d\]*$/]')
+      if splitVal.match('entry\[[0-9]+\]\[[0-9]+\]\..*$')
         splitVal.strip!
         #split the number between the []
         entry = splitVal.split(/[\[\]\.]/)
