@@ -22,8 +22,8 @@ ApprenticeDocLab1::Application.configure do
     :address        => "smtp.googlemail.com", 
     :port           => 587,
     :authentication => :login,
-    :user_name      => "GOOGLEKONTO@googlemail.com", 
-    :password       => 'GOOGLEPASSWORD', 
+    :user_name      => "GOOGLELOGIN@GOOGLEMAIL.COM", 
+    :password       => 'GOOGLEPASSWORT', 
     :enable_starttls_auto => true
   }
   
