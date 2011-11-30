@@ -80,7 +80,7 @@ describe ReviewsController do
       it "should change status to personal" do
         expect {
           delete 'destroy', :id => @report_c
-        }.to change { Report.find(@report_c).updated_at }
+        }.to change { Status.find(@report_c.status).updated_at }
         Report.find(@report_c).status.stype.should eq(Status.personal)
       end
 
@@ -114,7 +114,7 @@ describe ReviewsController do
       it "should change status to rejected" do
         expect {
           put 'update', :id => @report_c
-        }.to change { Report.find(@report_c).updated_at }
+        }.to change { Status.find(@report_c.status).updated_at }
         Report.find(@report_c).status.stype.should eq(Status.rejected)
       end
 
@@ -123,6 +123,24 @@ describe ReviewsController do
         flash[:notice].should =~ /erfolgreich/i
       end
 
+      describe "instructor hasn't this apprentice" do
+        before(:each) do
+          @instructor2 = User.create! valid_attributes_user.merge(:email => 'instructor2@mustermann.de')
+          @role_i.users << @instructor2
+          test_sign_in(@instructor2)
+        end
+
+        it "should require matching users for 'update'" do
+          put 'update', :id => @report_p
+          response.should redirect_to(welcome_path)
+        end
+
+        it "should not change status" do
+          expect {
+            put 'update', :id => @report_c
+          }.not_to change { Status.find(@report_c.status).updated_at }
+        end
+      end
     end
 
     describe "delete 'destroy'" do
@@ -134,7 +152,7 @@ describe ReviewsController do
       it "should change status to accepted" do
         expect {
           delete 'destroy', :id => @report_c
-        }.to change { Report.find(@report_c).updated_at }
+        }.to change { Status.find(@report_c.status).updated_at }
         Report.find(@report_c).status.stype.should eq(Status.accepted)
       end
 
@@ -143,6 +161,24 @@ describe ReviewsController do
         flash[:notice].should =~ /erfolgreich/i
       end
 
+      describe "instructor hasn't this apprentice" do
+        before(:each) do
+          @instructor2 = User.create! valid_attributes_user.merge(:email => 'instructor2@mustermann.de')
+          @role_i.users << @instructor2
+          test_sign_in(@instructor2)
+        end
+
+        it "should require matching users for 'destroy'" do
+          delete 'destroy', :id => @report_p
+          response.should redirect_to(welcome_path)
+        end
+
+        it "should not change status" do
+          expect {
+            delete 'destroy', :id => @report_c
+          }.not_to change { Status.find(@report_c.status).updated_at }
+        end
+      end
     end
   end
 end

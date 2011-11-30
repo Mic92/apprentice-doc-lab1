@@ -20,8 +20,8 @@
 
 class ReviewsController < ApplicationController
   def create
-    if current_user.role.commit?
-      @report = Report.find(params[:id])
+    @report = Report.find(params[:id])
+    if current_user.role.commit? && @report.status.stype == Status.personal
       @report.status.stype = Status.commited
       @report.status.save
       redirect_to reports_path, :notice => 'Das Freigeben des Berichtes war erfolgreich.' and return
@@ -32,9 +32,10 @@ class ReviewsController < ApplicationController
   end
 
   def update
+    @report = Report.find(params[:id])
     if current_user.role.commit?
       redirect_to welcome_path and return
-    elsif current_user.role.check?
+    elsif current_user.role.check? && @report.status.stype == Status.commited && current_user.apprentices.include?(@report.user)
 
 
       redirect_to reports_path, :notice => 'Diese Funktion ist noch in Arbeit.' and return
@@ -43,14 +44,15 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
-    if current_user.role.commit?
-
-
-      redirect_to reports_path, :notice => 'Diese Funktion ist noch in Arbeit.' and return
-    elsif current_user.role.check?
-
-
-      redirect_to reports_path, :notice => 'Diese Funktion ist noch in Arbeit.' and return
+    @report = Report.find(params[:id])
+    if current_user.role.commit? && @report.status.stype == Status.commited
+      @report.status.stype = Status.personal
+      @report.status.save
+      redirect_to reports_path, :notice => 'Das zurückziehen des Berichtes war erfolgreich.' and return
+    elsif current_user.role.check? && @report.status.stype == Status.commited && current_user.apprentices.include?(@report.user)
+      @report.status.stype = Status.accepted
+      @report.status.save
+      redirect_to reports_path, :notice => 'Das annehmen des Berichtes war erfolgreich.' and return
     end
     redirect_to welcome_path and return
   end
