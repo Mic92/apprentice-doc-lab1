@@ -34,6 +34,10 @@ class PasswordsController < ApplicationController
     @user.password_confirmation = @password
     @user.save
 
+    @data = { :user => @user, :password => @password }
+
+    UserMailer.password_recovery_mail(@data).deliver
+
     redirect_to users_path, :notice => 'Ein zufälliges Passwort wurde erstellt.'
   end
 
