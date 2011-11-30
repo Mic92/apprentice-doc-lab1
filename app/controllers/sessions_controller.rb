@@ -19,8 +19,13 @@
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
 
 class SessionsController < ApplicationController
+  
   def new
-    @title = "Login"
+    if signed_in?
+      redirect_to welcome_path
+    else
+      @title = "Login"
+    end
   end
 
   def create
@@ -32,7 +37,7 @@ class SessionsController < ApplicationController
       flash.now[:error] = "Inkorrekte Email/Passwort Kombination"
       @title = "Login"
       render 'new'
-	else
+	  else
       # Einloggen und zur Reportuebersichtsseite leiten
       sign_in user
       #UserMailer.testmail(user).deliver  #NUR TEST
@@ -42,8 +47,7 @@ class SessionsController < ApplicationController
   end
   
   def show
-  #Rechte abfragen und seite anzeigen
-	render 'show'
+    render 'show'
   end
   
   def destroy
