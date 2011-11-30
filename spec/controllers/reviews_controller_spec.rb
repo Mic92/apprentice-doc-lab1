@@ -22,21 +22,21 @@ require 'spec_helper'
 
 describe ReviewsController do
   before(:each) do
-    @apprentice = User.create valid_attributes_user
+    @apprentice = User.create valid_attributes_user.merge(:email => 'apprentis@mustermann.de')
     @role_a = Role.create valid_attributes_role_azubi
     @role_a.users << @apprentice
-    @instructor = User.create valid_attributes_user
+    @instructor = User.create valid_attributes_user.merge(:email => 'instructor@mustermann.de')
     @role_i = Role.create valid_attributes_role_ausbilder
     @role_i.users << @instructor
     @instructor.apprentices << @apprentice
-    @report1 = @apprentice.reports.create valid_attributes_report
-    @report2 = @apprentice.reports.create valid_attributes_report
-    @report3 = @apprentice.reports.create valid_attributes_report
-    @report4 = @apprentice.reports.create valid_attributes_report
-    @status1 = @report1.create_status valid_attributes_status.merge(:stype => Status.personal)
-    @status2 = @report2.create_status valid_attributes_status.merge(:stype => Status.commited)
-    @status3 = @report3.create_status valid_attributes_status.merge(:stype => Status.rejected)
-    @status4 = @report4.create_status valid_attributes_status.merge(:stype => Status.accepted)
+    @report_p = @apprentice.reports.create valid_attributes_report
+    @report_c = @apprentice.reports.create valid_attributes_report
+    @report_r = @apprentice.reports.create valid_attributes_report
+    @report_a = @apprentice.reports.create valid_attributes_report
+    @status_p = @report_p.create_status valid_attributes_status.merge(:stype => Status.personal)
+    @status_c = @report_c.create_status valid_attributes_status.merge(:stype => Status.commited)
+    @status_r = @report_r.create_status valid_attributes_status.merge(:stype => Status.rejected)
+    @status_a = @report_a.create_status valid_attributes_status.merge(:stype => Status.accepted)
   end
 
   describe "method tests for apprentice" do
@@ -46,26 +46,48 @@ describe ReviewsController do
 
     describe "POST 'create'" do
         it "should redirect to the reports page" do
-          post 'create', :id => @report1
+          post 'create', :id => @report_p
           response.should redirect_to(reports_path)
         end
 
+        it "should change status to commited" do
+          expect {
+            post 'create', :id => @report_p
+          }.to change { Status.find(@report_p.status).updated_at }
+          Report.find(@report_p).status.stype.should eq(Status.commited)
+        end
+
+        it "should have a flash message" do
+          post 'create', :id => @report_p
+          flash[:notice].should =~ /erfolgreich/i
+        end
 
     end
 
     describe "PUT 'update'" do
       it "should require matching users for 'update'" do
-        put 'update', :id => @report1
+        put 'update', :id => @report_p
         response.should redirect_to(welcome_path)
       end
     end
 
     describe "delete 'destroy'" do
-        it "should redirect to the reports page" do
-          delete 'destroy', :id => @report1
-          response.should redirect_to(reports_path)
-        end
+      it "should redirect to the reports page" do
+        delete 'destroy', :id => @report_c
+        response.should redirect_to(reports_path)
+      end
 
+      it "should change status to personal" do
+        expect {
+          delete 'destroy', :id => @report_c
+        }.to change { Report.find(@report_c).updated_at }
+        Report.find(@report_c).status.stype.should eq(Status.personal)
+      end
+
+      it "should have a flash message" do
+        delete 'destroy', :id => @report_c
+        flash[:notice].should =~ /erfolgreich/i
+      end
 
 
     end
@@ -77,30 +99,50 @@ describe ReviewsController do
     end
 
     describe "POST 'create'" do
-      it "should require matching users for 'update'" do
-        post 'create', :id => @report1
+      it "should require matching users for 'create'" do
+        post 'create', :id => @report_c
         response.should redirect_to(welcome_path)
       end
     end
 
     describe "PUT 'update'" do
-        it "should redirect to the reports page" do
-          put 'update', :id => @report2
-          response.should redirect_to(reports_path)
-        end
+      it "should redirect to the reports page" do
+        put 'update', :id => @report_c
+        response.should redirect_to(reports_path)
+      end
 
+      it "should change status to rejected" do
+        expect {
+          put 'update', :id => @report_c
+        }.to change { Report.find(@report_c).updated_at }
+        Report.find(@report_c).status.stype.should eq(Status.rejected)
+      end
+
+      it "should have a flash message" do
+        put 'update', :id => @report_c
+        flash[:notice].should =~ /erfolgreich/i
+      end
 
     end
 
     describe "delete 'destroy'" do
-        it "should redirect to the reports page" do
-          delete 'destroy', :id => @report2
-          response.should redirect_to(reports_path)
-        end
+      it "should redirect to the reports page" do
+        delete 'destroy', :id => @report_c
+        response.should redirect_to(reports_path)
+      end
 
+      it "should change status to accepted" do
+        expect {
+          delete 'destroy', :id => @report_c
+        }.to change { Report.find(@report_c).updated_at }
+        Report.find(@report_c).status.stype.should eq(Status.accepted)
+      end
 
+      it "should have a flash message" do
+        delete 'destroy', :id => @report_c
+        flash[:notice].should =~ /erfolgreich/i
+      end
 
     end
   end
-
 end

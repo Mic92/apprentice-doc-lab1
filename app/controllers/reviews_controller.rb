@@ -20,15 +20,39 @@
 
 class ReviewsController < ApplicationController
   def create
-    redirect_to reports_path, :notice => 'Diese Funktion ist noch in Arbeit.'
+    if current_user.role.commit?
+      @report = Report.find(params[:id])
+      @report.status.stype = Status.commited
+      @report.status.save
+      redirect_to reports_path, :notice => 'Das Freigeben des Berichtes war erfolgreich.' and return
+    elsif current_user.role.check?
+      redirect_to welcome_path and return
+    end
+    redirect_to welcome_path and return
   end
 
   def update
-    redirect_to reports_path, :notice => 'Diese Funktion ist noch in Arbeit.'
+    if current_user.role.commit?
+      redirect_to welcome_path and return
+    elsif current_user.role.check?
+
+
+      redirect_to reports_path, :notice => 'Diese Funktion ist noch in Arbeit.' and return
+    end
+    redirect_to welcome_path and return
   end
 
   def destroy
-    redirect_to reports_path, :notice => 'Diese Funktion ist noch in Arbeit.'
+    if current_user.role.commit?
+
+
+      redirect_to reports_path, :notice => 'Diese Funktion ist noch in Arbeit.' and return
+    elsif current_user.role.check?
+
+
+      redirect_to reports_path, :notice => 'Diese Funktion ist noch in Arbeit.' and return
+    end
+    redirect_to welcome_path and return
   end
 
 end
