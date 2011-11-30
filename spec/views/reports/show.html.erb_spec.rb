@@ -31,17 +31,17 @@ describe "reports/show.html.erb" do
 
   it "should display the beginning date of the report" do
     render
-    rendered.should include(@report.period_start.to_s)
+    rendered.should include(l @report.period_start, :format => :long)
   end
 
   it "should display the ending date of the report" do
     render
-    rendered.should include(@report.period_end.to_s)
+    rendered.should include(l @report.period_end, :format => :long)
   end
 
   it "should display the dates/times" do
     render
-    rendered.should include(@entry1.date.to_formatted_s(:short), @entry2.date.to_formatted_s(:short))
+    rendered.should include((l @entry1.date, :format => :short), (l @entry2.date, :format => :short))
   end
 
   it "should display the duration" do

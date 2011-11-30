@@ -22,14 +22,18 @@ require 'spec_helper'
 
 describe "reports/index.html.erb" do
   before(:each) do
-    @commit_role = mock_model(Role, :read? => true, :commit? => true, :check? => false)
-    @check_role = mock_model(Role, :read? => true, :commit? => false, :check? => true)
+    @commit_role = mock_model(Role, :read? => true, :commit? => true, :check? => false, :export? => false)
+    @check_role = mock_model(Role, :read? => true, :commit? => false, :check? => true, :export? => false)
+    @export_role = mock_model(Role, :read? => false, :commit? => false, :check? => false, :export? => true)
     @apprentice = mock_model(User, :name => 'Azubi',
                              :forename => 'One',
                              :role  => @commit_role)
     @instructor = mock_model(User, :name => 'Ausbilder',
                              :forename => 'One',
                              :role  => @check_role)
+    @exporter = mock_model(User, :name => 'Exporter',
+                           :forename => 'One',
+                           :role => @export_role)
     @report1 = mock_model(Report, :period_start => '2011-10-01'.to_date, :period_end => '2011-10-31'.to_date, :user => @apprentice)
     @report2 = mock_model(Report, :period_start => '2011-11-01'.to_date, :period_end => '2011-11-30'.to_date, :user => @apprentice)
     assign(:reports, [ @report1, @report2 ])
@@ -38,12 +42,12 @@ describe "reports/index.html.erb" do
 
   it "should display the beginning dates" do
     render
-    rendered.should include(@report1.period_start.to_s, @report2.period_start.to_s)
+    rendered.should include((l @report1.period_start),(l @report2.period_start))
   end
 
   it "should display the ending dates" do
     render
-    rendered.should include(@report1.period_end.to_s, @report2.period_end.to_s)
+    rendered.should include((l @report1.period_end),(l @report2.period_end))
   end
 
   describe "for users with commit right" do
@@ -66,6 +70,17 @@ describe "reports/index.html.erb" do
     it "should display the apprentices names" do
       render
       rendered.should include(@apprentice.forename, @apprentice.name)
+    end
+  end
+
+  describe "for users with export right" do
+    before(:each) do
+      assign(:current_user, @exporter)
+    end
+
+    it "should have links to export the reports" do
+      render
+      rendered.should include("href=\"/print_reports/#{@report1.id}\"", "href=\"/print_reports/#{@report2.id}\"")
     end
   end
 end
