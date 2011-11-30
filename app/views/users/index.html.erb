@@ -1,2 +1,32 @@
-<h1>Users#index</h1>
-<p>Find me in app/views/users/index.html.erb</p>
+<% if current_user.role.admin? %>
+  <h1> Benutzer-Übersicht </h1>
+<% else %>
+  <h1> Auszubildenen-Übersicht </h1>
+<% end %>
+
+<table>
+  <tr>
+    <th> Vorname </th>
+    <th> Name </th>
+    <% if current_user.role.admin? %>
+      <th> Rechte-Profil </th>
+    <% end %>
+    <th> </th>
+  </tr>
+  
+  <% @users.each do |u| %>
+    <tr>
+      <td class="center"><%= u.forename %></td>
+      <td class="center"><%= u.name %></td>
+      <% if current_user.role.admin? %>
+        <td class="center"><%= u.role.name %>
+      <% end %>
+      <% if !u.deleted? %>
+        <td><%= link_to 'Deaktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete %></td>
+      <% end %>
+      
+      
+    </tr>
+  <% end %>
+</table>
+

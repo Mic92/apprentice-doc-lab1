@@ -14,6 +14,7 @@ describe "users/index.html.erb" do
     @admin = mock_model(User, :name => 'Admin',
                               :forename => 'One',
                               :role => @admin_role)
+    assign(:users, [@admin, @apprentice, @instructor])
   end
   
   describe "admin view" do
@@ -22,7 +23,7 @@ describe "users/index.html.erb" do
     end
     it "should display all users" do
       render
-      rendered.should include((l @admin.name), (l @instructor.name), (l @apprentice.name))
+      rendered.should include((@admin.name), (@instructor.name), (@apprentice.name))
     end
     it "should have a link to create a new user" do
       render
@@ -42,12 +43,12 @@ describe "users/index.html.erb" do
     
     it "should display all its apprentices" do
       render
-      rendered.should include(l @apprentice.name)
+      rendered.should include(@apprentice.name)
     end
     
     it "should NOT display instructors or admins" do
       render
-      rendered.should_not include((l @admin.name), (l @instructor.name))
+      rendered.should_not include((@admin.name), (@instructor.name))
     end
 
     it "should have a link to create a new apprentice" do
@@ -59,5 +60,4 @@ describe "users/index.html.erb" do
       rendered.should include("href=\"/users/#{@apprentice.id}\"")
     end
   end
-  
 end
