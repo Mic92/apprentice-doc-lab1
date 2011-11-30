@@ -33,31 +33,73 @@ describe ReviewsController do
     @report2 = @apprentice.reports.create valid_attributes_report
     @report3 = @apprentice.reports.create valid_attributes_report
     @report4 = @apprentice.reports.create valid_attributes_report
-    @report_i = @instructor.reports.create valid_attributes_report
     @status1 = @report1.create_status valid_attributes_status.merge(:stype => Status.personal)
     @status2 = @report2.create_status valid_attributes_status.merge(:stype => Status.commited)
     @status3 = @report3.create_status valid_attributes_status.merge(:stype => Status.rejected)
     @status4 = @report4.create_status valid_attributes_status.merge(:stype => Status.accepted)
   end
 
-  describe "GET 'create'" do
-    it "returns http success" do
-      get 'create'
-      response.should be_success
+  describe "method tests for apprentice" do
+    before(:each) do
+      test_sign_in(@apprentice)
+    end
+
+    describe "POST 'create'" do
+        it "should redirect to the reports page" do
+          post 'create', :id => @report1
+          response.should redirect_to(reports_path)
+        end
+
+
+    end
+
+    describe "PUT 'update'" do
+      it "should require matching users for 'update'" do
+        put 'update', :id => @report1
+        response.should redirect_to(welcome_path)
+      end
+    end
+
+    describe "delete 'destroy'" do
+        it "should redirect to the reports page" do
+          delete 'destroy', :id => @report1
+          response.should redirect_to(reports_path)
+        end
+
+
+
     end
   end
 
-  describe "GET 'update'" do
-    it "returns http success" do
-      get 'update'
-      response.should be_success
+  describe "method tests for instructor" do
+    before(:each) do
+      test_sign_in(@instructor)
     end
-  end
 
-  describe "GET 'destroy'" do
-    it "returns http success" do
-      get 'destroy'
-      response.should be_success
+    describe "POST 'create'" do
+      it "should require matching users for 'update'" do
+        post 'create', :id => @report1
+        response.should redirect_to(welcome_path)
+      end
+    end
+
+    describe "PUT 'update'" do
+        it "should redirect to the reports page" do
+          put 'update', :id => @report2
+          response.should redirect_to(reports_path)
+        end
+
+
+    end
+
+    describe "delete 'destroy'" do
+        it "should redirect to the reports page" do
+          delete 'destroy', :id => @report2
+          response.should redirect_to(reports_path)
+        end
+
+
+
     end
   end
 
