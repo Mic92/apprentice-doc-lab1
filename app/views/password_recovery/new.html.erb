@@ -1,0 +1,9 @@
+<%= form_for(:password_recovery, :url => { :action => 'create'}) do |f| %>
+  <div class="field">
+    <%= f.label "Emailadresse:" %><br />
+    <%= f.text_field :email %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Passwort zusenden" %>
+  </div>
+<% end %>

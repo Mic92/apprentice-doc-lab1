@@ -1,4 +1,7 @@
 ApprenticeDocLab1::Application.routes.draw do
+  
+  resources :password_recovery, :only => [ :new, :create ]
+  
   resources :users
 
   resources :print_reports, :only => [ :show ]
