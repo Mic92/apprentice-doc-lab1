@@ -78,34 +78,69 @@ describe Role do
       Role.new(@attributes).should_not be_valid
     end
     
-    it "should require attribute read" do
-      @attributes.delete(:read)
-      Role.new(@attributes).should_not be_valid
+    it "should require attribute read" do 
+      @role = Role.create valid_attributes_role
+      @role.read = nil
+      @role.should_not be_valid
     end
     
     it "should require attribute commit" do
-      @attributes.delete(:commit)
-      Role.new(@attributes).should_not be_valid
+      @role = Role.create valid_attributes_role
+      @role.commit = nil
+      @role.should_not be_valid
     end
     
     it "should require attribute export" do
-      @attributes.delete(:export)
-      Role.new(@attributes).should_not be_valid
+      @role = Role.create valid_attributes_role
+      @role.export = nil
+      @role.should_not be_valid
     end
     
     it "should require attribute check" do
-      @attributes.delete(:check)
-      Role.new(@attributes).should_not be_valid
+      @role = Role.create valid_attributes_role
+      @role.check = nil
+      @role.should_not be_valid
     end
     
     it "should require attribute modify" do
-      @attributes.delete(:modify)
-      Role.new(@attributes).should_not be_valid
+      @role = Role.create valid_attributes_role
+      @role.modify = nil
+      @role.should_not be_valid
     end
     
     it "should require attribute admin" do
-      @attributes.delete(:admin)
-      Role.new(@attributes).should_not be_valid
+      @role = Role.create valid_attributes_role
+      @role.admin = nil
+      @role.should_not be_valid
+    end
+    
+    
+    
+    
+    
+    
+    it "should have a default value 'false' for read" do
+      Role.new.read.should eq(false)
+    end
+    
+    it "should have a default value 'false' for commit" do
+      Role.new.commit.should eq(false)
+    end
+    
+    it "should have a default value 'false' for export" do
+      Role.new.export.should eq(false)
+    end
+    
+    it "should have a default value 'false' for check" do
+      Role.new.check.should eq(false)
+    end
+    
+    it "should have a default value 'false' for modify" do
+      Role.new.modify.should eq(false)
+    end
+    
+    it "should have a default value 'false' for admin" do
+      Role.new.admin.should eq(false)
     end
     
     it "should require a unique name" do
