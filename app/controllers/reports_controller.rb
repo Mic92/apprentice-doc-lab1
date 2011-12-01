@@ -24,11 +24,14 @@
 # Nur eingeloggte Benutzer können seine Funktionalität nutzen,
 # des weiteren benötigen sie das Lesen-Recht (read) für #index und #show
 # und das Freigeben-Recht (commit) für #new, #create, #update, #destroy.
+# #edit, #update und #destroy darf nur vom Autor ausgeführt werden.
+# #show erfordert entweder den Autor, oder einen freigegebenen Bericht und einen Ausbilder.
 class ReportsController < ApplicationController
   before_filter :authenticate
-  before_filter :correct_user, :only => [ :edit, :update, :destroy ]
   before_filter :read, :only => [ :index, :show ]
+  before_filter :correct_user_or_instructor, :only => :show
   before_filter :commit, :only => [ :new, :create, :update, :destroy ]
+  before_filter :correct_user, :only => [ :edit, :update, :destroy ]
 
   # Listet Berichte auf. Welche Bericht angezeigt werden hängt von den Rechten des
   # Benutzers ab:
@@ -98,5 +101,12 @@ class ReportsController < ApplicationController
     def correct_user
       @user = Report.find(params[:id]).user
       redirect_to welcome_path unless current_user?(@user)
+    end
+
+    # Leitet den Benutzer auf die Willkommen-Seite, außer er ist der Autor des Berichts oder der Bericht ist freigegeben und der Benutzer
+    # ist ein Ausbilder.
+    def correct_user_or_instructor
+      @report = Report.find(params[:id])
+      redirect_to welcome_path unless current_user?(@report.user) || (@report.status.stype == Status.commited && current_user.role.check?)
     end
 end

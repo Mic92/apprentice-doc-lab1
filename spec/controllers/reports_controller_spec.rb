@@ -255,7 +255,9 @@ describe ReportsController do
 
   describe "authentication" do
     before(:each) do
-      @report = @user.reports.create valid_attributes_report
+      @report = @user.reports.new valid_attributes_report
+      @report.create_status valid_attributes_status
+      @report.save
     end
 
     describe "for non-signed-in users" do
@@ -299,6 +301,22 @@ describe ReportsController do
       before(:each) do
         @wrong_user = User.create valid_attributes_user.merge(:email => 'wrong@user.de')
         test_sign_in(@wrong_user)
+      end
+
+      it "should require matching users for 'show'" do
+        get 'show', :id => @report
+        response.should redirect_to(welcome_path)
+      end
+
+      it "should allow instructors to view commited reports" do
+        @instructor = User.create valid_attributes_user.merge(:email => 'instructor@user.de')
+        @check_role = Role.create valid_attributes_role_ausbilder
+        @check_role.users << @instructor
+        @commited_report = @user.reports.create valid_attributes_report
+        @commited_report.create_status valid_attributes_status.merge(:stype => Status.commited)
+        test_sign_in(@instructor)
+        get 'show', :id => @commited_report
+        response.should be_success
       end
 
       it "should require matching users for 'edit'" do
