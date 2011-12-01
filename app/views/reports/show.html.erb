@@ -18,14 +18,14 @@
   <% end %>
 </table>
 <% if current_user.role.commit? %>
-  <% if @report.status.type == Status.personal || @report.status.type == Status.rejected %>
+  <% if @report.status.stype == Status.personal || @report.status.stype == Status.rejected %>
     <%= link_to 'Bericht vorlegen', reviews_path, :method => :post, :report => @report %>
-  <% elsif @report.status.type == Status.commited %>
+  <% elsif @report.status.stype == Status.commited %>
     <%= link_to 'Bericht zurückziehen', review_path(@report), :method => :delete %>
   <% end %>
   <%= link_to 'Eintrag anlegen', new_report_report_entry_path(@report) %>
 <% elsif current_user.role.check? %>
-  <% if @report.status.type == Status.commited %>
+  <% if @report.status.stype == Status.commited %>
     <%= link_to 'Bericht akzeptieren', review_path(@report), :method => :delete %>
     |
     <%= link_to 'Bericht ablehnen', review_path(@report), :method => :put %>

@@ -26,8 +26,8 @@ describe "reports/show.html.erb" do
     @check_role = mock_model(Role, :commit? => false, :check? => true)
     @apprentice = mock_model(User, :role  => @commit_role)
     @instructor = mock_model(User, :role => @check_role)
-    @personal_status = mock_model(Status, :type => Status.personal)
-    @commited_status = mock_model(Status, :type => Status.commited)
+    @personal_status = mock_model(Status, :stype => Status.personal)
+    @commited_status = mock_model(Status, :stype => Status.commited)
     @personal_report = mock_model(Report, :period_start => '2011-10-01'.to_date,
                                   :period_end => '2011-10-31'.to_date,
                                   :status => @personal_status)
