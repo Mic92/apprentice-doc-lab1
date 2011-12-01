@@ -22,21 +22,33 @@ require 'spec_helper'
 
 describe "reports/show.html.erb" do
   before(:each) do
-    @report = mock_model(Report, :period_start => '2011-10-01'.to_date, :period_end => '2011-10-31'.to_date)
+    @commit_role = mock_model(Role, :commit? => true, :check? => false)
+    @check_role = mock_model(Role, :commit? => false, :check? => true)
+    @apprentice = mock_model(User, :role  => @commit_role)
+    @instructor = mock_model(User, :role => @check_role)
+    @personal_status = mock_model(Status, :type => Status.personal)
+    @commited_status = mock_model(Status, :type => Status.commited)
+    @personal_report = mock_model(Report, :period_start => '2011-10-01'.to_date,
+                                  :period_end => '2011-10-31'.to_date,
+                                  :status => @personal_status)
+    @commited_report = mock_model(Report, :period_start => '2011-10-01'.to_date,
+                                  :period_end => '2011-10-31'.to_date,
+                                  :status => @commited_status)
     @entry1 = mock_model(ReportEntry, :date => '2011-10-02 08:00:00'.to_datetime, :duration_in_hours => 1.5, :text => 'Entry created.')
     @entry2 = mock_model(ReportEntry, :date => '2011-10-02 10:00:00'.to_datetime, :duration_in_hours => 0.1, :text => 'View tested.')
     assign(:entries, [ @entry1, @entry2 ])
-    assign(:report, @report)
+    assign(:report, @personal_report)
+    assign(:current_user, @apprentice)
   end
 
   it "should display the beginning date of the report" do
     render
-    rendered.should include(l @report.period_start, :format => :long)
+    rendered.should include(l @personal_report.period_start, :format => :long)
   end
 
   it "should display the ending date of the report" do
     render
-    rendered.should include(l @report.period_end, :format => :long)
+    rendered.should include(l @personal_report.period_end, :format => :long)
   end
 
   it "should display the dates/times" do
@@ -54,13 +66,44 @@ describe "reports/show.html.erb" do
     rendered.should include(@entry1.text, @entry2.text)
   end
 
-  it "should have links to delete entries" do
-    render
-    rendered.should include("href=\"/reports/#{@report.id}/report_entries/#{@entry1.id}\"", "href=\"/reports/#{@report.id}/report_entries/#{@entry2.id}\"")
+  describe "for users with commit right" do
+    it "should have links to delete entries" do
+      render
+      rendered.should include("href=\"/reports/#{@personal_report.id}/report_entries/#{@entry1.id}\"",
+                              "href=\"/reports/#{@personal_report.id}/report_entries/#{@entry2.id}\"")
+    end
+
+    it "should have a link to create a new entry" do
+      render
+      rendered.should include("href=\"#{new_report_report_entry_path(@personal_report)}\"")
+    end
+
+    it "should have a link to commit the report" do
+      render
+      rendered.should include("href=\"#{reviews_path}\"")
+    end
+
+    it "should have a link to cancle the review" do
+      assign(:report, @commited_report)
+      render
+      rendered.should include("href=\"#{review_path(@commited_report)}\"", "data-method=\"delete\"")
+    end
   end
 
-  it "should have a link to create a new entry" do
-    render
-    rendered.should include("href=\"#{new_report_report_entry_path(@report)}\"")
+  describe "for users with check right" do
+    before(:each) do
+      assign(:report, @commited_report)
+      assign(:current_user, @instructor)
+    end
+
+    it "should have a link to accept the report" do
+      render
+      rendered.should include("href=\"#{review_path(@commited_report)}\"", "data-method=\"delete\"")
+    end
+
+    it "should have a link to reject the report" do
+      render
+      rendered.should include("href=\"#{review_path(@commited_report)}\"", "data-method=\"put\"")
+    end
   end
 end

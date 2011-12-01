@@ -11,9 +11,23 @@
       <td class="center"><%= l entry.date, :format => :short %></td>
       <td class="center"><%= entry.duration_in_hours.to_i %> Stunden <%= (entry.duration_in_hours.hours / 1.minute % 60).to_i %> Minuten</td>
       <td><%= entry.text %></td>
-      <td><%= link_to 'Löschen', report_report_entry_path(@report, entry), :confirm => "Sind Sie sicher?", :method => :delete %></td>
+      <% if current_user.role.commit? %>
+        <td><%= link_to 'Löschen', report_report_entry_path(@report, entry), :confirm => "Sind Sie sicher?", :method => :delete %></td>
+      <% end %>
     </tr>
   <% end %>
 </table>
-
-<%= link_to 'Eintrag anlegen.', new_report_report_entry_path(@report) %>
+<% if current_user.role.commit? %>
+  <% if @report.status.type == Status.personal || @report.status.type == Status.rejected %>
+    <%= link_to 'Bericht vorlegen', reviews_path, :method => :post, :report => @report %>
+  <% elsif @report.status.type == Status.commited %>
+    <%= link_to 'Bericht zurückziehen', review_path(@report), :method => :delete %>
+  <% end %>
+  <%= link_to 'Eintrag anlegen', new_report_report_entry_path(@report) %>
+<% elsif current_user.role.check? %>
+  <% if @report.status.type == Status.commited %>
+    <%= link_to 'Bericht akzeptieren', review_path(@report), :method => :delete %>
+    |
+    <%= link_to 'Bericht ablehnen', review_path(@report), :method => :put %>
+  <% end %>
+<% end %>
