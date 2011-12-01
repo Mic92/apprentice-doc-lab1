@@ -129,6 +129,10 @@
   
     <li><a href="./PasswordsHelper.html">PasswordsHelper</a>
   
+    <li><a href="./PrintReportsController.html">PrintReportsController</a>
+  
+    <li><a href="./PrintReportsHelper.html">PrintReportsHelper</a>
+  
     <li><a href="./Report.html">Report</a>
   
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
@@ -157,10 +161,6 @@
   
     <li><a href="./Status.html">Status</a>
   
-    <li><a href="./StatusesController.html">StatusesController</a>
-  
-    <li><a href="./StatusesHelper.html">StatusesHelper</a>
-  
     <li><a href="./Template.html">Template</a>
   
     <li><a href="./TemplatesController.html">TemplatesController</a>
@@ -168,6 +168,8 @@
     <li><a href="./TemplatesHelper.html">TemplatesHelper</a>
   
     <li><a href="./User.html">User</a>
+  
+    <li><a href="./UserMailer.html">UserMailer</a>
   
     <li><a href="./UsersController.html">UsersController</a>
   
@@ -184,6 +186,26 @@
 
   <div id="description" class="description">
     
+<p>Copyright (C) 2011, Max Löwen &lt;Max.mailbox at Loewen.tu-dresden.de&gt;</p>
+
+<p>This file is part of ApprenticeDocLab1, an application written for
+buschmais GbR &lt;<a
+href="http://www.buschmais.de/">www.buschmais.de/</a>&gt;.</p>
+
+<p>ApprenticeDocLab1 is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the
+Free Software Foundation, either version 2 of the License, or (at your
+option) any later version.</p>
+
+<p>ApprenticeDocLab1 is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.</p>
+
+<p>You should have received a copy of the GNU General Public License along
+with ApprenticeDocLab1.  If not, see &lt;<a
+href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
+
   </div><!-- description -->
 
   
@@ -220,8 +242,17 @@
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/reviews_controller.rb, line 2</span>
+            <pre><span class="ruby-comment"># File app/controllers/reviews_controller.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
+  <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">commit?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">personal</span>
+    <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> = <span class="ruby-constant">Status</span>.<span class="ruby-identifier">commited</span>
+    <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Das Freigeben des Berichtes war erfolgreich.'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- create-source -->
           
@@ -249,8 +280,19 @@
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/reviews_controller.rb, line 8</span>
+            <pre><span class="ruby-comment"># File app/controllers/reviews_controller.rb, line 45</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
+  <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">commit?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">commited</span>
+    <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> = <span class="ruby-constant">Status</span>.<span class="ruby-identifier">personal</span>
+    <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Das zurückziehen des Berichtes war erfolgreich.'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">commited</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@report</span>.<span class="ruby-identifier">user</span>)
+    <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> = <span class="ruby-constant">Status</span>.<span class="ruby-identifier">accepted</span>
+    <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Das annehmen des Berichtes war erfolgreich.'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- destroy-source -->
           
@@ -278,8 +320,17 @@
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/reviews_controller.rb, line 5</span>
+            <pre><span class="ruby-comment"># File app/controllers/reviews_controller.rb, line 33</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+  <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">commit?</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">commited</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@report</span>.<span class="ruby-identifier">user</span>)
+
+
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Diese Funktion ist noch in Arbeit.'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- update-source -->
           

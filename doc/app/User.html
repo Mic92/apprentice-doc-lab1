@@ -129,6 +129,10 @@
   
     <li><a href="./PasswordsHelper.html">PasswordsHelper</a>
   
+    <li><a href="./PrintReportsController.html">PrintReportsController</a>
+  
+    <li><a href="./PrintReportsHelper.html">PrintReportsHelper</a>
+  
     <li><a href="./Report.html">Report</a>
   
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
@@ -157,10 +161,6 @@
   
     <li><a href="./Status.html">Status</a>
   
-    <li><a href="./StatusesController.html">StatusesController</a>
-  
-    <li><a href="./StatusesHelper.html">StatusesHelper</a>
-  
     <li><a href="./Template.html">Template</a>
   
     <li><a href="./TemplatesController.html">TemplatesController</a>
@@ -168,6 +168,8 @@
     <li><a href="./TemplatesHelper.html">TemplatesHelper</a>
   
     <li><a href="./User.html">User</a>
+  
+    <li><a href="./UserMailer.html">UserMailer</a>
   
     <li><a href="./UsersController.html">UsersController</a>
   
@@ -261,7 +263,7 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
 
           
           <div class="method-source-code" id="authenticate-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 47</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 48</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">authenticate</span>(<span class="ruby-identifier">email</span>, <span class="ruby-identifier">submitted_pwd</span>)
   <span class="ruby-identifier">user</span> = <span class="ruby-identifier">find_by_email</span>(<span class="ruby-identifier">email</span>)
   <span class="ruby-keyword">return</span> <span class="ruby-keyword">nil</span>  <span class="ruby-keyword">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">nil?</span>
@@ -293,7 +295,7 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
 
           
           <div class="method-source-code" id="authenticate_with_salt-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 53</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 54</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">authenticate_with_salt</span>(<span class="ruby-identifier">id</span>, <span class="ruby-identifier">cookie_salt</span>)
   <span class="ruby-identifier">user</span> = <span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">id</span>)
   (<span class="ruby-identifier">user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">salt</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">cookie_salt</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">user</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>  <span class="ruby-comment">#If-Else Operator</span>
@@ -330,7 +332,7 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
 
           
           <div class="method-source-code" id="has_password-3F-source">
-            <pre><span class="ruby-comment"># File app/models/user.rb, line 43</span>
+            <pre><span class="ruby-comment"># File app/models/user.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">has_password?</span>(<span class="ruby-identifier">submitted_pwd</span>)
   <span class="ruby-identifier">hashed_password</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">encrypt</span>(<span class="ruby-identifier">submitted_pwd</span>)
 <span class="ruby-keyword">end</span></pre>

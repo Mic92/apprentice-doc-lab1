@@ -4,7 +4,7 @@
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
 
-<title>Module: StatusesHelper</title>
+<title>Class: UserMailer</title>
 
 <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet">
 
@@ -20,7 +20,7 @@
 <script type="text/javascript" charset="utf-8" src="./js/darkfish.js"></script>
 
 
-<body id="top" class="module">
+<body id="top" class="class">
 <nav id="metadata">
   <nav id="home-section" class="section">
   <h3 class="section-header">
@@ -47,7 +47,7 @@
     <nav id="file-list-section" class="section">
   <h3 class="section-header">Defined In</h3>
   <ul>
-    <li>app/helpers/statuses_helper.rb
+    <li>app/mailers/user_mailer.rb
   </ul>
 </nav>
 
@@ -56,9 +56,27 @@
 
   <div id="class-metadata">
     
+    <nav id="parent-class-section" class="section">
+  <h3 class="section-header">Parent</h3>
+  
+  <p class="link">ActionMailer::Base
+  
+</nav>
+
     
+    <!-- Method Quickref -->
+<nav id="method-list-section" class="section">
+  <h3 class="section-header">Methods</h3>
+
+  <ul class="link-list">
     
+    <li><a href="#method-i-password_recovery_mail">#password_recovery_mail</a>
     
+    <li><a href="#method-i-testmail">#testmail</a>
+    
+  </ul>
+</nav>
+
   </div>
 
   <div id="project-metadata">
@@ -109,6 +127,10 @@
   
     <li><a href="./PasswordsHelper.html">PasswordsHelper</a>
   
+    <li><a href="./PrintReportsController.html">PrintReportsController</a>
+  
+    <li><a href="./PrintReportsHelper.html">PrintReportsHelper</a>
+  
     <li><a href="./Report.html">Report</a>
   
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
@@ -137,10 +159,6 @@
   
     <li><a href="./Status.html">Status</a>
   
-    <li><a href="./StatusesController.html">StatusesController</a>
-  
-    <li><a href="./StatusesHelper.html">StatusesHelper</a>
-  
     <li><a href="./Template.html">Template</a>
   
     <li><a href="./TemplatesController.html">TemplatesController</a>
@@ -148,6 +166,8 @@
     <li><a href="./TemplatesHelper.html">TemplatesHelper</a>
   
     <li><a href="./User.html">User</a>
+  
+    <li><a href="./UserMailer.html">UserMailer</a>
   
     <li><a href="./UsersController.html">UsersController</a>
   
@@ -160,7 +180,7 @@
 </nav>
 
 <div id="documentation">
-  <h1 class="module">module StatusesHelper</h1>
+  <h1 class="class">class UserMailer</h1>
 
   <div id="description" class="description">
     
@@ -180,6 +200,77 @@
 
     <!-- Methods -->
     
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-password_recovery_mail" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">password_recovery_mail</span><span
+            class="method-args">(data)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="password_recovery_mail-source">
+            <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">password_recovery_mail</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:user</span>]
+  <span class="ruby-ivar">@password</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:password</span>]
+  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Apprentice Doc Lab: Dein vergessenes Passwort&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- password_recovery_mail-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- password_recovery_mail-method -->
+
+    
+      <div id="method-i-testmail" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">testmail</span><span
+            class="method-args">(user)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="testmail-source">
+            <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 3</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">testmail</span>(<span class="ruby-identifier">user</span>)
+  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
+  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;IRGENDWAS@IRGENDWAS.DE&quot;</span>,
+    <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;It works!&quot;</span>)
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- testmail-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- testmail-method -->
+
+    
+    </section><!-- public-instance-method-details -->
+  
   </section><!-- 5Buntitled-5D -->
 
 </div><!-- documentation -->

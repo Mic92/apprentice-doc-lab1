@@ -25,7 +25,8 @@ class PasswordsController < ApplicationController
   before_filter :authenticate
   before_filter :admin
 
-  # Setzt das Passwort des übergebenen Benutzers auf ein zufälliges neues.
+  # Setzt das Passwort des übergebenen Benutzers auf ein zufälliges Neues und
+  # sendet es per Mail.
   def update
     @user = User.find(params[:id])
     @password = random_password

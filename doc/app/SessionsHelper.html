@@ -80,6 +80,8 @@
     
     <li><a href="#method-i-deny_access">#deny_access</a>
     
+    <li><a href="#method-i-export">#export</a>
+    
     <li><a href="#method-i-read">#read</a>
     
     <li><a href="#method-i-right_notice">#right_notice</a>
@@ -143,6 +145,10 @@
   
     <li><a href="./PasswordsHelper.html">PasswordsHelper</a>
   
+    <li><a href="./PrintReportsController.html">PrintReportsController</a>
+  
+    <li><a href="./PrintReportsHelper.html">PrintReportsHelper</a>
+  
     <li><a href="./Report.html">Report</a>
   
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
@@ -171,10 +177,6 @@
   
     <li><a href="./Status.html">Status</a>
   
-    <li><a href="./StatusesController.html">StatusesController</a>
-  
-    <li><a href="./StatusesHelper.html">StatusesHelper</a>
-  
     <li><a href="./Template.html">Template</a>
   
     <li><a href="./TemplatesController.html">TemplatesController</a>
@@ -182,6 +184,8 @@
     <li><a href="./TemplatesHelper.html">TemplatesHelper</a>
   
     <li><a href="./User.html">User</a>
+  
+    <li><a href="./UserMailer.html">UserMailer</a>
   
     <li><a href="./UsersController.html">UsersController</a>
   
@@ -238,7 +242,7 @@ href="SessionsHelper.html#method-i-right_notice">#right_notice</a> aus.</p>
 
           
           <div class="method-source-code" id="admin-source">
-            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 82</span>
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 86</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">admin</span>
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">right_notice</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
 <span class="ruby-keyword">end</span></pre>
@@ -467,6 +471,36 @@ href="SessionsHelper.html#method-i-current_user">#current_user</a>) der
 
         
       </div><!-- deny_access-method -->
+
+    
+      <div id="method-i-export" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">export</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="export-source">
+            <pre><span class="ruby-comment"># File app/helpers/sessions_helper.rb, line 81</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">export</span>
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">right_notice</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">export?</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- export-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- export-method -->
 
     
       <div id="method-i-read" class="method-detail ">
