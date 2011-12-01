@@ -27,6 +27,13 @@ class ApprenticeshipsController < ApplicationController
   before_filter :authenticate
   before_filter :check
 
+  # Listet alle zugewiesenen Benutzer des eingeloggten Benutzers auf, sowie alle Benutzer,
+  # die niemandem zugewiesen sind.
+  def index
+    @own_apprentices = current_user.apprentices
+    @free_apprentices = User.where(:instructor_id => nil)
+  end
+
   # Weist dem eingeloggten Benuter den übergebenen Benutzer als Auszubildenden zu und
   # leitet auf UsersController#index weiter. Benuter mit Prüfen-Recht (check) oder
   # Admin-Recht (admin) können nicht zugewiesen werden.

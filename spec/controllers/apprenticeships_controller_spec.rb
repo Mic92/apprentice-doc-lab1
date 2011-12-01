@@ -27,6 +27,31 @@ describe ApprenticeshipsController do
     @instructor_role.users << @instructor
   end
 
+  describe "GET 'index'" do
+    before(:each) do
+      @apprentice = User.create valid_attributes_user.merge(:email => 'azubi@business.de')
+      @apprentice_role = Role.create valid_attributes_role_azubi
+      @apprentice_role.users << @apprentice
+      @instructor.apprentices << @apprentice
+      test_sign_in(@instructor)
+    end
+
+    it "returns http success" do
+      get 'index'
+      response.should be_success
+    end
+
+    it "should find all apprentices associated with the user" do
+      get 'index'
+      assigns(:own_apprentices).should eq(@instructor.apprentices)
+    end
+
+    it "should find all apprentices not assigned to any user" do
+      get 'index'
+      assigns(:free_apprentices).should eq(User.where(:instructor_id => nil))
+    end
+  end
+
   describe "POST 'create'" do
     describe "failure" do
       before(:each) do
@@ -157,6 +182,11 @@ describe ApprenticeshipsController do
     end
 
     describe "for non-signed-in users" do
+      it "should deny access to 'index'" do
+        get 'index'
+        response.should redirect_to(root_path)
+      end
+
       it "should deny access to 'create'" do
         post 'create', :apprentice_id => @apprentice
         response.should redirect_to(root_path)
@@ -173,6 +203,11 @@ describe ApprenticeshipsController do
         @no_check_role = Role.create valid_attributes_role.merge(:check => false)
         @no_check_role.users << @instructor
         test_sign_in(@instructor)
+      end
+
+      it "should deny access to 'index'" do
+        get 'index'
+        response.should redirect_to(welcome_path)
       end
 
       it "should deny access to 'create'" do

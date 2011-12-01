@@ -74,6 +74,8 @@
     
     <li><a href="#method-i-destroy">#destroy</a>
     
+    <li><a href="#method-i-index">#index</a>
+    
   </ul>
 </nav>
 
@@ -229,7 +231,7 @@ nicht zugewiesen werden.</p>
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 32</span>
+            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@apprentice</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:apprentice_id</span>])
     <span class="ruby-keyword">if</span> <span class="ruby-ivar">@apprentice</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@apprentice</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin</span>
@@ -271,7 +273,7 @@ weiter.</p>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 47</span>
+            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 54</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@apprentice</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-ivar">@apprentice</span>)
@@ -288,6 +290,38 @@ weiter.</p>
 
         
       </div><!-- destroy-method -->
+
+    
+      <div id="method-i-index" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">index</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Listet alle zugewiesenen Benutzer des eingeloggten Benutzers auf, sowie
+alle Benutzer, die niemandem zugewiesen sind.</p>
+          
+
+          
+          <div class="method-source-code" id="index-source">
+            <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-ivar">@own_apprentices</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>
+  <span class="ruby-ivar">@free_apprentices</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:instructor_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- index-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- index-method -->
 
     
     </section><!-- public-instance-method-details -->
