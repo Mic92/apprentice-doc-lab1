@@ -1,6 +1,6 @@
 <% if current_user.role.admin? %>
   <h1> Benutzer-Übersicht </h1>
-<% else %>
+<% elsif current_user.role.check? %>
   <h1> Auszubildenen-Übersicht </h1>
 <% end %>
 
@@ -29,4 +29,10 @@
     </tr>
   <% end %>
 </table>
+
+<% if current_user.role.admin? %>
+  <%= link_to 'Benutzer erstellen', new_user_path %>
+<% elsif  current_user.role.check? %>
+  <%= link_to 'Auszubildenden erstellen', new_user_path %>
+<% end %>
 

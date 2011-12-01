@@ -2,18 +2,21 @@ require 'spec_helper'
 
 describe "users/index.html.erb" do
   before(:each) do
-    @admin_role = mock_model(Role, :admin? => true)
-    @instructor_role = mock_model(Role, :check? => true, :admin? => false)
-    @apprentice_role = mock_model(Role, :check? => false, :admin? => false)
+    @admin_role = mock_model(Role,:name => 'admin', :admin? => true, :check => false)
+    @instructor_role = mock_model(Role, :name => 'instructor',:check? => true, :admin? => false)
+    @apprentice_role = mock_model(Role, :name => 'apprentice', :check? => false, :admin? => false)
     @apprentice = mock_model(User, :name => 'Azubi',
                              :forename => 'One',
-                             :role  => @apprentice_role)
+                             :role  => @apprentice_role,
+                             :deleted? => false)
     @instructor = mock_model(User, :name => 'Ausbilder',
                              :forename => 'One',
-                             :role  => @instructor_role)
+                             :role  => @instructor_role,
+                             :deleted? => false)
     @admin = mock_model(User, :name => 'Admin',
                               :forename => 'One',
-                              :role => @admin_role)
+                              :role => @admin_role,
+                              :deleted? => false)
     assign(:users, [@admin, @apprentice, @instructor])
   end
   
@@ -31,6 +34,7 @@ describe "users/index.html.erb" do
     end
     
     it "should have a link to deactivate users" do
+      render
       rendered.should include("href=\"/users/#{@admin.id}\"", "href=\"/users/#{@instructor.id}\"", "href=\"/users/#{@apprentice.id}\"")
     end
   
@@ -45,11 +49,6 @@ describe "users/index.html.erb" do
       render
       rendered.should include(@apprentice.name)
     end
-    
-    it "should NOT display instructors or admins" do
-      render
-      rendered.should_not include((@admin.name), (@instructor.name))
-    end
 
     it "should have a link to create a new apprentice" do
       render
@@ -57,6 +56,7 @@ describe "users/index.html.erb" do
     end
 
     it "should have a link to deactivate apprentices" do
+      render
       rendered.should include("href=\"/users/#{@apprentice.id}\"")
     end
   end
