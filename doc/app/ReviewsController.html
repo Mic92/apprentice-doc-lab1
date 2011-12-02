@@ -74,6 +74,8 @@
     
     <li><a href="#method-i-destroy">#destroy</a>
     
+    <li><a href="#method-i-edit">#edit</a>
+    
     <li><a href="#method-i-update">#update</a>
     
   </ul>
@@ -103,8 +105,6 @@
   
     <li><a href="./ApprenticeshipsController.html">ApprenticeshipsController</a>
   
-    <li><a href="./ApprenticeshipsHelper.html">ApprenticeshipsHelper</a>
-  
     <li><a href="./Business.html">Business</a>
   
     <li><a href="./Code.html">Code</a>
@@ -127,8 +127,6 @@
   
     <li><a href="./PasswordsController.html">PasswordsController</a>
   
-    <li><a href="./PasswordsHelper.html">PasswordsHelper</a>
-  
     <li><a href="./PrintReportsController.html">PrintReportsController</a>
   
     <li><a href="./PrintReportsHelper.html">PrintReportsHelper</a>
@@ -137,13 +135,9 @@
   
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
   
-    <li><a href="./ReportEntriesHelper.html">ReportEntriesHelper</a>
-  
     <li><a href="./ReportEntry.html">ReportEntry</a>
   
     <li><a href="./ReportsController.html">ReportsController</a>
-  
-    <li><a href="./ReportsHelper.html">ReportsHelper</a>
   
     <li><a href="./ReviewsController.html">ReviewsController</a>
   
@@ -244,7 +238,7 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
           <div class="method-source-code" id="create-source">
             <pre><span class="ruby-comment"># File app/controllers/reviews_controller.rb, line 21</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
-  <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:report_id</span>])
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">commit?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">personal</span>
     <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> = <span class="ruby-constant">Status</span>.<span class="ruby-identifier">commited</span>
     <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">save</span>
@@ -280,14 +274,14 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/reviews_controller.rb, line 45</span>
+            <pre><span class="ruby-comment"># File app/controllers/reviews_controller.rb, line 56</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">commit?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">commited</span>
     <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> = <span class="ruby-constant">Status</span>.<span class="ruby-identifier">personal</span>
     <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">save</span>
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Das zurückziehen des Berichtes war erfolgreich.'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">commited</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@report</span>.<span class="ruby-identifier">user</span>)
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">commited</span>
     <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> = <span class="ruby-constant">Status</span>.<span class="ruby-identifier">accepted</span>
     <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">save</span>
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Das annehmen des Berichtes war erfolgreich.'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
@@ -302,6 +296,38 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
 
         
       </div><!-- destroy-method -->
+
+    
+      <div id="method-i-edit" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">edit</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="edit-source">
+            <pre><span class="ruby-comment"># File app/controllers/reviews_controller.rb, line 33</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
+  <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@status</span> = <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>
+
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- edit-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- edit-method -->
 
     
       <div id="method-i-update" class="method-detail ">
@@ -320,15 +346,20 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/reviews_controller.rb, line 33</span>
+            <pre><span class="ruby-comment"># File app/controllers/reviews_controller.rb, line 39</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
-  <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@status</span> = <span class="ruby-constant">Status</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-ivar">@report</span> = <span class="ruby-ivar">@status</span>.<span class="ruby-identifier">report</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">commit?</span>
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
-  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">commited</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-ivar">@report</span>.<span class="ruby-identifier">user</span>)
-
-
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Diese Funktion ist noch in Arbeit.'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+  <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@status</span>.<span class="ruby-identifier">stype</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">commited</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:status</span>][<span class="ruby-value">:comment</span>] <span class="ruby-operator">!=</span> <span class="ruby-string">&quot;&quot;</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@status</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:status</span>])
+      <span class="ruby-ivar">@status</span>.<span class="ruby-identifier">stype</span> = <span class="ruby-constant">Status</span>.<span class="ruby-identifier">rejected</span>
+      <span class="ruby-ivar">@status</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Das Ablehnen des Berichtes war erfolgreich.'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">edit_review_path</span>(<span class="ruby-ivar">@report</span>), <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Das Ablehnen des Berichtes hat fehlgeschlagen, Kommentar muss abgegeben werden.'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
 <span class="ruby-keyword">end</span></pre>

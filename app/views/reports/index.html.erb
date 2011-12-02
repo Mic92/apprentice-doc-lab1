@@ -15,6 +15,22 @@
       <% if current_user.role.check? %>
         <td class="center"><%= report.user.forename + ' ' + report.user.name %></td>
       <% end %>
+      <td class="center">
+        <%= case report.status.stype
+          when Status.personal
+            'nicht vorgelegt'
+          when Status.commited
+            'vorgelegt'
+          when Status.accepted
+            'akzeptiert'
+          when Status.rejected
+            'abgelehnt'
+          end
+        %>
+      </td>
+      <% if report.status.comment? %>
+        <td class="center"><%= report.status.comment%></td>
+      <% end %>
       <td><%= link_to 'Anzeigen', report %></td>
       <% if current_user.role.commit? %>
         <td><%= link_to 'Löschen', report_path(report), :confirm => "Sind Sie sicher?", :method => :delete %></td>

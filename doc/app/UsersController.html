@@ -111,8 +111,6 @@
   
     <li><a href="./ApprenticeshipsController.html">ApprenticeshipsController</a>
   
-    <li><a href="./ApprenticeshipsHelper.html">ApprenticeshipsHelper</a>
-  
     <li><a href="./Business.html">Business</a>
   
     <li><a href="./Code.html">Code</a>
@@ -135,8 +133,6 @@
   
     <li><a href="./PasswordsController.html">PasswordsController</a>
   
-    <li><a href="./PasswordsHelper.html">PasswordsHelper</a>
-  
     <li><a href="./PrintReportsController.html">PrintReportsController</a>
   
     <li><a href="./PrintReportsHelper.html">PrintReportsHelper</a>
@@ -145,13 +141,9 @@
   
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
   
-    <li><a href="./ReportEntriesHelper.html">ReportEntriesHelper</a>
-  
     <li><a href="./ReportEntry.html">ReportEntry</a>
   
     <li><a href="./ReportsController.html">ReportsController</a>
-  
-    <li><a href="./ReportsHelper.html">ReportsHelper</a>
   
     <li><a href="./ReviewsController.html">ReviewsController</a>
   
@@ -291,9 +283,9 @@ gesperrt.</p>
 
         <div class="method-description">
           
-          <p>Die Methode ‘destroy’ deaktiviert einen Benutzer. Administratoren können
-jeden Benutzer deaktivieren. Ausbilder können sich und ihre Auszubildenden
-deaktivieren, Auszubildende nur sich selbst.</p>
+          <p>Die Methode ‘destroy’ de-/aktiviert einen Benutzer. Administratoren können
+jeden Benutzer de-/aktivieren. Ausbilder können sich und ihre
+Auszubildenden deaktivieren, Auszubildende nur sich selbst deaktivieren.</p>
           
 
           
@@ -308,18 +300,23 @@ deaktivieren, Auszubildende nur sich selbst.</p>
       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save!</span>
       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Ihr Account wurde erfolgreich deaktiviert.'</span>
       
-<span class="ruby-comment"># Anderen Account deaktivieren als Administrator</span>
+<span class="ruby-comment"># Anderen Account de-/aktivieren als Administrator</span>
     <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
-      <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">deleted</span> = <span class="ruby-keyword">true</span>
-      <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save!</span>
-      <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Benutzer wurde erfolgreich deaktiviert.'</span>
-
-<span class="ruby-comment"># Ausbilder deaktiviert Auszubildenden</span>
-    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">instructor_id</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">deleted</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
         <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">deleted</span> = <span class="ruby-keyword">true</span>
         <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save!</span>
         <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Benutzer wurde erfolgreich deaktiviert.'</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">deleted</span> = <span class="ruby-keyword">false</span>
+        <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save!</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Benutzer wurde erfolgreich aktiviert.'</span>
+      <span class="ruby-keyword">end</span>
+<span class="ruby-comment"># Ausbilder deaktiviert Auszubildenden</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">instructor_id</span>
+          <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">deleted</span> = <span class="ruby-keyword">true</span>
+          <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save!</span>
+          <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Auszubildende wurde erfolgreich deaktiviert.'</span>
       <span class="ruby-keyword">else</span> <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span>  
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">else</span> <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span>  

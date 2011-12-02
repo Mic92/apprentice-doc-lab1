@@ -43,12 +43,12 @@ describe "reports/show.html.erb" do
 
   it "should display the beginning date of the report" do
     render
-    rendered.should include(l @personal_report.period_start, :format => :long)
+    rendered.should include(l @personal_report.period_start)
   end
 
   it "should display the ending date of the report" do
     render
-    rendered.should include(l @personal_report.period_end, :format => :long)
+    rendered.should include(l @personal_report.period_end)
   end
 
   it "should display the dates/times" do
@@ -80,7 +80,7 @@ describe "reports/show.html.erb" do
 
     it "should have a link to commit the report" do
       render
-      rendered.should include("href=\"#{reviews_path}\"")
+      rendered.should include("href=\"#{reviews_path}?report_id=#{@personal_report.id}\"")
     end
 
     it "should have a link to cancle the review" do
@@ -103,7 +103,7 @@ describe "reports/show.html.erb" do
 
     it "should have a link to reject the report" do
       render
-      rendered.should include("href=\"#{review_path(@commited_report)}\"", "data-method=\"put\"")
+      rendered.should include("href=\"#{edit_review_path(@commited_report)}\"")
     end
   end
 end

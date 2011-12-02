@@ -1,4 +1,19 @@
-<h1>Bericht vom <%= l @report.period_start, :format => :long %> bis zum <%= l @report.period_end, :format => :long %></h1>
+<h1>Bericht vom <%= l @report.period_start %> bis zum <%= l @report.period_end %></h1>
+
+<% if current_user.role.commit? %>
+  <% if @report.status.stype == Status.personal || @report.status.stype == Status.rejected %>
+    <%= link_to 'Bericht vorlegen', reviews_path(:report_id => @report), :method => :post %>
+  <% elsif @report.status.stype == Status.commited %>
+    <%= link_to 'Bericht zurückziehen', review_path(@report), :method => :delete %>
+  <% end %>
+  <%= link_to 'Eintrag anlegen', new_report_report_entry_path(@report) %>
+<% elsif current_user.role.check? %>
+  <% if @report.status.stype == Status.commited %>
+    <%= link_to 'Bericht akzeptieren', review_path(@report), :method => :delete %>
+    |
+    <%= link_to 'Bericht ablehnen', edit_review_path(@report) %>
+  <% end %>
+<% end %>
 
 <table>
   <tr>
@@ -17,17 +32,3 @@
     </tr>
   <% end %>
 </table>
-<% if current_user.role.commit? %>
-  <% if @report.status.stype == Status.personal || @report.status.stype == Status.rejected %>
-    <%= link_to 'Bericht vorlegen', reviews_path(:report_id => @report), :method => :post %>
-  <% elsif @report.status.stype == Status.commited %>
-    <%= link_to 'Bericht zurückziehen', review_path(@report), :method => :delete %>
-  <% end %>
-  <%= link_to 'Eintrag anlegen', new_report_report_entry_path(@report) %>
-<% elsif current_user.role.check? %>
-  <% if @report.status.stype == Status.commited %>
-    <%= link_to 'Bericht akzeptieren', review_path(@report), :method => :delete %>
-    |
-    <%= link_to 'Bericht ablehnen', review_path(@report), :method => :put %>
-  <% end %>
-<% end %>

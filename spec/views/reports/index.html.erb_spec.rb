@@ -34,8 +34,16 @@ describe "reports/index.html.erb" do
     @exporter = mock_model(User, :name => 'Exporter',
                            :forename => 'One',
                            :role => @export_role)
-    @report1 = mock_model(Report, :period_start => '2011-10-01'.to_date, :period_end => '2011-10-31'.to_date, :user => @apprentice)
-    @report2 = mock_model(Report, :period_start => '2011-11-01'.to_date, :period_end => '2011-11-30'.to_date, :user => @apprentice)
+    @personal_status = mock_model(Status, :stype => Status.personal, :comment => nil, :comment? => false)
+    @rejected_status = mock_model(Status, :stype => Status.rejected, :comment => 'Nicht gut genug.', :comment? => true)
+    @report1 = mock_model(Report, :period_start => '2011-10-01'.to_date,
+                          :period_end => '2011-10-31'.to_date,
+                          :user => @apprentice,
+                          :status => @personal_status)
+    @report2 = mock_model(Report, :period_start => '2011-11-01'.to_date,
+                          :period_end => '2011-11-30'.to_date,
+                          :user => @apprentice,
+                          :status => @rejected_status)
     assign(:reports, [ @report1, @report2 ])
     assign(:current_user, @apprentice)
   end
@@ -48,6 +56,16 @@ describe "reports/index.html.erb" do
   it "should display the ending dates" do
     render
     rendered.should include((l @report1.period_end),(l @report2.period_end))
+  end
+
+  it "should display the statuses" do
+    render
+    rendered.should include('nicht vorgelegt', 'abgelehnt')
+  end
+
+  it "should display the comments" do
+    render
+    rendered.should include('Nicht gut genug.')
   end
 
   describe "for users with commit right" do
