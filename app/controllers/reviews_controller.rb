@@ -20,7 +20,7 @@
 
 class ReviewsController < ApplicationController
   def create
-    @report = Report.find(params[:id])
+    @report = Report.find(params[:report_id])
     if current_user.role.commit? && @report.status.stype == Status.personal
       @report.status.stype = Status.commited
       @report.status.save
@@ -31,14 +31,25 @@ class ReviewsController < ApplicationController
     redirect_to welcome_path and return
   end
 
-  def update
+  def edit
     @report = Report.find(params[:id])
+    @status = @report.status
+
+  end
+
+  def update
+    @status = Status.find(params[:id])
+    @report = @status.report
     if current_user.role.commit?
       redirect_to welcome_path and return
-    elsif current_user.role.check? && @report.status.stype == Status.commited && current_user.apprentices.include?(@report.user)
-
-
-      redirect_to reports_path, :notice => 'Diese Funktion ist noch in Arbeit.' and return
+    elsif current_user.role.check? && @status.stype == Status.commited
+      if params[:status][:comment] != "" && @status.update_attributes(params[:status])
+        @status.stype = Status.rejected
+        @status.save
+        redirect_to reports_path, :notice => 'Das Ablehnen des Berichtes war erfolgreich.' and return
+      else
+        redirect_to edit_review_path(@report), :notice => 'Das Ablehnen des Berichtes hat fehlgeschlagen, Kommentar muss abgegeben werden.' and return
+      end
     end
     redirect_to welcome_path and return
   end
@@ -49,7 +60,7 @@ class ReviewsController < ApplicationController
       @report.status.stype = Status.personal
       @report.status.save
       redirect_to reports_path, :notice => 'Das zurückziehen des Berichtes war erfolgreich.' and return
-    elsif current_user.role.check? && @report.status.stype == Status.commited && current_user.apprentices.include?(@report.user)
+    elsif current_user.role.check? && @report.status.stype == Status.commited
       @report.status.stype = Status.accepted
       @report.status.save
       redirect_to reports_path, :notice => 'Das annehmen des Berichtes war erfolgreich.' and return

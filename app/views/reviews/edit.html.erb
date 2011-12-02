@@ -1,0 +1,12 @@
+<html>
+<head>
+</head>
+<body>
+  <%= form_for @status, :url => review_path, :method => :put do |f| %>
+    <%= f.label "ihr Kommentar:" %><br />
+    <%= f.text_field :comment %><br />
+    <%= f.submit('Bericht ablehnen') %>
+  <% end %>
+
+</body>
+</html>
