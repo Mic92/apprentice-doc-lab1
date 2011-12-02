@@ -41,9 +41,16 @@ class ReportsController < ApplicationController
     if current_user.role.commit?
       @reports = current_user.reports
     elsif current_user.role.check?
-      @apprentices = []
-      current_user.apprentices.each { |a| @apprentices << a.id }
-      @reports = Report.where(:user_id => @apprentices)
+      if params[:all]
+        @reports = []
+        Status.where(:stype => Status.commited).each { |s| @reports << s.report }
+      else
+        @apprentices = []
+        current_user.apprentices.each { |a| @apprentices << a.id }
+        @all_reports = Report.where(:user_id => @apprentices)
+        @reports = []
+        @all_reports.each { |r| @reports << r if r.status.stype == Status.commited }
+      end
     end
   end
 

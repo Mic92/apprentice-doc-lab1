@@ -30,11 +30,14 @@ describe ReportsController do
   describe "GET 'index'" do
     before(:each) do
       @report1 = @user.reports.create valid_attributes_report
+      @report1.create_status(:stype => Status.commited)
       @report2 = @user.reports.create valid_attributes_report
+      @report2.create_status(:stype => Status.personal)
       @instructor = User.create valid_attributes_user.merge(:email => 'user2@reports.controller')
       @instructor_role = Role.create valid_attributes_role_ausbilder
       @instructor_role.users << @instructor
       @report3 = @instructor.reports.create valid_attributes_report
+      @report3.create_status(:stype => Status.commited)
       @instructor.apprentices << @user
       test_sign_in(@user)
     end
@@ -56,11 +59,14 @@ describe ReportsController do
         test_sign_in(@instructor)
       end
 
-      it "should only find all reports associated with assigned apprentices" do
-        @apprentices = []
-        @instructor.apprentices.each { |a| @apprentices << a.id }
+      it "should only find commited reports associated with assigned apprentices" do
         get 'index'
-        assigns(:reports).should eq(Report.where(:user_id => @apprentices))
+        assigns(:reports).should eq([ @report1 ])
+      end
+
+      it "should find all commited reports with parameter all" do
+        get 'index', :all => true
+        assigns(:reports).should eq([ @report1, @report3 ])
       end
     end
   end
