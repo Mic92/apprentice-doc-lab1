@@ -19,7 +19,7 @@
 </table>
 <% if current_user.role.commit? %>
   <% if @report.status.stype == Status.personal || @report.status.stype == Status.rejected %>
-    <%= link_to 'Bericht vorlegen', reviews_path, :method => :post, :report => @report %>
+    <%= link_to 'Bericht vorlegen', reviews_path(:report_id => @report), :method => :post %>
   <% elsif @report.status.stype == Status.commited %>
     <%= link_to 'Bericht zurückziehen', review_path(@report), :method => :delete %>
   <% end %>
