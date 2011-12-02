@@ -115,8 +115,8 @@ class UsersController < ApplicationController
   end
 
 
-# Die Methode 'destroy' deaktiviert einen Benutzer. Administratoren können jeden Benutzer deaktivieren.
-# Ausbilder können sich und ihre Auszubildenden deaktivieren, Auszubildende nur sich selbst.    
+# Die Methode 'destroy' de-/aktiviert einen Benutzer. Administratoren können jeden Benutzer de-/aktivieren.
+# Ausbilder können sich und ihre Auszubildenden deaktivieren, Auszubildende nur sich selbst deaktivieren.    
 
   def destroy
   
@@ -127,18 +127,23 @@ class UsersController < ApplicationController
       @user.save!
       redirect_to root_path, :notice => 'Ihr Account wurde erfolgreich deaktiviert.'
       
-# Anderen Account deaktivieren als Administrator
+# Anderen Account de-/aktivieren als Administrator
     elsif current_user.role.admin?
-      @user.deleted = true
-      @user.save!
-      redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich deaktiviert.'
-
-# Ausbilder deaktiviert Auszubildenden
-    elsif current_user.role.check?
-      if current_user.id == @user.instructor_id
+      if @user.deleted == false
         @user.deleted = true
         @user.save!
         redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich deaktiviert.'
+      else
+        @user.deleted = false
+        @user.save!
+        redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich aktiviert.'
+      end
+# Ausbilder deaktiviert Auszubildenden
+    elsif current_user.role.check?
+      if current_user.id == @user.instructor_id
+          @user.deleted = true
+          @user.save!
+          redirect_to users_path, :notice => 'Der Auszubildende wurde erfolgreich deaktiviert.'
       else redirect_to welcome_path  
       end
     else redirect_to welcome_path  

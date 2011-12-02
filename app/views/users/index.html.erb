@@ -1,7 +1,7 @@
 <% if current_user.role.admin? %>
   <h1> Benutzer-Übersicht </h1>
 <% elsif current_user.role.check? %>
-  <h1> Auszubildenen-Übersicht </h1>
+  <h1> Auszubildenden-Übersicht </h1>
 <% end %>
 
 <table>
@@ -10,8 +10,9 @@
     <th> Name </th>
     <% if current_user.role.admin? %>
       <th> Rechte-Profil </th>
+      <th> </th>
     <% end %>
-    <th> </th>
+    
   </tr>
   
   <% @users.each do |u| %>
@@ -21,8 +22,12 @@
       <% if current_user.role.admin? %>
         <td class="center"><%= u.role.name %>
       <% end %>
-      <% if !u.deleted? %>
-        <td><%= link_to 'Deaktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete %></td>
+      <% if current_user.role.admin? %>
+        <% if !u.deleted? %>
+          <td><%= link_to 'Deaktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete %></td>
+        <% else %>
+          <td><%= link_to 'Aktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete %></td>
+        <% end %>
       <% end %>
       
       
@@ -34,5 +39,6 @@
   <%= link_to 'Benutzer erstellen', new_user_path %>
 <% elsif  current_user.role.check? %>
   <%= link_to 'Auszubildenden erstellen', new_user_path %>
+  <%= link_to 'Auszubildende verwalten', apprenticeships_path %>
 <% end %>
 
