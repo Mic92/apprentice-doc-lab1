@@ -17,7 +17,7 @@ adminRole = Role.create(
   :admin  => true
 )
 
-Role.create(
+ausbilderRole = Role.create(
   :name   => 'Ausbilder',
   :level  => 2,
   :read   => true,
@@ -96,6 +96,17 @@ admin = User.create(
   :template_id => template.id
 )
 
+ausbilder = User.create(
+  :name     => 'Ausbilder',
+  :forename => 'Ausbi',
+  :email    => 'ausbilder@swt.de',
+  :password => '12345678',
+  :password_confirmation => '12345678',
+  :role_id  => ausbilderRole.id,
+  :business_id => business.id,
+  :template_id => template.id
+)
+
 azubi = User.create(
   :name     => 'Auszubildender',
   :forename => 'Azubi',
@@ -106,3 +117,5 @@ azubi = User.create(
   :business_id => business.id,
   :template_id => template.id
 )
+
+ausbilder.apprentices << azubi
