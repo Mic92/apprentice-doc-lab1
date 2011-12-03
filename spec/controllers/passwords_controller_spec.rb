@@ -22,66 +22,44 @@ require 'spec_helper'
 
 describe PasswordsController do
   before(:each) do
-    @admin = User.create valid_attributes_user
-    @admin_role = Role.create valid_attributes_role_admin
-    @admin_role.users << @admin
     @user = User.create valid_attributes_user.merge(:email => 'azubi@business.de')
     @role = Role.create valid_attributes_role
     @role.users << @user
   end
 
-  describe "PUT 'update'" do
-    before(:each) do
-      test_sign_in(@admin)
+  describe "GET 'new'" do
+    it "returns http success" do
+      get 'new'
+      response.should be_succes
     end
+  end
 
+  describe "POST 'create'" do
     it "should find the right user" do
-      put 'update', :id => @user
+      post 'create', :email => @user.email
       assigns(:user).should eq(@user)
     end
 
     it "should generate a password with lenght 8" do
-      put 'update', :id => @user
+      post 'create', :email => @user.email
       assigns(:password).class.should eq(String)
       assigns(:password).length.should eq(8)
     end
 
     it "should change the user's password" do
       expect {
-        put 'update', :id => @user
+        post 'create', :email => @user.email
       }.to change { User.find(@user).hashed_password }
     end
 
     it "should redirect to the users index page" do
-      put 'update', :id => @user
-      response.should redirect_to(users_path)
+      post 'create', :email => @user.email
+      response.should redirect_to(root_path)
     end
 
     it "should have a flash message" do
-      put 'update', :id => @user
+      post 'create', :email => @user.email
       flash[:notice] =~ /zufällig/i
-    end
-  end
-
-  describe "authentication" do
-    describe "for non-signed-in users" do
-      it "should deny access to 'update'" do
-        put 'update', :id => @user
-        response.should redirect_to(root_path)
-      end
-    end
-
-    describe "for signed-in users without the admin right" do
-      before(:each) do
-        @no_admin_role = Role.create valid_attributes_role_azubi.merge(:admin => false)
-        @no_admin_role.users << @admin
-        test_sign_in(@admin)
-      end
-
-      it "should deny access to 'update'" do
-        put 'update', :id => @user
-        response.should redirect_to(welcome_path)
-      end
     end
   end
 end

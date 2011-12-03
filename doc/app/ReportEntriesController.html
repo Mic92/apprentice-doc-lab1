@@ -236,8 +236,14 @@ weiter. Ist der Eintrag nicht valid, so wird das Formular erneut angezeigt.</p>
     <span class="ruby-ivar">@entry</span> = <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">report_entries</span>.<span class="ruby-identifier">build</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:report_entry</span>])
   <span class="ruby-keyword">end</span>
 
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">save</span>
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@report</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Eintrag wurde erfolgreich erstellt.'</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">date</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">date</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">date</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_end</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">save</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@report</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Eintrag wurde erfolgreich erstellt.'</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>
   <span class="ruby-keyword">end</span>
@@ -270,7 +276,7 @@ weiter.</p>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/report_entries_controller.rb, line 84</span>
+            <pre><span class="ruby-comment"># File app/controllers/report_entries_controller.rb, line 96</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-ivar">@entry</span> = <span class="ruby-constant">ReportEntry</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@report</span> = <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">report</span>
@@ -372,7 +378,7 @@ angezeigt.</p>
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/report_entries_controller.rb, line 66</span>
+            <pre><span class="ruby-comment"># File app/controllers/report_entries_controller.rb, line 72</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-ivar">@entry</span> = <span class="ruby-constant">ReportEntry</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 
@@ -383,8 +389,14 @@ angezeigt.</p>
     <span class="ruby-ivar">@attr</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:report_entry</span>]
   <span class="ruby-keyword">end</span>
 
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@attr</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-ivar">@attr</span>)
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">report</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Eintrag wurde erfolgreich bearbeitet.'</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@attr</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@attr</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-value">:date</span>).<span class="ruby-identifier">to_date</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">report</span>.<span class="ruby-identifier">period_start</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@attr</span>.<span class="ruby-identifier">fetch</span>(<span class="ruby-value">:date</span>).<span class="ruby-identifier">to_date</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">report</span>.<span class="ruby-identifier">period_end</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
+    <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-ivar">@attr</span>)
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-ivar">@entry</span>.<span class="ruby-identifier">report</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Eintrag wurde erfolgreich bearbeitet.'</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
   <span class="ruby-keyword">end</span>

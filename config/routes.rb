@@ -17,7 +17,7 @@ ApprenticeDocLab1::Application.routes.draw do
     resources :report_entries, :only => [ :new, :edit, :create, :update, :destroy ]
   end
 
-  resources :passwords, :only => [ :update ]
+  resources :passwords, :only => [ :new, :create ]
 
   resources :jobs
 

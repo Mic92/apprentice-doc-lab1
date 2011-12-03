@@ -20,14 +20,24 @@
 
 require 'spec_helper'
 
-describe PasswordsController do
-  describe "routing" do
-    it "routes to #new" do
-      get('/passwords/new').should route_to('passwords#new')
-    end
+describe "passwords/new.html.erb" do
+  it "should state that it's generating a password" do
+    render
+    rendered.should include('Passwort generieren')
+  end
 
-    it "routes to #create" do
-      post('/passwords').should route_to('passwords#create')
-    end
+  it "should have a email field" do
+    render
+    rendered.should include('id="email"', 'type="email"')
+  end
+
+  it "should have a submit button" do
+    render
+    rendered.should include('type="submit"')
+  end
+
+  it "should have a link to the root page" do
+    render
+    rendered.should include("href=\"#{root_path}\"")
   end
 end

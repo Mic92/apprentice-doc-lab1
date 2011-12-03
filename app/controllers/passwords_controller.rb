@@ -22,29 +22,32 @@
 
 # Ist für das zurücksetzen von Passwörtern zuständig.
 class PasswordsController < ApplicationController
-  before_filter :authenticate
-  before_filter :admin
+  # Zeigt das Formular zum generieren eines neuen Passworts.
+  def new
+  end
 
   # Setzt das Passwort des übergebenen Benutzers auf ein zufälliges Neues und
   # sendet es per Mail.
-  def update
-    @user = User.find(params[:id])
-    @password = random_password
+  def create
+    @user = User.find_by_email(params[:email])
+    if @user
+      @password = PasswordsController.random_password
 
-    @user.password = @password
-    @user.password_confirmation = @password
-    @user.save
+      @user.password = @password
+      @user.password_confirmation = @password
+      @user.save
 
-    @data = { :user => @user, :password => @password }
+      @data = { :user => @user, :password => @password }
 
-    UserMailer.password_recovery_mail(@data).deliver
+      UserMailer.password_recovery_mail(@data).deliver
+    end
 
-    redirect_to users_path, :notice => 'Ein zufälliges Passwort wurde erstellt.'
+    redirect_to root_path, :notice => 'Ein zufälliges Passwort wurde erstellt.'
   end
 
   private
     # Erzeugt ein zufälliges Passwort der Länge 8, bestehend aus Ziffer, Groß- und Kleinbuchstaben.
-    def random_password
+    def self.random_password
       chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
       newpass = ""
       1.upto(8) { |i| newpass << chars[rand(chars.size-1)] }
