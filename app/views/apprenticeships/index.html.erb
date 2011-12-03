@@ -1,1 +1,27 @@
 <h1>Zuweisungs-Übersicht</h1>
+
+<h2>Ihre zugewiesenen Benutzer</h2>
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+  <% @own_apprentices.each do |own_apprentice| %>
+    <tr>
+      <td class="center"><%= own_apprentice.forename + ' ' + own_apprentice.name %></td>
+      <td class="center"><%= link_to 'Zuweisung aufheben', apprenticeship_path(own_apprentice), :confirm => "Sind Sie sicher?", :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<h2>Freie Benutzer</h2>
+<table>
+  </tr>
+    <th>Name</th>
+  </tr>
+  <% @free_apprentices.each do |free_apprentice| %>
+    <tr>
+      <td class="center"><%= free_apprentice.forename + ' ' + free_apprentice.name %></td>
+      <td class="center"><%= link_to 'Zuweisen', apprenticeships_path(:apprentice_id => free_apprentice), :method => :post %></td>
+    </tr>
+  <% end %>
+</table>
