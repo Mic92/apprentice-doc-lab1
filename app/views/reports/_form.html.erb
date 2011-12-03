@@ -1,4 +1,15 @@
 <%= form_for @report do |f| %>
+  <% if @report.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= @report.errors.count %> Fehler verhinderten die Erstellung dieses Eintrags:</h2>
+      <ul>
+        <% @report.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <%= f.label "Von:" %><br />
   <%= f.date_select :period_start %><br />
   <%= f.label "Bis:" %><br />
