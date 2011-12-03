@@ -39,17 +39,12 @@ class ReportsController < ApplicationController
   # * Prüfen (check): alle Berichte der dem Benutzer zugewiesenen Azubis
   def index
     if current_user.role.commit?
-      @reports = current_user.reports
+      @reports = current_user.reports.order('period_start asc, period_end asc')
     elsif current_user.role.check?
       if params[:all]
-        @reports = []
-        Status.where(:stype => Status.commited).each { |s| @reports << s.report }
+        @reports = Report.joins(:status).where(:statuses => { :stype => Status.commited }).order('period_start asc, period_end asc')
       else
-        @apprentices = []
-        current_user.apprentices.each { |a| @apprentices << a.id }
-        @all_reports = Report.where(:user_id => @apprentices)
-        @reports = []
-        @all_reports.each { |r| @reports << r if r.status.stype == Status.commited }
+        @reports = Report.joins(:status, :user).where(:statuses => { :stype => Status.commited }, :user_id => current_user.apprentices).order('period_start asc, period_end asc')
       end
     end
   end

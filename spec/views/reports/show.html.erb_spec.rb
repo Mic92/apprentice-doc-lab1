@@ -26,14 +26,18 @@ describe "reports/show.html.erb" do
     @check_role = mock_model(Role, :commit? => false, :check? => true)
     @apprentice = mock_model(User, :role  => @commit_role)
     @instructor = mock_model(User, :role => @check_role)
-    @personal_status = mock_model(Status, :stype => Status.personal)
-    @commited_status = mock_model(Status, :stype => Status.commited)
+    @personal_status = mock_model(Status, :stype => Status.personal, :comment => nil, :comment? => false)
+    @commited_status = mock_model(Status, :stype => Status.commited, :comment => nil, :comment? => false)
+    @rejected_status = mock_model(Status, :stype => Status.rejected, :comment => 'Nicht gut genug.', :comment? => true)
     @personal_report = mock_model(Report, :period_start => '2011-10-01'.to_date,
                                   :period_end => '2011-10-31'.to_date,
                                   :status => @personal_status)
     @commited_report = mock_model(Report, :period_start => '2011-10-01'.to_date,
                                   :period_end => '2011-10-31'.to_date,
                                   :status => @commited_status)
+    @rejected_report = mock_model(Report, :period_start => '2011-10-01'.to_date,
+                                  :period_end => '2011-10-31'.to_date,
+                                  :status => @rejected_status)
     @entry1 = mock_model(ReportEntry, :date => '2011-10-02 08:00:00'.to_datetime, :duration_in_hours => 1.5, :text => 'Entry created.')
     @entry2 = mock_model(ReportEntry, :date => '2011-10-02 10:00:00'.to_datetime, :duration_in_hours => 0.1, :text => 'View tested.')
     assign(:entries, [ @entry1, @entry2 ])
@@ -49,6 +53,12 @@ describe "reports/show.html.erb" do
   it "should display the ending date of the report" do
     render
     rendered.should include(l @personal_report.period_end)
+  end
+
+  it "should display the comment" do
+    assign(:report, @rejected_report)
+    render
+    rendered.should include(@rejected_report.status.comment)
   end
 
   it "should display the dates/times" do

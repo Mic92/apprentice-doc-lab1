@@ -50,7 +50,7 @@ describe ReportsController do
     describe "for users with commit right" do
       it "should only find all reports associated with the user" do
         get 'index'
-        assigns(:reports).should eq(@user.reports)
+        assigns(:reports).should eq(@user.reports.order('period_start asc, period_end asc'))
       end
     end
 

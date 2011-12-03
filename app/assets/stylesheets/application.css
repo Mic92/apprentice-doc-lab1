@@ -81,6 +81,10 @@ a:hover {
   background-color: #000;
 }
 
+.center {
+  text-align: center;
+}
+
 .notice {
   color: green;
 }

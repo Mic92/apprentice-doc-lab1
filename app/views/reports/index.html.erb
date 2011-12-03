@@ -28,11 +28,9 @@
           end
         %>
       </td>
-      <% if report.status.comment? %>
-        <td class="center"><%= report.status.comment%></td>
-      <% end %>
       <td><%= link_to 'Anzeigen', report %></td>
       <% if current_user.role.commit? %>
+        <td><%= link_to 'Bearbeiten', edit_report_path(report) %></td>
         <td><%= link_to 'Löschen', report_path(report), :confirm => "Sind Sie sicher?", :method => :delete %></td>
       <% end %>
       <% if current_user.role.export? %>

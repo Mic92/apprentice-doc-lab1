@@ -34,8 +34,8 @@ describe "reports/index.html.erb" do
     @exporter = mock_model(User, :name => 'Exporter',
                            :forename => 'One',
                            :role => @export_role)
-    @personal_status = mock_model(Status, :stype => Status.personal, :comment => nil, :comment? => false)
-    @rejected_status = mock_model(Status, :stype => Status.rejected, :comment => 'Nicht gut genug.', :comment? => true)
+    @personal_status = mock_model(Status, :stype => Status.personal)
+    @rejected_status = mock_model(Status, :stype => Status.rejected)
     @report1 = mock_model(Report, :period_start => '2011-10-01'.to_date,
                           :period_end => '2011-10-31'.to_date,
                           :user => @apprentice,
@@ -61,11 +61,6 @@ describe "reports/index.html.erb" do
   it "should display the statuses" do
     render
     rendered.should include('nicht vorgelegt', 'abgelehnt')
-  end
-
-  it "should display the comments" do
-    render
-    rendered.should include('Nicht gut genug.')
   end
 
   describe "for users with commit right" do
