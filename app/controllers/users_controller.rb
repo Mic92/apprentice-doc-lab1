@@ -73,13 +73,16 @@ class UsersController < ApplicationController
       @roles = Role.all
     elsif current_user.role.modify?
       @roles = Role.where(:admin => false, :modify => false, :check => false)
-    end
+    end 
 
+    
 # zufälliges password wird generiert
     
-    @password = PasswordsController.random_password
-    params[:user][:password] = @password
-    params[:user][:password_confirmation] = @password
+    if params[:user] != nil
+      @password = PasswordsController.random_password
+      params[:user][:password] = @password
+      params[:user][:password_confirmation] = @password
+    end
 
     @user = User.new(params[:user])
     if @user == nil || @user.role_id == nil
