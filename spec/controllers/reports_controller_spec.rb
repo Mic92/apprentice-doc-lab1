@@ -181,6 +181,7 @@ describe ReportsController do
   describe "PUT 'update'" do
     before(:each) do
       @report = @user.reports.create valid_attributes_report
+      @report.create_status valid_attributes_status.merge(:stype => Status.personal)
       test_sign_in(@user)
     end
 

@@ -26,6 +26,7 @@ describe ReportEntriesController do
     @role = Role.create valid_attributes_role_azubi
     @role.users << @user
     @report = @user.reports.create valid_attributes_report
+    @report.create_status valid_attributes_report.merge(:stype => Status.personal)
   end
 
   describe "GET 'new'" do
@@ -69,6 +70,11 @@ describe ReportEntriesController do
     it "should find the right report" do
       post 'create', :report_id => @report
       assigns(:report).should eq(@report)
+    end
+
+    it "should require a date between starting date and ending date of report" do
+      post 'create', :report_id => @report, :report_entry => valid_attributes_entry.merge(:date => '2009-01-01 00:00:00')
+      response.should render_template('report_entries/new')
     end
 
     describe "failure" do
@@ -126,6 +132,11 @@ describe ReportEntriesController do
     it "should find the right entry" do
       put 'update', :report_id => @report, :id => @entry
       assigns(:entry).should eq(@entry)
+    end
+
+    it "should require a date between starting date and ending date of report" do
+      put 'update', :report_id => @report, :id => @entry, :report_entry => valid_attributes_entry.merge(:date => '2009-01-01 00:00:00')
+      response.should render_template('report_entries/edit')
     end
 
     describe "failure" do
