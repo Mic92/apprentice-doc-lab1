@@ -35,6 +35,7 @@
           <li><%= link_to 'IHK-Verwaltung', ihks_path %></li>
           <li><%= link_to 'Code-Verwaltung', codes_path %></li>
           <li><%= link_to 'Template-Verwaltung', templates_path %></li>
+          <li><%= link_to 'Mein Profil', user_path(current_user) %></lil>
         <% end %>
         <br>
         <li><%= link_to "Ausloggen", signout_path %></li>
