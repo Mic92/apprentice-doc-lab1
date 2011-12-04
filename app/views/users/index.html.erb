@@ -3,7 +3,16 @@
 <% elsif current_user.role.check? %>
   <h1> Auszubildenden-Übersicht </h1>
 <% end %>
+<p>
+<% if current_user.role.admin? %>
+  <%= link_to 'Benutzer erstellen', new_user_path %>
+<% elsif  current_user.role.check? %>
+  <%= link_to 'Auszubildenden erstellen', new_user_path %>
+  <%= link_to 'Auszubildende verwalten', apprenticeships_path %>
+<% end %>
+</p>
 
+<p>
 <table>
   <tr>
     <th> Vorname </th>
@@ -34,11 +43,6 @@
     </tr>
   <% end %>
 </table>
+</p>
 
-<% if current_user.role.admin? %>
-  <%= link_to 'Benutzer erstellen', new_user_path %>
-<% elsif  current_user.role.check? %>
-  <%= link_to 'Auszubildenden erstellen', new_user_path %>
-  <%= link_to 'Auszubildende verwalten', apprenticeships_path %>
-<% end %>
 

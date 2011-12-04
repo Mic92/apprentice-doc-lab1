@@ -1,2 +1,45 @@
-<h1>Users#new</h1>
-<p>Find me in app/views/users/new.html.erb</p>
+<% if current_user.role.admin? %>
+<h1>Neuen Benutzer erstellen</h1>
+<% else %>
+<h1>Auszubildenden erstellen</h1>
+<% end %>
+
+<%= form_for @user do |f| %>
+  <table>
+  <tr>
+  <th></th> <th></th>
+  </tr>
+  <tr>  
+  <td>  <%= f.label "Vorname:" %> </td>
+  <td>  <%= f.text_field :forename %> </td>
+  </tr>
+  <tr>  
+  <td>  <%= f.label "Name:" %> </td>
+  <td>  <%= f.text_field :name %> </td>
+  </tr>
+  <tr>  
+  <td>  <%= f.label "Email:" %> </td>
+  <td>  <%= f.text_field :email %> </td>
+  </tr>  
+  <tr>  
+  <td>  <%= f.label "Straße:" %> </td>
+  <td>  <%= f.text_field :street %> </td>
+  </tr>  
+  <tr>  
+  <td>  <%= f.label "Postleitzahl:" %> </td>
+  <td>  <%= f.text_field :zipcode %> </td>
+  </tr>  
+  <tr>  
+  <td>  <%= f.label "Ort:" %> </td>
+  <td>  <%= f.text_field :city %> </td>
+  </tr>  
+  <tr>
+  <td>  <%= f.label "Rechte-Profil" %> </td>
+  <td>  <%= f.collection_select(:role_id, @roles, :id, :name, :prompt => true) %> </td>
+  </tr>
+  </table>
+  <br/>
+  <%= f.submit "Benutzer erstellen"%>
+  <%= link_to "Abbrechen", users_path %>
+<% end %>
+

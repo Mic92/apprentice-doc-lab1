@@ -31,7 +31,7 @@ class UsersController < ApplicationController
   def index
     if current_user.role.admin?
       @users = User.all
-    elsif current_user.role.check?
+    elsif current_user.role.modify?
       @users = current_user.apprentices
       else redirect_to welcome_path
     end    
@@ -45,10 +45,14 @@ class UsersController < ApplicationController
 # Die Methode 'new' erzeugt einen neuen Nutzer, wenn man Administrator oder Ausbilder ist. Für Auszubildene ist die Methode gesperrt.
 
   def new
-    if current_user.role.admin? || current_user.role.check?
+    if current_user.role.admin?
       @user = User.new
-    else
-      redirect_to welcome_path
+      @roles = Role.all
+    elsif current_user.role.modify?
+        @user = User.new
+        @roles = Role.where(:admin => false, :modify => false, :check => false)
+      else
+        redirect_to welcome_path
     end
   end
   
@@ -62,25 +66,37 @@ class UsersController < ApplicationController
 # Administratoren dürfen jede Art von Benutzer erstellen, Ausbilder nur Auszubildende, Auszubildenden ist die Methode gesperrt.
 
   def create
+# roles muss initialisiert werden für collection_select, falls save fehlschlägt.
+    if current_user.role.admin?
+      @roles = Role.all
+    elsif current_user.role.modify?
+      @roles = Role.where(:admin => false, :modify => false, :check => false)
+    end
+
+# zufälliges password wird generiert
+    
+    @password = random_password
+    params[:user].merge(:password => @password,
+                                :password_confirmation => @password,
+                                :template_id => Template.first) unless params[:user] == nil
     @user = User.new(params[:user])
-    if @user == nil || @user.role_id == nil 
+    if @user == nil || @user.role_id == nil
       render 'new'
     elsif current_user.role.admin?
         
-        @user = User.create(params[:user])      
-        if @user.save
+        if @user.save!
           redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich erstellt.'
         else
           render 'new'
         end
-      elsif current_user.role.check?
+      elsif current_user.role.modify?
         
         @role = Role.find(@user.role_id)
-        if @role.admin? || @role.check?
-          render 'new'        
+        if @role.admin? || @role.modify?
+          render 'new'     
         else
           @user = current_user.apprentices.build(params[:user])
-          if @user.save
+          if @user.save!
             redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich erstellt.'
           else
             render 'new'
@@ -101,14 +117,20 @@ class UsersController < ApplicationController
     if @attr == nil
       render 'edit'
     else
-      @role = Role.find(@attr.fetch(:role_id))
+      if params[:user][:role_id] == nil
+        @role = Role.find(current_user.role_id)
+      else
+        @role = Role.find(params[:user][:role_id])
+      end
+      
+      @attr = params[:user].merge(:role_id => @role)
       if current_user.role.admin?
-        @user.update_attributes(@attr)
+        @user.update_attributes(@user.attributes.merge(@attr))
         redirect_to welcome_path, :notice => 'Das Profil wurde erfolgreich bearbeitet.'
-      elsif @role.check? || @role.admin?
+      elsif @role.modify? || @role.admin?
          render 'edit'
          else 
-         @user.update_attributes(@attr)
+         @user.update_attributes(@user.attributes.merge(@attr))
          redirect_to welcome_path, :notice => 'Das Profil wurde erfolgreich bearbeitet.'
       end     
     end
@@ -139,7 +161,7 @@ class UsersController < ApplicationController
         redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich aktiviert.'
       end
 # Ausbilder deaktiviert Auszubildenden
-    elsif current_user.role.check?
+    elsif current_user.role.modify?
       if current_user.id == @user.instructor_id
           @user.deleted = true
           @user.save!
@@ -152,8 +174,13 @@ class UsersController < ApplicationController
    
     
   end  
+  def random_password
+      chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
+      newpass = ""
+      1.upto(8) { |i| newpass << chars[rand(chars.size-1)] }
+      return newpass
+  end
   private
-  
     def correct_user
       @user = User.find(params[:id])
       redirect_to welcome_path unless current_user?(@user)

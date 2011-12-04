@@ -1,2 +1,37 @@
-<h1>Users#show</h1>
-<p>Find me in app/views/users/show.html.erb</p>
+<h1>Mein Profil</h1>
+
+<%= form_for @user do |f| %>
+  <%= f.label "Sie sind angemeldet als #{@user.role.name}"%>
+  <br />
+  <table>
+  <tr>
+  <th></th> <th></th>
+  </tr>
+  <tr>  
+  <td><b>  <%= f.label "Vorname:" %></b> </td>
+  <td>  <%= f.label @user.forename%> </td>
+  </tr>
+  <tr>  
+  <td><b> <%= f.label "Name:" %></b> </td>
+  <td>  <%= f.label @user.name %> </td>
+  </tr>
+  <tr>  
+  <td><b>  <%= f.label "Email:" %></b>  </td>
+  <td>  <%= f.label @user.email %> </td>
+  </tr>  
+  <tr>  
+  <td><b>  <%= f.label "Straße:" %></b>  </td>
+  <td>  <%= f.label @user.street %> </td>
+  </tr>  
+  <tr>  
+  <td><b>  <%= f.label "Postleitzahl:" %></b>  </td>
+  <td>  <%= f.label @user.zipcode %> </td>
+  </tr>  
+  <tr>  
+  <td><b>  <%= f.label "Ort:" %></b>  </td>
+  <td>  <%= f.label @user.city %> </td>
+  </tr>
+  </table>
+  
+<% end %>
+<%= link_to "Bearbeiten", edit_user_path(@user) %>
