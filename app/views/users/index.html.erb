@@ -25,7 +25,9 @@
   </tr>
   
   <% @users.each do |u| %>
+
     <tr>
+      
       <td class="center"><%= u.forename %></td>
       <td class="center"><%= u.name %></td>
       <% if current_user.role.admin? %>
@@ -38,7 +40,6 @@
           <td><%= link_to 'Aktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete %></td>
         <% end %>
       <% end %>
-      
       
     </tr>
   <% end %>

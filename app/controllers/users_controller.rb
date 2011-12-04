@@ -45,6 +45,7 @@ class UsersController < ApplicationController
 # Die Methode 'new' erzeugt einen neuen Nutzer, wenn man Administrator oder Ausbilder ist. Für Auszubildene ist die Methode gesperrt.
 
   def new
+    @templates = Template.all
     if current_user.role.admin?
       @user = User.new
       @roles = Role.all
@@ -66,7 +67,8 @@ class UsersController < ApplicationController
 # Administratoren dürfen jede Art von Benutzer erstellen, Ausbilder nur Auszubildende, Auszubildenden ist die Methode gesperrt.
 
   def create
-# roles muss initialisiert werden für collection_select, falls save fehlschlägt.
+# roles/templates muss initialisiert werden für collection_select, falls save fehlschlägt.
+    @templates = Template.all
     if current_user.role.admin?
       @roles = Role.all
     elsif current_user.role.modify?
@@ -75,16 +77,16 @@ class UsersController < ApplicationController
 
 # zufälliges password wird generiert
     
-    @password = random_password
-    params[:user].merge(:password => @password,
-                                :password_confirmation => @password,
-                                :template_id => Template.first) unless params[:user] == nil
+    @password = PasswordsController.random_password
+    params[:user][:password] = @password
+    params[:user][:password_confirmation] = @password
+
     @user = User.new(params[:user])
     if @user == nil || @user.role_id == nil
       render 'new'
     elsif current_user.role.admin?
         
-        if @user.save!
+        if @user.save
           redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich erstellt.'
         else
           render 'new'
@@ -96,7 +98,7 @@ class UsersController < ApplicationController
           render 'new'     
         else
           @user = current_user.apprentices.build(params[:user])
-          if @user.save!
+          if @user.save
             redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich erstellt.'
           else
             render 'new'
