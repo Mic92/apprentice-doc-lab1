@@ -32,7 +32,7 @@ class ReviewsController < ApplicationController
       redirect_to welcome_path and return
     end
     if current_user.role.commit? && @report.status.stype == Status.rejected
-      redirect_to reports_path, :alert => 'Der Bericht muss geändert werden, bervor Sie ihn wieder vorlegen können' and return
+      redirect_to report_path(@report), :alert => 'Der Bericht muss geändert werden, bervor Sie ihn wieder vorlegen können' and return
     end
     redirect_to welcome_path and return
   end

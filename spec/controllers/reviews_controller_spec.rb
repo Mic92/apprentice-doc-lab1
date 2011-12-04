@@ -98,9 +98,9 @@ describe ReviewsController do
       end
 
       describe "report is rejected" do
-        it "should redirect to the reports page" do
+        it "should redirect to the report-show page" do
           post 'create', :report_id => @report_r
-          response.should redirect_to(reports_path)
+          response.should redirect_to(report_path(@report_r))
         end
 
         it "should have a alert-flash message" do
