@@ -68,6 +68,15 @@ describe ReviewsController do
         post 'create', :report_id => @report_p
         Report.find(@report_p).status.comment.should =~ /Dieser Bericht wurde damals aus folgendem Grund abgelehnt:\n/i
       end
+
+      it "should not change the comment when commiting and withdrawing a report" do
+        @report_p.status.comment = 'test_comment'
+        @report_p.status.save
+        post 'create', :report_id => @report_p
+        delete 'destroy', :id => @report_p
+        Report.find(@report_p).status.comment.should eq('test_comment')
+      end
+
       describe "report doesnt belong to current_user" do
         before(:each) do
           @apprentice_2 = User.create valid_attributes_user.merge(:email => 'apprentice_2@mustermann.de')
@@ -85,6 +94,24 @@ describe ReviewsController do
           expect {
             post 'create', :report_id => @report_p
           }.not_to change { Status.find(@report_p.status).updated_at }
+        end
+      end
+
+      describe "report is rejected" do
+        it "should redirect to the reports page" do
+          post 'create', :report_id => @report_r
+          response.should redirect_to(reports_path)
+        end
+
+        it "should have a alert-flash message" do
+          post 'create', :report_id => @report_r
+          flash[:alert].should =~ /muss geändert werden/i
+        end
+
+        it "should not change status" do
+          expect {
+            post 'create', :report_id => @report_r
+          }.not_to change { Status.find(@report_r.status).updated_at }
         end
       end
     end

@@ -31,6 +31,9 @@ class ReviewsController < ApplicationController
     elsif current_user.role.check?
       redirect_to welcome_path and return
     end
+    if current_user.role.commit? && @report.status.stype == Status.rejected
+      redirect_to reports_path, :alert => 'Der Bericht muss geändert werden, bervor Sie ihn wieder vorlegen können' and return
+    end
     redirect_to welcome_path and return
   end
 
@@ -60,6 +63,9 @@ class ReviewsController < ApplicationController
   def destroy
     @report = Report.find(params[:id])
     if current_user.role.commit? && @report.status.stype == Status.commited && current_user == @report.user
+      if @report.status.comment != '' && @report.status.comment != nil
+        @report.status.comment = @report.status.comment.from(59)
+      end
       @report.status.stype = Status.personal
       @report.status.save
       redirect_to reports_path, :notice => 'Das zurückziehen des Berichtes war erfolgreich.' and return
