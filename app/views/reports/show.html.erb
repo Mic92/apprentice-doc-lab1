@@ -1,12 +1,13 @@
 <h1>Bericht vom <%= l @report.period_start %> bis zum <%= l @report.period_end %></h1>
 
 <% if current_user.role.commit? %>
-  <% if @report.status.stype == Status.personal || @report.status.stype == Status.rejected %>
+  <% if @report.status.stype == Status.personal %>
     <%= link_to 'Bericht vorlegen', reviews_path(:report_id => @report), :method => :post %>
+    |
   <% elsif @report.status.stype == Status.commited %>
     <%= link_to 'Bericht zurückziehen', review_path(@report), :method => :delete %>
+    |
   <% end %>
-  |
   <%= link_to 'Eintrag anlegen', new_report_report_entry_path(@report) %>
 <% elsif current_user.role.check? %>
   <% if @report.status.stype == Status.commited %>
@@ -32,6 +33,7 @@
       <td class="center"><%= entry.duration_in_hours.to_i %> Stunden <%= (entry.duration_in_hours.hours / 1.minute % 60).to_i %> Minuten</td>
       <td><%= entry.text %></td>
       <% if current_user.role.commit? %>
+        <td><%= link_to 'Bearbeiten', edit_report_report_entry_path(@report, entry) %></td>
         <td><%= link_to 'Löschen', report_report_entry_path(@report, entry), :confirm => "Sind Sie sicher?", :method => :delete %></td>
       <% end %>
     </tr>

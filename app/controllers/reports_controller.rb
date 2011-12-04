@@ -69,7 +69,7 @@ class ReportsController < ApplicationController
   # Ist der Bericht nicht valid, so wird das Formular erneut gezeigt.
   def create
     @report = current_user.reports.build(params[:report])
-    @report.build_status(:stype => 0)
+    @report.build_status(:stype => Status.personal)
 
     if @report.save
       redirect_to reports_path, :notice => 'Bericht wurde erfolgreich erstellt.'
@@ -84,6 +84,7 @@ class ReportsController < ApplicationController
     @report = Report.find(params[:id])
 
     if params[:report] != nil && @report.update_attributes(params[:report])
+      @report.status.update_attributes(:stype => Status.personal)
       redirect_to reports_path, :notice => 'Bericht wurde erfolgreich bearbeitet.'
     else
       render 'edit'

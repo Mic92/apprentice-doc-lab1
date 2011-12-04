@@ -55,16 +55,24 @@ class ReportEntriesController < ApplicationController
       @entry = @report.report_entries.build(params[:report_entry])
     end
 
-    if @entry.save
-      redirect_to @report, :notice => 'Eintrag wurde erfolgreich erstellt.'
-    else
-      render 'new'
+    if @entry.date != nil
+      if @entry.date >= @report.period_start && @entry.date <= @report.period_end
+        if @entry.save
+          @report.status.update_attributes(:stype => Status.personal)
+          redirect_to @report, :notice => 'Eintrag wurde erfolgreich erstellt.' and return
+        end
+      else
+        @entry.errors.add(:date, 'muss im Zeitraum des Berichts liegen')
+      end
     end
+
+    render 'new'
   end
 
   # Ändert die Attribute des Eintrags und leitet auf ReportsController#show weiter.
   # Sind die Attribute nicht valid, so wird das Formular erneut angezeigt.
   def update
+    @report = Report.find(params[:report_id])
     @entry = ReportEntry.find(params[:id])
 
     if params[:hours] != nil && params[:minutes] != nil && params[:report_entry] != nil
@@ -74,11 +82,21 @@ class ReportEntriesController < ApplicationController
       @attr = params[:report_entry]
     end
 
-    if @attr != nil && @entry.update_attributes(@attr)
-      redirect_to @entry.report, :notice => 'Eintrag wurde erfolgreich bearbeitet.'
-    else
-      render 'edit'
+    if @attr != nil
+      @date = ReportEntry.new(@attr).date
+      if @date != nil
+        if @date >= @entry.report.period_start && @date <= @entry.report.period_end
+          if @entry.update_attributes(@attr)
+            @entry.report.status.update_attributes(:stype => Status.personal)
+            redirect_to @entry.report, :notice => 'Eintrag wurde erfolgreich bearbeitet.' and return
+          end
+        else
+          @entry.errors.add(:date, 'muss im Zeitraum des Berichts liegen')
+        end
+      end
     end
+
+    render 'edit'
   end
 
   # Löschte einen Eintrag aus dem System und leitet auf ReportsController#show weiter.
@@ -86,6 +104,7 @@ class ReportEntriesController < ApplicationController
     @entry = ReportEntry.find(params[:id])
     @report = @entry.report
     @entry.destroy
+    @report.status.update_attributes(:stype => Status.personal)
 
     redirect_to @report, :notice => 'Eintrag wurde erfolgreich gelöscht.'
   end
