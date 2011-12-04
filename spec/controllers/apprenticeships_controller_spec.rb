@@ -32,6 +32,10 @@ describe ApprenticeshipsController do
       @apprentice = User.create valid_attributes_user.merge(:email => 'azubi@business.de')
       @apprentice_role = Role.create valid_attributes_role_azubi
       @apprentice_role.users << @apprentice
+      @unassigned_apprentice = User.create valid_attributes_user.merge(:email => 'unassigned@swt.de')
+      @apprentice_role.users << @unassigned_apprentice
+      @unassigned_instructor = User.create valid_attributes_user.merge(:email => 'ui@swt.de')
+      @instructor_role.users << @unassigned_instructor
       @instructor.apprentices << @apprentice
       test_sign_in(@instructor)
     end
@@ -46,9 +50,9 @@ describe ApprenticeshipsController do
       assigns(:own_apprentices).should eq(@instructor.apprentices)
     end
 
-    it "should find all apprentices not assigned to any user" do
+    it "should find all apprentices without admin and check right not assigned to any user" do
       get 'index'
-      assigns(:free_apprentices).should eq(User.where(:instructor_id => nil))
+      assigns(:free_apprentices).should eq([ @unassigned_apprentice ])
     end
   end
 

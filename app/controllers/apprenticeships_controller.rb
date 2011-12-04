@@ -31,7 +31,7 @@ class ApprenticeshipsController < ApplicationController
   # die niemandem zugewiesen sind.
   def index
     @own_apprentices = current_user.apprentices
-    @free_apprentices = User.where(:instructor_id => nil)
+    @free_apprentices = User.joins(:role).where(:instructor_id => nil, :roles => { :admin => false, :check => false})
   end
 
   # Weist dem eingeloggten Benuter den übergebenen Benutzer als Auszubildenden zu und
