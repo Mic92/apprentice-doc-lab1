@@ -174,17 +174,9 @@ class UsersController < ApplicationController
       else redirect_to welcome_path  
       end
     else redirect_to welcome_path  
-    end
-    
-   
-    
+    end  
   end  
-  def random_password
-      chars = ("a".."z").to_a + ("A".."Z").to_a + ("0".."9").to_a
-      newpass = ""
-      1.upto(8) { |i| newpass << chars[rand(chars.size-1)] }
-      return newpass
-  end
+
   private
     def correct_user
       @user = User.find(params[:id])
