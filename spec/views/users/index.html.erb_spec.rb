@@ -22,9 +22,9 @@ require 'spec_helper'
 
 describe "users/index.html.erb" do
   before(:each) do
-    @admin_role = mock_model(Role,:name => 'admin', :admin? => true, :check => false)
-    @instructor_role = mock_model(Role, :name => 'instructor',:check? => true, :admin? => false)
-    @apprentice_role = mock_model(Role, :name => 'apprentice', :check? => false, :admin? => false)
+    @admin_role = mock_model(Role,:name => 'admin', :admin? => true, :modify => true, :check => true)
+    @instructor_role = mock_model(Role, :name => 'instructor', :check => true, :modify? => true, :admin? => false)
+    @apprentice_role = mock_model(Role, :name => 'apprentice', :modify? => false, :check => false, :admin? => false)
     @apprentice = mock_model(User, :name => 'Azubi',
                              :forename => 'One',
                              :role  => @apprentice_role,
