@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
   
     user = User.authenticate(params[:session][:email], params[:session][:password])
 	
-    if user.nil?
+    if user.nil? or user.deleted == true 
       # Fehlermeldung
       flash.now[:error] = "Inkorrekte Email/Passwort Kombination"
       @title = "Login"
