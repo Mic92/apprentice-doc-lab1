@@ -60,7 +60,8 @@ class UsersController < ApplicationController
 # Die Methode 'edit' ermöglicht das Editieren des eigenen Profils.
 
   def edit
-    @user = User.find(params[:id])    
+    @user = User.find(params[:id])
+    @templates = Template.all   
   end
 
 # Die Methode 'create' erstellt einen neuen Benutzer, sofern dieser über valide Attribute verfügt.
@@ -117,6 +118,7 @@ class UsersController < ApplicationController
 # Die Methode 'update' aktualisiert das eigene Benutzerprofil mit validen Daten. 
 
   def update
+    @templates = Template.all
     @user = current_user
     @attr = params[:user]
     if @attr == nil

@@ -31,6 +31,10 @@
   <td><b>  <%= f.label "Ort:" %></b>  </td>
   <td>  <%= f.text_field :city %> </td>
   </tr>
+  <tr>
+  <td>  <%= f.label "Druckansicht" %> </td>
+  <td>  <%= f.collection_select(:template_id, @templates, :id, :name, :prompt => true) %> </td>
+  </tr>
   </table>
   <br />
   
