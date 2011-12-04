@@ -162,7 +162,7 @@ RSpec.configure do |config|
     {
       :report => 1,
       :stype => Status.personal,
-      :comment => 'Das ist ein Kommentar eines Ausbilders zum Report in :report'
+      #:comment => 'Das ist ein Kommentar eines Ausbilders zum Report in :report'
     }
   end
 end
