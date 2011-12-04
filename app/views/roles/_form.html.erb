@@ -1,0 +1,37 @@
+<%= form_for @role do |f| %>
+  <% if @role.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= @role.errors.count %> Fehler verhinderten die Erstellung dieses Rechte-Profils:</h2>
+      <ul>
+        <% @role.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= f.label "Name:" %><br />
+  <%= f.text_field :name %><br />
+  <%= f.label "Level" %><br />
+  <%= f.number_field :level%>
+  <br />
+  <br />
+  <b> <%= f.label "Rechte:" %> </b>
+  <br/>
+  <br/>
+  <%= f.label "Berichte lesen" %>
+  <%= f.check_box :read %><br />
+  <%= f.label "Berichte erstellen" %>
+  <%= f.check_box :commit %><br />
+  <%= f.label "Berichte exportieren" %>
+  <%= f.check_box :export %><br />
+  <%= f.label "Berichte bewerten" %>
+  <%= f.check_box :check %><br />
+  <%= f.label "Auszubildende erstellen" %>
+  <%= f.check_box :modify %><br />
+  <%= f.label "Administrator" %>
+  <%= f.check_box :admin %><br />
+  <br/>
+  <%= @role.new_record? ? f.submit('Rechte-Profil anlegen') : f.submit('Änderungen speichern') %>
+  
+<% end %>
