@@ -43,7 +43,7 @@
         <li><%= link_to 'Mein Profil', user_path(current_user) %></li>
         <li><%= link_to "Ausloggen", signout_path %></li>
       <% else %>
-        <li><%= link_to "Einloggen", sessions_path, :method => :new %></li>
+        <li><%= link_to "Einloggen", welcome_path %></li>
       <% end %>
     </ul>
   </nav>

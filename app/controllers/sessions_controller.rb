@@ -20,6 +20,8 @@
 
 class SessionsController < ApplicationController
   
+  before_filter :authenticate, :only => [ :show, :destroy ]
+  
   def new
     if signed_in?
       redirect_to welcome_path
