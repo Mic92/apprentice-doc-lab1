@@ -12,6 +12,9 @@ module PrintReportsHelper
     @simpleFunctions['username'] = :username
     @simpleFunctions['userforename'] = :userforename
     @simpleFunctions['jobname'] = :jobname
+    @simpleFunctions['reportmonth'] = :reportmonth
+    @simpleFunctions['reportyear'] = :reportyear
+    @simpleFunctions['currentdate'] = :currentdate
     #...
 
     @entryFunctions = Hash.new
@@ -101,6 +104,18 @@ module PrintReportsHelper
 
   def jobname
     @user.template.job.name ||= ''
+  end
+  
+  def reportmonth
+    @report.period_start.strftime('%B')
+  end
+  
+  def reportyear
+    @report.period_start.year
+  end
+  
+  def currentdate
+    DateTime.now.strftime('%d.%m.%Y')
   end
 
   def entry(group, number, value)
