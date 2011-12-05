@@ -35,6 +35,19 @@ class Status < ActiveRecord::Base
     3
   end
 
+  def name
+    case stype
+      when Status.personal
+        'nicht vorgelegt'
+      when Status.commited
+        'vorgelegt'
+      when Status.accepted
+        'akzeptiert'
+      when Status.rejected
+        'abgelehnt'
+      end
+  end
+
   attr_accessible :comment, :stype
   belongs_to :report
 
