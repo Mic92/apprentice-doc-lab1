@@ -10,6 +10,13 @@ class UserMailer < ActionMailer::Base
   def password_recovery_mail(data)
     @user = data[:user]
     @password = data[:password]
-    mail(:to => @user.email, :subject => "Apprentice Doc Lab: Dein vergessenes Passwort")
+    mail(:to => @user.email, :subject => "Apprentice Doc Lab: Dein neues Passwort")
   end
+  
+  def password_verification_mail(data)
+    @user = data[:user]
+    @password = data[:password]
+    mail(:to => @user.email, :subject => "Apprentice Doc Lab: Du hast dein Passwort vergessen?")
+  end
+  
 end
