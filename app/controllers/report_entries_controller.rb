@@ -56,7 +56,7 @@ class ReportEntriesController < ApplicationController
     end
 
     if @entry.date != nil
-      if @entry.date >= @report.period_start && @entry.date <= @report.period_end
+      if @entry.date.to_date >= @report.period_start && @entry.date.to_date <= @report.period_end
         if @entry.save
           @report.status.update_attributes(:stype => Status.personal)
           redirect_to @report, :notice => 'Eintrag wurde erfolgreich erstellt.' and return
