@@ -72,7 +72,7 @@ module PrintReportsHelper
     self.init
     #replace simple values
     @simpleFunctions.each { |key, value|
-      @displayCode.gsub!("[v]#{key}[/v]",self.send(value))
+      @displayCode.gsub!("[v]#{key}[/v]",self.send(value).to_s)
     }
 
     #replace complex values
