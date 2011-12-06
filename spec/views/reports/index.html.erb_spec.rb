@@ -34,8 +34,8 @@ describe "reports/index.html.erb" do
     @exporter = mock_model(User, :name => 'Exporter',
                            :forename => 'One',
                            :role => @export_role)
-    @personal_status = mock_model(Status, :stype => Status.personal)
-    @rejected_status = mock_model(Status, :stype => Status.rejected)
+    @personal_status = mock_model(Status, :name => 'nicht vorgelegt')
+    @rejected_status = mock_model(Status, :name => 'abgelehnt')
     @report1 = mock_model(Report, :period_start => '2011-10-01'.to_date,
                           :period_end => '2011-10-31'.to_date,
                           :user => @apprentice,
