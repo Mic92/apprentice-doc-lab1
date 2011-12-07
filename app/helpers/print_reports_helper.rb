@@ -15,6 +15,8 @@ module PrintReportsHelper
     @simpleFunctions['reportmonth'] = :reportmonth
     @simpleFunctions['reportyear'] = :reportyear
     @simpleFunctions['currentdate'] = :currentdate
+    @simpleFunctions['trainingyear'] = :trainingyear
+    @simpleFunctions['reportnumber'] = :reportnumber
     #...
 
     @entryFunctions = Hash.new
@@ -100,6 +102,14 @@ module PrintReportsHelper
 
   def userforename
     @user.forename ||= ''
+  end
+  
+  def trainingyear
+    @user.trainingyear ||= ''
+  end
+  
+  def reportnumber
+    @report.reportnumber ||= ''
   end
 
   def jobname

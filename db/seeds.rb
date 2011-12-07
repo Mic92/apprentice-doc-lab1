@@ -58,25 +58,143 @@ job = Job.create(
 code = Code.create(
   :name => 'Code 1',
   :codegroup => 3,
-  :code => 'Hallo [v]userforename[/v] [v]username[/v]<br /> 
-  Woche 1:<br />
-  [e]entry[0][0].text[e]<br />
-  [e]entry[0][1].text[e]<br />
-  [e]entry[0][2].text[e]<br />
-  [e]entry[0][3].text[e]<br />
+  :code => 'Vor- und Zuname <u>[v]userforename[/v] [v]username[/v]</u> Ausbildungsabteilung:<u>[v]jobname[/v]</u><br />
+  <b>Ausbildungsnachweis Nr. </b><u>[v]reportnumber[/v]</u> Monat <u>[v]reportmonth[/v] [v]reportyear[/v]</u> <u>[v]trainingyear[/v].</u> Ausbildungsjahr<br />
 
-  Woche 2:<br />
-  [e]entry[1][0].text[e]<br />
-  [e]entry[1][1].text[e]<br />
-  [e]entry[1][2].text[e]<br />
-  [e]entry[1][3].text[e]<br />
+  <table width=100% border="1" style="border-collapse:collapse">
+  <colgroup>
+    <col width=10%>
+      <col width=90%>
+      </colgroup>
+      <tr>
+      <th>Wochen</th>
+      <th>Ausgef&uuml;hrte Arbeiten, Unterricht</th>
+      </tr>
 
-  Woche 3:<br />
+      <tr>
+      <td rowspan="7">1. Woche</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[0][0].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[0][1].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[0][2].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[0][3].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[0][4].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[0][5].text[e]</td>
+      </tr>
 
-  [e]entry[2][0].text[e]<br />
-  [e]entry[2][1].text[e]<br />
-  [e]entry[2][2].text[e]<br />
-  [e]entry[2][3].text[e]<br />'
+      <tr>
+      <td rowspan="7">2. Woche</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[1][0].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[1][1].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[1][2].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[1][3].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[1][4].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[1][5].text[e]</td>
+      </tr>
+
+      <tr>
+      <td rowspan="7">3. Woche</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[2][0].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[2][1].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[2][2].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[2][3].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[2][4].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[2][5].text[e]</td>
+      </tr>
+
+      <tr>
+      <td rowspan="7">4. Woche</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[3][0].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[3][1].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[3][2].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[3][3].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[3][4].text[e]</td>
+      </tr>
+      <tr>
+      <td>&nbsp;[e]entry[3][5].text[e]</td>
+      </tr>
+      </table>
+
+      <br /><br /><br />
+      <b>Besondere Bemerkungen</b><br />
+      <table width=100% border=\'1\' style="border-collapse:collapse">
+      <colgroup>
+        <col width=50%>
+          <col width=50%>
+          </colgroup>
+          <tr>
+          <td>Auszubildender</td>
+          <td>Ausbildender bzw. Ausbilder</td>
+          </tr>
+          <tr>
+          <td><br /><br /><br /></td>
+          <td><br /><br /><br /></td>
+          </tr>
+          </table>
+          <br />
+
+          <b>F&uuml;r die Richtigkeit</b><br />
+          <table width=100% border=\'1\' style="border-collapse:collapse">
+          <colgroup>
+            <col width=50%>
+              <col width=50%>
+              </colgroup>
+              <tr>
+              <td><br /><br />
+              <u>[v]currentdate[/v]</u><br />
+              Datum, Unterschrift des Auszubildenden
+              </td>
+              <td><br /><br />
+              <u>[v]currentdate[/v]</u><br />
+              Datum, Unterschrift des Ausbildenden bzw. Ausbilders
+              </td>
+              </tr>
+              </table>'
 )
 
 template = Template.create(
