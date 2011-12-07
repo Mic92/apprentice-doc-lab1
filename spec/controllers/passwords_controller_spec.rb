@@ -25,6 +25,8 @@ describe PasswordsController do
     @user = User.create valid_attributes_user.merge(:email => 'azubi@business.de')
     @role = Role.create valid_attributes_role
     @role.users << @user
+    @user.pw_expired_at = Time.now + 600
+    @user.save
   end
 
   describe "GET 'new'" do
@@ -41,24 +43,24 @@ describe PasswordsController do
     end
 
     it "should generate a password with lenght 8" do
-      post 'create', :email => @user.email
+      post 'show', :email => @user.email, :id => @user.pw_recovery_hash
       assigns(:password).class.should eq(String)
       assigns(:password).length.should eq(8)
     end
 
     it "should change the user's password" do
       expect {
-        post 'create', :email => @user.email
+        post 'show', :email => @user.email, :id => @user.pw_recovery_hash
       }.to change { User.find(@user).hashed_password }
     end
 
     it "should redirect to the users index page" do
-      post 'create', :email => @user.email
+      post 'show', :email => @user.email, :id => @user.pw_recovery_hash
       response.should redirect_to(root_path)
     end
 
     it "should have a flash message" do
-      post 'create', :email => @user.email
+      post 'show', :email => @user.email, :id => @user.pw_recovery_hash
       flash[:notice] =~ /zufällig/i
     end
   end
