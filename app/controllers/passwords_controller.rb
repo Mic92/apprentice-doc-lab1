@@ -26,23 +26,48 @@ class PasswordsController < ApplicationController
   def new
   end
 
-  # Setzt das Passwort des übergebenen Benutzers auf ein zufälliges Neues und
-  # sendet es per Mail.
   def create
     @user = User.find_by_email(params[:email])
     if @user
-      @password = PasswordsController.random_password
-
-      @user.password = @password
-      @user.password_confirmation = @password
+      
+      @user.pw_recovery_hash = Digest::SHA2.hexdigest("#{@user.email}--#{Time.now.utc}")
+      @user.pw_expired_at = (Time.now) + 600
       @user.save
-
-      @data = { :user => @user, :password => @password }
-
-      UserMailer.password_recovery_mail(@data).deliver
+      
+      @data = { :user => @user, :domain => request.host_with_port }
+      UserMailer.password_verification_mail(@data).deliver
+      
     end
 
-    redirect_to root_path, :notice => 'Ein zufälliges Passwort wurde erstellt.'
+    redirect_to root_path, :notice => 'Eine Benachrichtigung wurde verschickt.'
+  end
+  
+  
+  # Setzt das Passwort des übergebenen Benutzers auf ein zufälliges Neues und
+  # sendet es per Mail.
+  def show
+    @user = User.find_by_pw_recovery_hash(params[:id])
+    @notice = 'Ein zufälliges Passwort wurde erstellt.'
+    if !@user.nil?
+      if Time.now - @user.pw_expired_at < 0
+        @password = PasswordsController.random_password
+
+        @user.password = @password
+        @user.password_confirmation = @password
+        @user.save
+
+        @data = { :user => @user, :password => @password }
+
+        UserMailer.password_recovery_mail(@data).deliver
+        
+        @user.pw_expired_at = Time.now
+        @user.save
+      else
+        @notice = 'Der Link zum Passwortzuruecksetzen ist abgelaufen'
+      end
+    end
+    redirect_to root_path, :notice => @notice
+    
   end
 
   private

@@ -22,7 +22,7 @@
 
 class User < ActiveRecord::Base
   attr_accessor :password
-  attr_accessible :name, :forename, :zipcode, :street, :city, :email, :password, :password_confirmation, :role_id, :business_id, :template_id, :deleted, :trainingyear
+  attr_accessible :name, :forename, :zipcode, :street, :city, :email, :password, :password_confirmation, :role_id, :business_id, :template_id, :deleted, :trainingyear, :pw_expired_at, :pw_recovery_hash
   belongs_to :role
   belongs_to :business
   belongs_to :instructor, :class_name => "User", :foreign_key => "instructor_id"

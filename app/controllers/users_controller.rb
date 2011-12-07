@@ -83,6 +83,8 @@ class UsersController < ApplicationController
       @password = PasswordsController.random_password
       params[:user][:password] = @password
       params[:user][:password_confirmation] = @password
+      params[:user][:pw_expired_at] = Time.now.utc
+      params[:user][:pw_recovery_hash] = '/welcome'
     end
 
     @user = User.new(params[:user])

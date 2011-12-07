@@ -212,7 +212,9 @@ admin = User.create(
   :password_confirmation => '12345678',
   :role_id  => adminRole.id,
   :business_id => business.id,
-  :template_id => template.id
+  :template_id => template.id,
+  :pw_expired_at => Time.now.utc,
+  :pw_recovery_hash => 'fail'
 )
 
 ausbilder = User.create(
@@ -223,7 +225,9 @@ ausbilder = User.create(
   :password_confirmation => '12345678',
   :role_id  => ausbilderRole.id,
   :business_id => business.id,
-  :template_id => template.id
+  :template_id => template.id,
+  :pw_expired_at => Time.now.utc,
+  :pw_recovery_hash => 'fail'
 )
 
 azubi = User.create(
@@ -234,7 +238,9 @@ azubi = User.create(
   :password_confirmation => '12345678',
   :role_id  => azubiRole.id,
   :business_id => business.id,
-  :template_id => template.id
+  :template_id => template.id,
+  :pw_expired_at => Time.now.utc,
+  :pw_recovery_hash => 'fail'
 )
 
 ausbilder.apprentices << azubi

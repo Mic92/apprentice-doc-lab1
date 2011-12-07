@@ -17,7 +17,7 @@ ApprenticeDocLab1::Application.routes.draw do
     resources :report_entries, :only => [ :new, :edit, :create, :update, :destroy ]
   end
 
-  resources :passwords, :only => [ :new, :create ]
+  resources :passwords, :only => [ :new, :create, :show ]
 
   resources :jobs
 
@@ -31,7 +31,9 @@ ApprenticeDocLab1::Application.routes.draw do
 
   match '/welcome', :to => 'sessions#show'
   match '/signout', :to => 'sessions#destroy'
-
+  
+  #match ':users(/:pw_recovery_hash)' => '/welcome'
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

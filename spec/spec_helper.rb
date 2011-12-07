@@ -127,7 +127,9 @@ RSpec.configure do |config|
       :password => 'unknackbarespasswort',
       :password_confirmation => 'unknackbarespasswort',
       :role_id => 1,
-      :template_id => 1
+      :template_id => 1,
+      :pw_expired_at => Time.now.utc,
+      :pw_recovery_hash => 'fail'
     }
   end
 
