@@ -1,4 +1,8 @@
 ApprenticeDocLab1::Application.routes.draw do
+  get "report_bot/unwritten"
+
+  get "report_bot/unchecked"
+
   resources :users
 
   resources :print_reports, :only => [ :show ]
