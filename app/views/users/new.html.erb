@@ -45,6 +45,10 @@
   <td>  <%= f.label "Ort:" %> </td>
   <td>  <%= f.text_field :city %> </td>
   </tr>  
+  <tr>  
+  <td>  <%= f.label "Ausbildungsjahr:" %> </td>
+  <td>  <%= f.text_field :trainingyear %> </td>
+  </tr>  
   <tr>
   <td>  <%= f.label "Rechte-Profil" %> </td>
   <td>  <%= f.collection_select(:role_id, @roles, :id, :name, :prompt => true) %> </td>

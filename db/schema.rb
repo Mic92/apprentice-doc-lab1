@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111129195737) do
+ActiveRecord::Schema.define(:version => 20111207090523) do
 
   create_table "apprenticeships", :force => true do |t|
     t.integer  "instructor_id"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20111129195737) do
     t.integer  "role_id"
     t.integer  "business_id"
     t.integer  "template_id"
+    t.integer  "trainingyear"
   end
 
   add_index "users", ["business_id"], :name => "index_users_on_business_id"
