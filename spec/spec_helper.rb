@@ -55,6 +55,7 @@ RSpec.configure do |config|
 
   def valid_attributes_report
     {
+      :reportnumber => 1,
       :period_start => '2011-10-01',
       :period_end => '2011-10-31'
     }
@@ -108,7 +109,8 @@ RSpec.configure do |config|
       :export => true,
       :check => false,
       :modify => false,
-      :admin => false
+      :admin => false,
+      :trainingyear => 1
     }
   end
       

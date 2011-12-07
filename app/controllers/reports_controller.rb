@@ -70,6 +70,7 @@ class ReportsController < ApplicationController
   def create
     @report = current_user.reports.build(params[:report])
     @report.build_status(:stype => Status.personal)
+    @report.reportnumber = current_user.reports.count + 1
 
     if @report.save
       redirect_to reports_path, :notice => 'Bericht wurde erfolgreich erstellt.'

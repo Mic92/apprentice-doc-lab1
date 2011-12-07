@@ -36,7 +36,8 @@ azubiRole = Role.create(
   :export => true,
   :check  => false,
   :modify => false,
-  :admin  => false
+  :admin  => false,
+  :trainingyear => 1
 )
 
 business = Business.create(

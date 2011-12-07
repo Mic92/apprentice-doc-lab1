@@ -32,7 +32,7 @@
 # <b>Assoziation (gehört zu):</b>
 # * einem User : user
 class Report < ActiveRecord::Base
-  attr_accessible :period_start, :period_end
+  attr_accessible :period_start, :period_end, :reportnumber
 
   belongs_to :user
   has_many :report_entries, :dependent => :destroy
