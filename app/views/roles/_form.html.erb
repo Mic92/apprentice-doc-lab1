@@ -10,26 +10,39 @@
     </div>
   <% end %>
   
-  <%= f.label "Name:" %><br />
+  <b><%= f.label "Name:" %><br /></b>
   <%= f.text_field :name %><br />
   <br />
-  <br />
   <b> <%= f.label "Rechte:" %> </b>
-  <br/>
-  <br/>
-  <%= f.label "Berichte lesen" %>
-  <%= f.check_box :read %><br />
-  <%= f.label "Berichte erstellen" %>
-  <%= f.check_box :commit %><br />
-  <%= f.label "Berichte exportieren" %>
-  <%= f.check_box :export %><br />
-  <%= f.label "Berichte bewerten" %>
-  <%= f.check_box :check %><br />
-  <%= f.label "Auszubildende erstellen" %>
-  <%= f.check_box :modify %><br />
-  <%= f.label "Administrator" %>
-  <%= f.check_box :admin %><br />
-  <br/>
+
+  <table>
+  <th></th>
+  <th></th>
+  <tr>
+  <td><%= f.label "Berichte lesen" %></td>
+  <td><%= f.check_box :read %></td>
+  </tr>
+  <tr>
+  <td><%= f.label "Berichte erstellen" %></td>
+  <td><%= f.check_box :commit %></td>
+  </tr>
+  <tr>
+  <td><%= f.label "Berichte exportieren" %></td>
+  <td><%= f.check_box :export %></td>
+  </tr>
+  <tr>
+  <td><%= f.label "Berichte bewerten" %></td>
+  <td><%= f.check_box :check %></td>
+  </tr>
+  <tr>
+  <td><%= f.label "Auszubildende erstellen" %></td>
+  <td><%= f.check_box :modify %></td>
+  </tr>
+  <tr>
+  <td><%= f.label "Administrator" %></td>
+  <td><%= f.check_box :admin %></td>
+  </tr><br/>
+  </table>
   <%= @role.new_record? ? f.submit('Rechte-Profil anlegen') : f.submit('Änderungen speichern') %>
   
 <% end %>
