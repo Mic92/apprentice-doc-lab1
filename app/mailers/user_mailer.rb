@@ -19,4 +19,8 @@ class UserMailer < ActionMailer::Base
     mail(:to => @user.email, :subject => "Apprentice Doc Lab: Du hast dein Passwort vergessen?")
   end
  
+  def unchecked_reports_mail(instructor)
+    @user = instructor
+    mail(:to => @user.email, :subject => "Apprentice Doc Lab: Sie haben noch vorgelegte Berichte, die nicht ueberprueft wurden")
+  end 
 end
