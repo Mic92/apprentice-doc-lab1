@@ -182,6 +182,7 @@ describe ReportsController do
     before(:each) do
       @report = @user.reports.create valid_attributes_report
       @report.create_status valid_attributes_status.merge(:stype => Status.personal)
+      @entry = @report.report_entries.create valid_attributes_entry
       test_sign_in(@user)
     end
 
@@ -206,6 +207,11 @@ describe ReportsController do
         put 'update', :id => @report, :report => nil
         response.should render_template('reports/edit')
       end
+
+      it "should have a flash message if the change conflicts with entries" do
+        put 'update', :id => @report, :report => { :period_start => '2011-10-04', :period_end => '2011-10-20' }
+        flash[:alert].should =~ /Konflikt/i
+      end
     end
 
     describe "success" do
@@ -218,6 +224,13 @@ describe ReportsController do
           put 'update', :id => @report, :report => @attr
         }.to change { Report.find(@report).updated_at }
         Report.find(@report).period_start.should eq(@attr.fetch(:period_start).to_date)
+      end
+
+      it "should shift the entries dates if the period is shifted" do
+        expect {
+          put 'update', :id => @report, :report => @attr.merge(:period_start => '2011-11-01',
+                                                               :period_end => '2011-12-01')
+        }.to change { ReportEntry.find(@entry).date }.by(1.month)
       end
 
       it "should redirect to the reports index page" do

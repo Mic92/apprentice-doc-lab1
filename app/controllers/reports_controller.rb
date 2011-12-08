@@ -84,9 +84,28 @@ class ReportsController < ApplicationController
   def update
     @report = Report.find(params[:id])
 
-    if params[:report] != nil && @report.update_attributes(params[:report])
-      @report.status.update_attributes(:stype => Status.personal)
-      redirect_to reports_path, :notice => 'Bericht wurde erfolgreich bearbeitet.'
+    @new = Report.new(params[:report])
+
+    if @new.period_start != nil && @new.period_end != nil
+      if @new.period_start >= @report.period_start && @new.period_end <= @report.period_end
+        @entries = @report.report_entries.order('date asc')
+
+        if @entries.first.date.to_date < @new.period_start || @entries.last.date.to_date > @new.period_start
+          flash.now[:alert] = 'Diese Änderung führt zu einem Konflikt mit den Einträgen dieses Berichts.'
+          render 'edit' and return
+        end
+      elsif (@new.period_start - @report.period_start) == (@new.period_end - @report.period_end)
+        # beide Daten um den gleichen Wert verschoben -> Einträge um diesen Wert verschieben
+        @shift = (@new.period_start - @report.period_start)
+        @report.report_entries.each { |e| e.update_attributes(:date => (e.date + @shift.days)) }
+      end
+
+      if params[:report] != nil && @report.update_attributes(params[:report])
+        @report.status.update_attributes(:stype => Status.personal)
+        redirect_to reports_path, :notice => 'Bericht wurde erfolgreich bearbeitet.'
+      else
+        render 'edit'
+      end
     else
       render 'edit'
     end
