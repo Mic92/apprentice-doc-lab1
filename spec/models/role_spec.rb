@@ -67,11 +67,6 @@ describe Role do
     before(:each) do
         @attributes = valid_attributes_role
     end
-
-    it "should require attribute level" do
-      @attributes.delete(:level)
-      Role.new(@attributes).should_not be_valid
-    end
     
     it "should require attribute name" do
       @attributes.delete(:name)

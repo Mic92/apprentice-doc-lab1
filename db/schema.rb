@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111207120215) do
+ActiveRecord::Schema.define(:version => 20111208112642) do
 
   create_table "apprenticeships", :force => true do |t|
     t.integer  "instructor_id"
@@ -73,7 +73,6 @@ ActiveRecord::Schema.define(:version => 20111207120215) do
 
   create_table "roles", :force => true do |t|
     t.string   "name"
-    t.integer  "level"
     t.boolean  "read",       :default => false
     t.boolean  "commit",     :default => false
     t.boolean  "export",     :default => false

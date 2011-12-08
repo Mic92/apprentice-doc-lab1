@@ -55,7 +55,7 @@
   <td> <%= f.password_field :password_confirmation %></td>
   </tr>
   <tr>
-  <td>  <%= f.label "Druckansicht" %> </td>
+  <td><b>  <%= f.label "Druckansicht" %> </b></td>
   <td>  <%= f.collection_select(:template_id, @templates, :id, :name, :prompt => true) %> </td>
   </tr>
   </table>

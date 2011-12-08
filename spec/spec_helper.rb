@@ -64,7 +64,6 @@ RSpec.configure do |config|
   def valid_attributes_role
     {
       :name => 'Tester',
-      :level => 11,
       :read => true,
       :commit => false,
       :export => true,
@@ -77,7 +76,6 @@ RSpec.configure do |config|
   def valid_attributes_role_admin
     {
       :name => 'Administrator',
-      :level => 1,
       :read => false,
       :commit => false,
       :export => false,
@@ -90,7 +88,6 @@ RSpec.configure do |config|
   def valid_attributes_role_ausbilder
     {
       :name => 'Ausbilder',
-      :level => 2,
       :read => true,
       :commit => false,
       :export => true,
@@ -103,7 +100,6 @@ RSpec.configure do |config|
   def valid_attributes_role_azubi
     {
       :name => 'Auszubildender',
-      :level => 3,
       :read => true,
       :commit => true,
       :export => true,
