@@ -2,6 +2,17 @@
 
 <%= form_for @user do |f| %>
   <%= f.label "Sie sind angemeldet als #{@user.role.name}"%>
+  
+  <% if @user.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= @user.errors.count %> Fehler verhinderten die Änderungen der Einstellungen:</h2>
+    <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
   <br />
   <table>
   <tr>
@@ -28,12 +39,20 @@
   <td>  <%= f.text_field :zipcode %> </td>
   </tr>  
   <tr>  
-  <td>  <%= f.label "Ausbildungsjahr:" %> </td>
+  <td><b>  <%= f.label "Ausbildungsjahr:" %> </b></td>
   <td>  <%= f.text_field :trainingyear %> </td>
   </tr>  
   <tr>  
   <td><b>  <%= f.label "Ort:" %></b>  </td>
   <td>  <%= f.text_field :city %> </td>
+  </tr>
+  <tr>
+  <td><b><%= f.label "Passwort:" %></b></td>
+  <td> <%= f.password_field :password %></td>
+  </tr>
+  <tr>
+  <td><b><%= f.label "Passwort bestätigen:" %></b></td>
+  <td> <%= f.password_field :password_confirmation %></td>
   </tr>
   <tr>
   <td>  <%= f.label "Druckansicht" %> </td>

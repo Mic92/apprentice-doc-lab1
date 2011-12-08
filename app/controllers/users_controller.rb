@@ -123,7 +123,7 @@ class UsersController < ApplicationController
     @templates = Template.all
     @user = current_user
     @attr = params[:user]
-    if @attr == nil
+    if @attr == nil || (params[:user][:password] != params[:user][:password_confirmation] && params[:user][:password].length < 8)
       render 'edit'
     else
       if params[:user][:role_id] == nil
@@ -131,16 +131,15 @@ class UsersController < ApplicationController
       else
         @role = Role.find(params[:user][:role_id])
       end
-      
       @attr = params[:user].merge(:role_id => @role)
       if current_user.role.admin?
         @user.update_attributes(@user.attributes.merge(@attr))
-        redirect_to welcome_path, :notice => 'Das Profil wurde erfolgreich bearbeitet.'
+        redirect_to user_path(@user), :notice => 'Das Profil wurde erfolgreich bearbeitet.'
       elsif @role.modify? || @role.admin?
-         render 'edit'
-         else 
-         @user.update_attributes(@user.attributes.merge(@attr))
-         redirect_to welcome_path, :notice => 'Das Profil wurde erfolgreich bearbeitet.'
+       render 'edit'
+       else 
+       @user.update_attributes(@user.attributes.merge(@attr))
+       redirect_to user_path(@user), :notice => 'Das Profil wurde erfolgreich bearbeitet.'
       end     
     end
   end

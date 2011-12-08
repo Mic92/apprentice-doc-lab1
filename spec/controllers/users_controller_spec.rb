@@ -175,9 +175,9 @@ describe UsersController do
                  }.to change {User.find(@admin).updated_at}
         end
         
-        it "should redirect to the welcome page" do
+        it "should redirect to the user page" do
           put 'update', :id => @admin, :user => valid_attributes_user.merge(:email => 'new@email.de')
-          response.should redirect_to(welcome_path)
+          response.should redirect_to(user_path(@admin))
         end
         
         it "should have a flash message" do
@@ -334,9 +334,9 @@ describe UsersController do
                  }.to change {User.find(@ausbilder).updated_at}
         end
         
-        it "should redirect to the welcome page" do
+        it "should redirect to the user page" do
           put 'update', :id => @ausbilder, :user => valid_attributes_user.merge(:email => 'new@email.de', :role_id => 3)
-          response.should redirect_to(welcome_path)
+          response.should redirect_to(user_path(@ausbilder))
         end
         
         it "should have a flash message" do
