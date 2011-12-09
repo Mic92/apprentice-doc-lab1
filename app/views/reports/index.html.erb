@@ -31,3 +31,6 @@
 <% if current_user.role.commit? %>
   <%= link_to 'Bericht anlegen', new_report_path %>
 <% end %>
+<% if current_user.role.check? %>
+  <%= link_to 'Alle freigegebenen Berichte', reports_path(:all => true) %>
+<% end %>

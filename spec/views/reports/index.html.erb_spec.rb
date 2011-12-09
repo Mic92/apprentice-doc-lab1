@@ -84,6 +84,11 @@ describe "reports/index.html.erb" do
       render
       rendered.should include(@apprentice.forename, @apprentice.name)
     end
+
+    it "should have a link to show all commited reports" do
+      render
+      rendered.should include('href="/reports?all=true"')
+    end
   end
 
   describe "for users with export right" do
