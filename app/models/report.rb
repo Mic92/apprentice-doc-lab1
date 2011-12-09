@@ -47,7 +47,7 @@ class Report < ActiveRecord::Base
   private
     def period_end_after_period_start
       if period_start and period_end
-        errors.add(:period_end, 'Bis: muss nach Von: liegen.') if period_end < period_start
+        errors[:base] << 'Bis: muss nach Von: liegen.' if period_end < period_start
       end
     end
 end

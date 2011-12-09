@@ -34,6 +34,8 @@ class ReportEntriesController < ApplicationController
   def new
     @report = Report.find(params[:report_id])
     @entry = ReportEntry.new
+    @hours = 1
+    @minutes = 30
   end
 
   # Zeigt das Formular zum Bearbeiten eines vorhandenen Eintrags. Wandelt die Dauer von Stunden in

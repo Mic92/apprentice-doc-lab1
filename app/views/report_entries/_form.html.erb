@@ -1,7 +1,8 @@
 <%= form_for [ @report, @entry ] do |f| %>
   <% if @entry.errors.any? %>
     <div id="error_explanation">
-      <h2><%= @entry.errors.count %> Fehler verhinderten die Erstellung dieses Eintrags:</h2>
+      <h2><%= t('errors.template.header', :model=> 'Eintrag', :count=> @entry.errors.count) %></h2>
+      <h2><%= t('errors.template.body') %></h2>
       <ul>
         <% @entry.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
@@ -13,11 +14,11 @@
   <%= f.label 'Anfangszeit:' %><br />
   <%= f.datetime_select :date %><br />
   <%= f.label 'Dauer:' %><br />
-  <%= number_field_tag(:hours, @hours, :min => 0, :max => 24, :size => 2) %>
+  <%= select_tag :hours, options_for_select(0..24, @hours) %>
   <%= f.label 'Stunden, ' %>
-  <%= number_field_tag(:minutes, @minutes, :min => 0, :max => 59, :size => 2) %>
+  <%= select_tag :minutes, options_for_select(0..59, @minutes) %>
   <%= f.label 'Minuten' %><br />
   <%= f.label 'Text:' %><br />
-  <%= f.text_area :text, :rows => 5 %><br />
+  <%= f.text_area :text, :rows => 5, :placeholder => 'Was haben Sie gemacht?' %><br />
   <%= @entry.new_record? ? f.submit('Eintrag anlegen') : f.submit('Änderungen speichern') %>
 <% end %>

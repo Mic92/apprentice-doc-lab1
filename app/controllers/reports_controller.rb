@@ -60,6 +60,8 @@ class ReportsController < ApplicationController
   # Zeigt das Formular zum Erstellen eines neuen Berichts.
   def new
     @report = Report.new
+    @report.period_start = Date.today.beginning_of_month
+    @report.period_end = Date.today.end_of_month
   end
 
   # Zeigt das Formular zum Bearbeiten eines vorhandenen Berichts.

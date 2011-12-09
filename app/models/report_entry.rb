@@ -35,6 +35,15 @@ class ReportEntry < ActiveRecord::Base
 
   validates :report_id, :presence => true
   validates :date, :presence => true
-  validates :duration_in_hours, :presence => true, :numericality => { :greater_than => 0 }
+  validates :duration_in_hours, :presence => true
   validates :text, :presence => true
+
+  validate :duration_in_hours_greater_than_zero
+
+  private
+    def duration_in_hours_greater_than_zero
+      if duration_in_hours
+        errors[:base] << 'Dauer muss größer als 0 sein' if duration_in_hours <= 0
+      end
+    end
 end
