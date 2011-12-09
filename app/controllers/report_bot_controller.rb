@@ -19,7 +19,19 @@
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
 
 class ReportBotController < ApplicationController
+  def instructor_period
+    2.weeks
+  end
+
+  def apprentice_period
+    1.months
+  end
+
   def unwritten
+    @apprentices = User.joins(:role).where( :roles => {:commit => true} )
+    @apprentices.each do |apprentice|
+      #TODO überprüfen, ob an jedem wochentag etwas eingereicht wurde
+    end
   end
 
   def unchecked
@@ -33,17 +45,19 @@ class ReportBotController < ApplicationController
           if apprentice.deleted != true
             #für all ihre Berichte
             apprentice.reports.each do |report|
-              if report.status.stype == Status.commited #TODO datum testen
+              #if report was commited before period
+              if report.status.stype == Status.commited && report.status.updated_at < Time.now - instructor_period
                 @unchecked_reports_num += 1
               end
             end
           end
         end
+        #if instructor has unchecked reports, which are older than the period, send email
         if @unchecked_reports_num > 0
-          UserMailer.unchecked_reports_mail(instructor).deliver #TODO anz übergeben
+          @data = { :instructor => instructor, :unchecked_reports_num => @unchecked_reports_num }
+          UserMailer.unchecked_reports_mail(@data).deliver
         end
       end
     end
   end
-
 end
