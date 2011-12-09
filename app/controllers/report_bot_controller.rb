@@ -19,11 +19,11 @@
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
 
 class ReportBotController < ApplicationController
-  def instructor_period
+  def self.instructor_period
     2.weeks
   end
 
-  def apprentice_period
+  def self.apprentice_period
     1.months
   end
 
@@ -46,7 +46,7 @@ class ReportBotController < ApplicationController
             #für all ihre Berichte
             apprentice.reports.each do |report|
               #if report was commited before period
-              if report.status.stype == Status.commited && report.status.updated_at < Time.now - instructor_period
+              if report.status.stype == Status.commited && report.status.updated_at < Time.now - ReportBotController.instructor_period
                 @unchecked_reports_num += 1
               end
             end
