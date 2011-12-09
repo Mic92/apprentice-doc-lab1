@@ -23,10 +23,12 @@
 #
 # Nur eingeloggte Benutzer können seine Funktionalität nutzen,
 # des weiteren benötigen sie das Freigeben-Recht (commit) für alle Aktionen.
+# Wurde der Bericht schon akzeptiert, kann keine Aktion ausgeführt werden.
 class ReportEntriesController < ApplicationController
   before_filter :authenticate
   before_filter :correct_user
   before_filter :commit
+  before_filter :not_accepted
 
   # Zeigt das Formular zum Erstellen eines neuen Eintrags.
   def new
@@ -114,5 +116,11 @@ class ReportEntriesController < ApplicationController
     def correct_user
       @user = Report.find(params[:report_id]).user
       redirect_to welcome_path unless current_user?(@user)
+    end
+
+    # Leitet den Benutzer auf die Berichtsübersicht-Seite, wenn der Bericht akzeptiert ist.
+    def not_accepted
+      @report = Report.find(params[:report_id])
+      redirect_to @report, :alert => 'Da der Bericht schon akzeptiert wurde sind Änderungen nicht mehr möglich' if @report.status.stype == Status.accepted
     end
 end

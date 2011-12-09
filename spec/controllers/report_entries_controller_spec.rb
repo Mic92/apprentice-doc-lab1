@@ -236,7 +236,7 @@ describe ReportEntriesController do
       end
 
       it "should deny access to 'update'" do
-        put 'update', :report_id => @report, :id => @entry, :report_entry => valid_attributes_entry
+        put 'update', :report_id => @report, :id => @entry, :report_entry => valid_attributes_entry.merge(:text => 'Entry edited.')
         response.should redirect_to(root_path)
       end
 
@@ -263,18 +263,50 @@ describe ReportEntriesController do
       end
 
       it "should require matching users for 'create'" do
-        post 'create', :report_id => @report
+        post 'create', :report_id => @report, :report_entry => valid_attributes_entry
         response.should redirect_to(welcome_path)
       end
 
       it "should require matching users for 'update'" do
-        put 'update', :report_id => @report, :id => @entry
+        put 'update', :report_id => @report, :id => @entry, :report_entry => valid_attributes_entry.merge(:text => 'Entry edited.')
         response.should redirect_to(welcome_path)
       end
 
       it "should require matching users for 'destroy'" do
         delete 'destroy', :report_id => @report, :id => @entry
         response.should redirect_to(welcome_path)
+      end
+
+      describe "and accepted reports" do
+        before(:each) do
+          test_sign_in(@user)
+          @report.status.update_attribute(:stype, Status.accepted)
+        end
+
+        it "should deny access to 'new'" do
+          get 'new', :report_id => @report
+          response.should redirect_to(report_path(@report))
+        end
+
+        it "should deny access to 'edit'" do
+          get 'edit', :report_id => @report, :id => @entry
+          response.should redirect_to(report_path(@report))
+        end
+
+        it "should deny access to 'create'" do
+          post 'create', :report_id => @report, :report_entry => valid_attributes_entry
+          response.should redirect_to(report_path(@report))
+        end
+
+        it "should deny access to 'update'" do
+          put 'update', :report_id => @report, :id => @entry, :report_entry => valid_attributes_entry.merge(:text => 'Entry edited.')
+          response.should redirect_to(report_path(@report))
+        end
+
+        it "should deny access to 'destroy'" do
+          delete 'destroy', :report_id => @report, :id => @entry
+          response.should redirect_to(report_path(@report))
+        end
       end
 
       describe "without the commit right" do

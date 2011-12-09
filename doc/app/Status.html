@@ -78,6 +78,8 @@
     
     <li><a href="#method-c-rejected">::rejected</a>
     
+    <li><a href="#method-i-name">#name</a>
+    
   </ul>
 </nav>
 
@@ -132,6 +134,8 @@
     <li><a href="./PrintReportsHelper.html">PrintReportsHelper</a>
   
     <li><a href="./Report.html">Report</a>
+  
+    <li><a href="./ReportBotHelper.html">ReportBotHelper</a>
   
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
   
@@ -341,6 +345,51 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
 
     
     </section><!-- public-class-method-details -->
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section section">
+      <h3 class="section-header">Public Instance Methods</h3>
+
+    
+      <div id="method-i-name" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">name</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="name-source">
+            <pre><span class="ruby-comment"># File app/models/status.rb, line 37</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">name</span>
+  <span class="ruby-keyword">case</span> <span class="ruby-identifier">stype</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">personal</span>
+      <span class="ruby-string">'nicht vorgelegt'</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">commited</span>
+      <span class="ruby-string">'vorgelegt'</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">accepted</span>
+      <span class="ruby-string">'akzeptiert'</span>
+    <span class="ruby-keyword">when</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">rejected</span>
+      <span class="ruby-string">'abgelehnt'</span>
+    <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- name-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- name-method -->
+
+    
+    </section><!-- public-instance-method-details -->
   
   </section><!-- 5Buntitled-5D -->
 

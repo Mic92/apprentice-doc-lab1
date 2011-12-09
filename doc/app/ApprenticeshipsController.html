@@ -131,6 +131,8 @@
   
     <li><a href="./Report.html">Report</a>
   
+    <li><a href="./ReportBotHelper.html">ReportBotHelper</a>
+  
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
   
     <li><a href="./ReportEntry.html">ReportEntry</a>
@@ -304,7 +306,7 @@ alle Benutzer, die niemandem zugewiesen sind.</p>
             <pre><span class="ruby-comment"># File app/controllers/apprenticeships_controller.rb, line 31</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
   <span class="ruby-ivar">@own_apprentices</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>
-  <span class="ruby-ivar">@free_apprentices</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">where</span>(<span class="ruby-value">:instructor_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>)
+  <span class="ruby-ivar">@free_apprentices</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:role</span>).<span class="ruby-identifier">where</span>(<span class="ruby-value">:instructor_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">:roles</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-value">:admin</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">:check</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">false</span>})
 <span class="ruby-keyword">end</span></pre>
           </div><!-- index-source -->
           

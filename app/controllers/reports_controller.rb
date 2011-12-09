@@ -26,11 +26,13 @@
 # und das Freigeben-Recht (commit) für #new, #create, #update, #destroy.
 # #edit, #update und #destroy darf nur vom Autor ausgeführt werden.
 # #show erfordert entweder den Autor, oder einen freigegebenen Bericht und einen Ausbilder.
+# Berichte die bereits akzeptiert wurden, können nicht mehr bearbeitet werden.
 class ReportsController < ApplicationController
   before_filter :authenticate
   before_filter :read, :only => [ :index, :show ]
   before_filter :correct_user_or_instructor, :only => :show
   before_filter :commit, :only => [ :new, :create, :update, :destroy ]
+  before_filter :not_accepted, :only => [ :edit, :update ]
   before_filter :correct_user, :only => [ :edit, :update, :destroy ]
 
   # Listet Berichte auf. Welche Bericht angezeigt werden hängt von den Rechten des
@@ -131,5 +133,11 @@ class ReportsController < ApplicationController
     def correct_user_or_instructor
       @report = Report.find(params[:id])
       redirect_to welcome_path unless current_user?(@report.user) || (@report.status.stype == Status.commited && current_user.role.check?)
+    end
+
+    # Leitet den Benutzer auf die Berichtsübersicht-Seite, wenn der Bericht akzeptiert ist.
+    def not_accepted
+      @report = Report.find(params[:id])
+      redirect_to reports_path, :alert => 'Da der Bericht schon akzeptiert wurde sind Änderungen nicht mehr möglich' if @report.status.stype == Status.accepted
     end
 end

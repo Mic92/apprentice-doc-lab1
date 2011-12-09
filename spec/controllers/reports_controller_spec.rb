@@ -113,6 +113,7 @@ describe ReportsController do
   describe "GET 'edit'" do
     before(:each) do
       @report = @user.reports.create valid_attributes_report
+      @report.create_status valid_attributes_status
       test_sign_in(@user)
     end
 
@@ -352,6 +353,23 @@ describe ReportsController do
       it "should require matching users for 'destroy'" do
         delete 'destroy', :id => @report
         response.should redirect_to(welcome_path)
+      end
+
+      describe "and accepted reports" do
+        before(:each) do
+          @report.status.update_attribute(:stype, Status.accepted)
+          test_sign_in(@user)
+        end
+
+        it "should deny access to 'edit'" do
+          get 'edit', :id => @report
+          response.should redirect_to(reports_path)
+        end
+
+        it "should deny access to 'update'" do
+          put 'update', :id => @report, :report => valid_attributes_report.merge(:period_start => '2011-09-01')
+          response.should redirect_to(reports_path)
+        end
       end
 
       describe "without the read right" do
