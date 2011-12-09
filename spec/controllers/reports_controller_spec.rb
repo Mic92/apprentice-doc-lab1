@@ -91,7 +91,7 @@ describe ReportsController do
 
     it "should find the right entries" do
       get 'show', :id => @report
-      assigns(:entries).should eq(@report.report_entries)
+      assigns(:entries).should eq(@report.report_entries.order('date asc'))
     end
   end
 

@@ -52,7 +52,7 @@ class ReportsController < ApplicationController
   # Zeigt die Einträge eines Berichts.
   def show
     @report = Report.find(params[:id])
-    @entries = @report.report_entries
+    @entries = @report.report_entries.order('date asc')
   end
 
   # Zeigt das Formular zum Erstellen eines neuen Berichts.
