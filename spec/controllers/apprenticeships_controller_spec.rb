@@ -75,7 +75,7 @@ describe ApprenticeshipsController do
 
       it "should have a flash message" do
         post 'create', :apprentice_id => 20
-        flash[:notice].should =~ /nicht/i
+        flash[:alert].should =~ /nicht/i
       end
     end
 
@@ -149,7 +149,7 @@ describe ApprenticeshipsController do
 
       it "should have a flash message" do
         delete 'destroy', :id => 20
-        flash[:notice].should =~ /nicht/i
+        flash[:alert].should =~ /nicht/i
       end
     end
 

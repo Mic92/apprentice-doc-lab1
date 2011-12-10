@@ -40,13 +40,13 @@ class ApprenticeshipsController < ApplicationController
   def create
     if @apprentice = User.find_by_id(params[:apprentice_id])
       if @apprentice.role.check || @apprentice.role.admin
-        redirect_to users_path, :notice => 'Der Benutzer ist kein Auszubildender.'
+        redirect_to users_path, :alert => 'Der Benutzer ist kein Auszubildender.'
       else
         current_user.apprentices << @apprentice
         redirect_to users_path, :notice => 'Der Auszubildende wurde zugewiesen.'
       end
     else
-      redirect_to users_path, :notice => 'Der Auszubildende konnte nicht zugewiesen werden.'
+      redirect_to users_path, :alert => 'Der Auszubildende konnte nicht zugewiesen werden.'
     end
   end
 
@@ -57,7 +57,7 @@ class ApprenticeshipsController < ApplicationController
       current_user.apprentices.delete(@apprentice)
       redirect_to users_path, :notice => 'Die Zuweisung wurde entfernt.'
     else
-      redirect_to users_path, :notice => 'Die Zuweisung konnte nicht entfernt werden.'
+      redirect_to users_path, :alert => 'Die Zuweisung konnte nicht entfernt werden.'
     end
   end
 end
