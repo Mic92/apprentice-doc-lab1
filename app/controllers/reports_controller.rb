@@ -60,6 +60,7 @@ class ReportsController < ApplicationController
   # Zeigt das Formular zum Erstellen eines neuen Berichts.
   def new
     @report = Report.new
+    # Setze die Werte, mit denen die Felder vorausgefüllt werden.
     @report.period_start = Date.today.beginning_of_month
     @report.period_end = Date.today.end_of_month
   end
@@ -73,6 +74,7 @@ class ReportsController < ApplicationController
   # Ist der Bericht nicht valid, so wird das Formular erneut gezeigt.
   def create
     @report = current_user.reports.build(params[:report])
+    # Jeder Bericht muss einen Status haben, also erstelle ihn zusammen mit dem Bericht.
     @report.build_status(:stype => Status.personal)
     @report.reportnumber = current_user.reports.count + 1
 
@@ -88,6 +90,7 @@ class ReportsController < ApplicationController
   def update
     @report = Report.find(params[:id])
 
+    # Hilfsobjekt für den Vergleich der Daten.
     @new = Report.new(params[:report])
 
     if @new.period_start != nil && @new.period_end != nil
@@ -95,16 +98,19 @@ class ReportsController < ApplicationController
         @entries = @report.report_entries.order('date asc')
 
         if @entries.first.date.to_date < @new.period_start || @entries.last.date.to_date > @new.period_start
+          # Durch die Änderung würden Einträge nicht mehr im Zeitraum des Berichts liegen.
           flash.now[:alert] = 'Diese Änderung führt zu einem Konflikt mit den Einträgen dieses Berichts.'
           render 'edit' and return
         end
       elsif (@new.period_start - @report.period_start) == (@new.period_end - @report.period_end)
-        # beide Daten um den gleichen Wert verschoben -> Einträge um diesen Wert verschieben
+        # Beide Daten wurden um den gleichen Wert verschoben, verschiebe die Einträge auch um diesen Wert.
         @shift = (@new.period_start - @report.period_start)
-        @report.report_entries.each { |e| e.update_attributes(:date => (e.date + @shift.days)) }
+        @report.report_entries.each { |e| e.update_attribute(:date, (e.date + @shift.days)) }
       end
 
       if params[:report] != nil && @report.update_attributes(params[:report])
+        # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
+        # freigegeben werden kann.
         @report.status.update_attributes(:stype => Status.personal)
         redirect_to reports_path, :notice => 'Bericht wurde erfolgreich bearbeitet.'
       else

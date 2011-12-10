@@ -133,6 +133,8 @@
   
     <li><a href="./Report.html">Report</a>
   
+    <li><a href="./ReportBotController.html">ReportBotController</a>
+  
     <li><a href="./ReportBotHelper.html">ReportBotHelper</a>
   
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
@@ -303,7 +305,7 @@
         
         <div class="method-heading">
           <span class="method-name">unchecked_reports_mail</span><span
-            class="method-args">(instructor)</span>
+            class="method-args">(data)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
@@ -316,9 +318,10 @@
           
           <div class="method-source-code" id="unchecked_reports_mail-source">
             <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 22</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">unchecked_reports_mail</span>(<span class="ruby-identifier">instructor</span>)
-  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">instructor</span>
-  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Apprentice Doc Lab: Sie haben noch vorgelegte Berichte, die nicht ueberprueft wurden&quot;</span>)
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">unchecked_reports_mail</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:instructor</span>]
+  <span class="ruby-ivar">@unchecked_reports_num</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:unchecked_reports_num</span>]
+  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Apprentice Doc Lab: Sie haben noch &quot;</span> <span class="ruby-operator">+</span>  <span class="ruby-ivar">@unchecked_reports_num</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; vorgelegte Berichte, die nicht ueberprueft wurden&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- unchecked_reports_mail-source -->
           

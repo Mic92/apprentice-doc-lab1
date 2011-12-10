@@ -34,6 +34,7 @@ class ReportEntriesController < ApplicationController
   def new
     @report = Report.find(params[:report_id])
     @entry = ReportEntry.new
+    # Setze die Werte, mit denen die Felder vorausgefüllt werden.
     @hours = 1
     @minutes = 30
   end
@@ -43,6 +44,7 @@ class ReportEntriesController < ApplicationController
   def edit
     @report = Report.find(params[:report_id])
     @entry = ReportEntry.find(params[:id])
+    # Das Formular hat eine Auswahl für die Stunden und eine für die Minuten.
     @hours =  @entry.duration_in_hours.to_i
     @minutes = ((@entry.duration_in_hours.hours / 1.minute) % 60).to_i
   end
@@ -53,15 +55,21 @@ class ReportEntriesController < ApplicationController
   def create
     @report = Report.find(params[:report_id])
     if params[:hours] != nil && params[:minutes] != nil && params[:report_entry] != nil
+      # Das Formular liefert die Dauer nach Stunden und Minuten getrennt, das Model benötigt aber die Dauer
+      # nur in Stunden.
       @duration = (params[:hours].to_i.hours + params[:minutes].to_i.minutes) / 1.0.hour
+      # Priorisiere duration_in_hours über die berechnete Dauer.
       @entry = @report.report_entries.build({ :duration_in_hours => @duration }.merge(params[:report_entry]))
     else
       @entry = @report.report_entries.build(params[:report_entry])
     end
 
     if @entry.date != nil
+      # Einträge müssen im Zeitraum des Berichts liegen.
       if @entry.date.to_date >= @report.period_start && @entry.date.to_date <= @report.period_end
         if @entry.save
+          # Der Status des Berichts wird durch das Erstellen wieder auf personal gesetzt, damit er wieder
+          # freigegeben werden kann.
           @report.status.update_attributes(:stype => Status.personal)
           redirect_to @report, :notice => 'Eintrag wurde erfolgreich erstellt.' and return
         end
@@ -80,6 +88,8 @@ class ReportEntriesController < ApplicationController
     @entry = ReportEntry.find(params[:id])
 
     if params[:hours] != nil && params[:minutes] != nil && params[:report_entry] != nil
+      # Das Formular liefert die Dauer nach Stunden und Minuten getrennt, das Model benötigt aber die Dauer
+      # nur in Stunden.
       @duration = (params[:hours].to_i.hours + params[:minutes].to_i.minutes) / 1.0.hour
       @attr = { :duration_in_hours => @duration }.merge(params[:report_entry])
     else
@@ -87,10 +97,14 @@ class ReportEntriesController < ApplicationController
     end
 
     if @attr != nil
+      # Erzeuge aus den Formulardaten das Datum zum vergleichen.
       @date = ReportEntry.new(@attr).date
       if @date != nil
+        # Einträge müssen im Zeitraum des Berichts liegen.
         if @date >= @entry.report.period_start && @date <= @entry.report.period_end
           if @entry.update_attributes(@attr)
+            # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
+            # freigegeben werden kann.
             @entry.report.status.update_attributes(:stype => Status.personal)
             redirect_to @entry.report, :notice => 'Eintrag wurde erfolgreich bearbeitet.' and return
           end
@@ -108,6 +122,8 @@ class ReportEntriesController < ApplicationController
     @entry = ReportEntry.find(params[:id])
     @report = @entry.report
     @entry.destroy
+    # Der Status des Berichts wird durch das Löschen wieder auf personal gesetzt, damit er wieder
+    # freigegeben werden kann.
     @report.status.update_attributes(:stype => Status.personal)
 
     redirect_to @report, :notice => 'Eintrag wurde erfolgreich gelöscht.'
