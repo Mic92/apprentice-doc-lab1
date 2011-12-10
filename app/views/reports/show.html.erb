@@ -1,7 +1,7 @@
 <h1>Bericht vom <%= l @report.period_start %> bis zum <%= l @report.period_end %></h1>
 
 <% if current_user.role.commit? %>
-  <% if @report.status.stype == Status.personal %>
+  <% if @report.status.stype == Status.personal && !@report.report_entries.blank? %>
     <%= link_to 'Bericht vorlegen', reviews_path(:report_id => @report), :method => :post %>
     |
   <% elsif @report.status.stype == Status.commited %>

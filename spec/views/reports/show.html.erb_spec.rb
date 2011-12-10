@@ -24,22 +24,32 @@ describe "reports/show.html.erb" do
   before(:each) do
     @commit_role = mock_model(Role, :commit? => true, :check? => false)
     @check_role = mock_model(Role, :commit? => false, :check? => true)
+
     @apprentice = mock_model(User, :role  => @commit_role)
     @instructor = mock_model(User, :role => @check_role)
+
     @personal_status = mock_model(Status, :stype => Status.personal, :comment => nil, :comment? => false)
     @commited_status = mock_model(Status, :stype => Status.commited, :comment => nil, :comment? => false)
     @rejected_status = mock_model(Status, :stype => Status.rejected, :comment => 'Nicht gut genug.', :comment? => true)
+
+    @entry1 = mock_model(ReportEntry, :date => '2011-10-02 08:00:00'.to_datetime, :duration_in_hours => 1.5, :text => 'Entry created.')
+    @entry2 = mock_model(ReportEntry, :date => '2011-10-02 10:00:00'.to_datetime, :duration_in_hours => 0.1, :text => 'View tested.')
+
     @personal_report = mock_model(Report, :period_start => '2011-10-01'.to_date,
                                   :period_end => '2011-10-31'.to_date,
-                                  :status => @personal_status)
+                                  :status => @personal_status,
+                                  :report_entries => [ @entry1, @entry2 ])
+    @no_entry_personal_report = mock_model(Report, :period_start => '2011-10-01'.to_date,
+                                           :period_end => '2011-10-31'.to_date,
+                                           :status => @personal_status,
+                                           :report_entries => [])
     @commited_report = mock_model(Report, :period_start => '2011-10-01'.to_date,
                                   :period_end => '2011-10-31'.to_date,
                                   :status => @commited_status)
     @rejected_report = mock_model(Report, :period_start => '2011-10-01'.to_date,
                                   :period_end => '2011-10-31'.to_date,
                                   :status => @rejected_status)
-    @entry1 = mock_model(ReportEntry, :date => '2011-10-02 08:00:00'.to_datetime, :duration_in_hours => 1.5, :text => 'Entry created.')
-    @entry2 = mock_model(ReportEntry, :date => '2011-10-02 10:00:00'.to_datetime, :duration_in_hours => 0.1, :text => 'View tested.')
+
     assign(:entries, [ @entry1, @entry2 ])
     assign(:report, @personal_report)
     assign(:current_user, @apprentice)
@@ -88,9 +98,15 @@ describe "reports/show.html.erb" do
       rendered.should include("href=\"#{new_report_report_entry_path(@personal_report)}\"")
     end
 
-    it "should have a link to commit the report" do
+    it "should have a link to commit the report if he has at least one entry" do
       render
       rendered.should include("href=\"#{reviews_path}?report_id=#{@personal_report.id}\"")
+    end
+
+    it "should not have a link to commit the report if he has no entries" do
+      assign(:report, @no_entry_personal_report)
+      render
+      rendered.should_not include("href=\"#{reviews_path}?report_id=#{@no_entry_personal_report.id}\"")
     end
 
     it "should have a link to cancle the review" do
