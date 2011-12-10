@@ -56,7 +56,7 @@ module SessionsHelper
 
   # Leitet den Benutzer auf die Wurzel-Seite (Login), gibt einen Hinweis aus.
   def deny_access
-    redirect_to root_path, :notice => 'Sie müssen angemeldet sein um auf diese Seite zuzugreifen.'
+    redirect_to root_path, :alert => 'Sie müssen angemeldet sein um auf diese Seite zuzugreifen.'
   end
 
   # Definiert den Hinweis, der bei fehlenden Rechten ausgegeben wird.
@@ -66,26 +66,26 @@ module SessionsHelper
 
   # Leitet den Benuter auf die Willkommen-Seite, falls er kein Lesen-Recht hat. Gibt den Hinweis right_notice aus.
   def read
-    redirect_to welcome_path, :notice => right_notice unless current_user.role.read?
+    redirect_to welcome_path, :alert => right_notice unless current_user.role.read?
   end
 
   # Leitet den Benuter auf die Willkommen-Seite, falls er kein Freigeben-Recht hat. Gibt den Hinweis right_notice aus.
   def commit
-    redirect_to welcome_path, :notice => right_notice unless current_user.role.commit?
+    redirect_to welcome_path, :alert => right_notice unless current_user.role.commit?
   end
 
   # Leitet den Benuter auf die Willkommen-Seite, falls er kein Prüfen-Recht hat. Gibt den Hinweis right_notice aus.
   def check
-    redirect_to welcome_path, :notice => right_notice unless current_user.role.check?
+    redirect_to welcome_path, :alert => right_notice unless current_user.role.check?
   end
 
   def export
-    redirect_to welcome_path, :notice => right_notice unless current_user.role.export?
+    redirect_to welcome_path, :alert => right_notice unless current_user.role.export?
   end
 
   # Leitet den Benuter auf die Willkommen-Seite, falls er kein Admin-Recht hat. Gibt den Hinweis right_notice aus.
   def admin
-    redirect_to welcome_path, :notice => right_notice unless current_user.role.admin?
+    redirect_to welcome_path, :alert => right_notice unless current_user.role.admin?
   end
 
   private
