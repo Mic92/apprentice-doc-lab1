@@ -108,6 +108,23 @@ describe ReportsController do
       get 'new'
       assigns(:report).should be_new_record
     end
+
+    describe "without existing reports" do
+      it "should provide the beginning and the end of the current month as pre-selected values" do
+        get 'new'
+        assigns(:report).period_start.should eq(Date.today.beginning_of_month)
+        assigns(:report).period_end.should eq(Date.today.end_of_month)
+      end
+    end
+
+    describe "with existing reports" do
+      it "should provide the beginning and the end of the month after the last report as pre-selected values" do
+        @report = @user.reports.create valid_attributes_report.merge(:period_start => '2011-10-01', :period_end => '2011-10-31')
+        get 'new'
+        assigns(:report).period_start.should eq('2011-11-01'.to_date)
+        assigns(:report).period_end.should eq('2011-11-30'.to_date)
+      end
+    end
   end
 
   describe "GET 'edit'" do

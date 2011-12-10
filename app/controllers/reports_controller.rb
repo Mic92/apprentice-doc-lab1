@@ -61,8 +61,13 @@ class ReportsController < ApplicationController
   def new
     @report = Report.new
     # Setze die Werte, mit denen die Felder vorausgefüllt werden.
-    @report.period_start = Date.today.beginning_of_month
-    @report.period_end = Date.today.end_of_month
+    if Report.all.blank?
+      @date = Date.today
+    else
+      @date = Report.order('period_start asc, period_end asc').last.period_end + 1.month
+    end
+    @report.period_start = @date.beginning_of_month
+    @report.period_end = @date.end_of_month
   end
 
   # Zeigt das Formular zum Bearbeiten eines vorhandenen Berichts.
