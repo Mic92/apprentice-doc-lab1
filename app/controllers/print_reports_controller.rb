@@ -9,7 +9,7 @@ class PrintReportsController < ApplicationController
 
   def correct_user
     @user = Report.find(params[:id]).user
-    redirect_to welcome_path unless current_user?(@user)
+    redirect_to welcome_path unless current_user?(@user) or current_user.role.check?
     redirect_to reports_path, :notice => 'Keine Druckvorlage zugeordnet' unless not @user.template.nil?
   end
 

@@ -41,10 +41,10 @@ azubiRole = Role.create(
 )
 
 business = Business.create(
-  :name     => 'Buschmais',
+  :name     => 'The Company',
   :zipcode  => '01234',
   :street   => 'TheStreet 1',
-  :city     => 'Dresden'
+  :city     => 'TheCity'
 )
 
 ihk = Ihk.create(
@@ -244,3 +244,136 @@ azubi = User.create(
 )
 
 ausbilder.apprentices << azubi
+
+azubi.save
+
+report = azubi.reports.create(
+  :reportnumber => 1,
+  :period_start => Date.new(2011,12,5),
+  :period_end => Date.new(2011,12,30)
+)
+
+report.build_status(:stype => Status.personal)
+report.save
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,5,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Oberflaeche fuer Angebotsmodul entworfen'
+)
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,6,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Datenbankwartung beim Kunden'
+)
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,7,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Installation und Konfiguration eines PCs'
+)
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,8,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Realisierung der entworfenen Oberflaeche'
+)  
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,9,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Arbeitsbesprechung und weiterarbeiten an der Anwendung'
+)
+###################################################################
+report.report_entries.create(
+  :date => DateTime.new(2011,12,12,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Implementierung von Tests'
+)
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,13,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Einarbeitung in Ruby'
+)
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,14,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Installation und Konfiguration von Rails mit Apache'
+)
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,15,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Einlesen in die Anwendungsentwicklung Rails'
+)  
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,16,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Arbeitsbesprechung und erste Rails-Tests'
+)
+###################################################################
+report.report_entries.create(
+  :date => DateTime.new(2011,12,19,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Anlegen der Modelle in Rails'
+)
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,20,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Bestimmen der Beziehungen zwischen den Models'
+)
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,21,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Anlegen der Controller'
+)
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,22,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Konfigurieren der Routen und anfangen der Controller-Realisierung'
+)  
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,23,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Arbeitsbesprechung und Implementierung der Views'
+)
+###################################################################
+report.report_entries.create(
+  :date => DateTime.new(2011,12,26,12,0,0),
+  :duration_in_hours => 8,
+  :text => '2. Weihnachtstag'
+)
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,27,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Urlaub'
+)
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,28,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Schreiben der Tests in Rails'
+)
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,29,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Letzte Taetigkeiten am Rails-Programm'
+)  
+
+report.report_entries.create(
+  :date => DateTime.new(2011,12,30,12,0,0),
+  :duration_in_hours => 8,
+  :text => 'Urlaub'
+)
+###################################################################
+
