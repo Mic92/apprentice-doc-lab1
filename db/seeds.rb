@@ -61,7 +61,7 @@ code = Code.create(
   :code => 'Vor- und Zuname <u>[v]userforename[/v] [v]username[/v]</u> Ausbildungsabteilung:<u>[v]jobname[/v]</u><br />
   <b>Ausbildungsnachweis Nr. </b><u>[v]reportnumber[/v]</u> Monat <u>[v]reportmonth[/v] [v]reportyear[/v]</u> <u>[v]trainingyear[/v].</u> Ausbildungsjahr<br />
 
-  <table width=100% border="1" style="border-collapse:collapse">
+  <table border="1" width=595px style="border-collapse:collapse;">
   <colgroup>
     <col width=10%>
       <col width=90%>
@@ -75,94 +75,94 @@ code = Code.create(
       <td rowspan="7">1. Woche</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[0][0].text[e]</td>
+      <td>[e]entry[0][0].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[0][1].text[e]</td>
+      <td>[e]entry[0][1].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[0][2].text[e]</td>
+      <td>[e]entry[0][2].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[0][3].text[e]</td>
+      <td>[e]entry[0][3].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[0][4].text[e]</td>
+      <td>[e]entry[0][4].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[0][5].text[e]</td>
+      <td>[e]entry[0][5].text[e]</td>
       </tr>
 
       <tr>
       <td rowspan="7">2. Woche</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[1][0].text[e]</td>
+      <td>[e]entry[1][0].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[1][1].text[e]</td>
+      <td>[e]entry[1][1].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[1][2].text[e]</td>
+      <td>[e]entry[1][2].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[1][3].text[e]</td>
+      <td>[e]entry[1][3].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[1][4].text[e]</td>
+      <td>[e]entry[1][4].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[1][5].text[e]</td>
+      <td>[e]entry[1][5].text[e]</td>
       </tr>
 
       <tr>
       <td rowspan="7">3. Woche</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[2][0].text[e]</td>
+      <td>[e]entry[2][0].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[2][1].text[e]</td>
+      <td>[e]entry[2][1].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[2][2].text[e]</td>
+      <td>[e]entry[2][2].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[2][3].text[e]</td>
+      <td>[e]entry[2][3].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[2][4].text[e]</td>
+      <td>[e]entry[2][4].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[2][5].text[e]</td>
+      <td>[e]entry[2][5].text[e]</td>
       </tr>
 
       <tr>
       <td rowspan="7">4. Woche</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[3][0].text[e]</td>
+      <td>[e]entry[3][0].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[3][1].text[e]</td>
+      <td>[e]entry[3][1].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[3][2].text[e]</td>
+      <td>[e]entry[3][2].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[3][3].text[e]</td>
+      <td>[e]entry[3][3].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[3][4].text[e]</td>
+      <td>[e]entry[3][4].text[e]</td>
       </tr>
       <tr>
-      <td>&nbsp;[e]entry[3][5].text[e]</td>
+      <td>[e]entry[3][5].text[e]</td>
       </tr>
       </table>
 
       <br /><br /><br />
       <b>Besondere Bemerkungen</b><br />
-      <table width=100% border=\'1\' style="border-collapse:collapse">
+      <table border=\'1\' width=595px style="border-collapse:collapse;">
       <colgroup>
         <col width=50%>
           <col width=50%>
@@ -179,7 +179,7 @@ code = Code.create(
           <br />
 
           <b>F&uuml;r die Richtigkeit</b><br />
-          <table width=100% border=\'1\' style="border-collapse:collapse">
+          <table border=\'1\' width=595px style="border-collapse:collapse;">
           <colgroup>
             <col width=50%>
               <col width=50%>
@@ -236,6 +236,7 @@ azubi = User.create(
   :email    => 'azubi@swt.de',
   :password => '12345678',
   :password_confirmation => '12345678',
+  :trainingyear => 1,
   :role_id  => azubiRole.id,
   :business_id => business.id,
   :template_id => template.id,

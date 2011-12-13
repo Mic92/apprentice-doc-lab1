@@ -98,7 +98,7 @@ module PrintReportsHelper
   end
   
   def displayValueFormat(value,entryNo,entryGroup,entryValue)
-    value
+    "&nbsp;"+value
   end
 
   def editValueFormat(value,entryNo,entryGroup,entryValue)
