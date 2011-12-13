@@ -23,14 +23,58 @@ class ReportBotController < ApplicationController
     2.weeks
   end
 
-  def self.apprentice_period
-    1.months
+  def self.apprentice_period_inmonths
+    12
+  end
+
+  def workdays (startdate, enddate)
+    #TODO richtige tagesberechnung
+    enddate.yday - startdate.yday
   end
 
   def unwritten
     @apprentices = User.joins(:role).where( :roles => {:commit => true} )
+    @year = Time.now.year
+    @month = Time.now.month
+    #@day = Time.now.day
+
     @apprentices.each do |apprentice|
-      #TODO überprüfen, ob an jedem wochentag etwas eingereicht wurde
+      if apprentice.deleted != true
+
+        i = 1
+        @date_v = Time.now
+        #@year_v = @year
+        #@month_v = @month
+        #get commited and accepted reports
+        @reports = apprentice.reports.select {|report| report.status.stype == Status.commited || report.status.stype == Status.accepted }
+
+        #gehe durch jeden monat, der im zurückliegendem zeitraum liegt
+        while i < ReportBotController.apprentice_period_inmonths + 1
+          @date_v -= 1.months
+          @vtime_start = Time.mktime(@date_v.year, @date_v.month)
+          @vtime_end = Time.mktime(@date_v.year, @date_v.month) + 1.months
+          #berechne, wie viele Arbeitstage in dem zu prüfendem Monat sind
+          @daycount = workdays( @vtime_start, @vtime_end )
+          #ziehe von dem Arbeitstagcounter die Tage ab, für die ein Report existiert
+          @reports.each do |report|
+            if report.period_start.to_time >= @vtime_start && report.period_end.to_time <= @vtime_end
+              #Report ist innerhalb des Monats
+              @daycount -= workdays( report.period_start.to_time, report.period_end.to_time )
+            elsif false#TODO
+              #Report ist teilweise am Anfang des Monats
+              #TODO
+            elsif false#TODO
+              #Report ist teilweise am Ende des Monats
+              #TODO
+            end
+            #TODO
+          end
+
+          #TODO überprüfen, ob an jedem wochentag etwas eingereicht wurde
+
+          i += 1
+        end
+      end
     end
   end
 
