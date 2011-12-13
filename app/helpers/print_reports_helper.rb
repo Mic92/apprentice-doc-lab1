@@ -69,14 +69,14 @@ module PrintReportsHelper
     @groupedEntries = grouper.values.to_a
   end
 
-  # entry point of this class
-  def handleRawCode
-    self.init
+  def replaceNonEditableValues
     #replace simple values
     @simpleFunctions.each { |key, value|
       @displayCode.gsub!("[v]#{key}[/v]",self.send(value).to_s)
     }
-
+  end
+  
+  def replaceEditableValues(formatMethod)
     #replace complex values
     @splitted = @displayCode.split("[e]")
     @displayCode.clear
@@ -91,9 +91,35 @@ module PrintReportsHelper
         entryGroup = entry[3].to_i
         entryValue = entry[5]
         value = self.entry(entryNo,entryGroup,entryValue)
+        value = formatMethod.call(value,entryNo,entryGroup,entryValue)
       end
       @displayCode << value
     end
+  end
+  
+  def displayValueFormat(value,entryNo,entryGroup,entryValue)
+    value
+  end
+
+  def editValueFormat(value,entryNo,entryGroup,entryValue)
+    pream = "entry_#{entryNo}_#{entryGroup}"
+    "<input id=\"#{pream}_#{entryValue}\" name=\"#{pream}[#{entryValue}]\" type=\"text\" style=\"width:99%;\" value=\"#{value}\" />"
+  end
+  
+  # entry point of this class
+  def handleRawCode
+    self.init
+    self.replaceNonEditableValues
+
+    self.replaceEditableValues(method(:displayValueFormat))
+  end
+
+  # entry point of this class
+  def editRawCode
+    self.init
+    self.replaceNonEditableValues
+    
+    self.replaceEditableValues(method(:editValueFormat))
   end
 
   def username
@@ -130,15 +156,59 @@ module PrintReportsHelper
 
   def entry(group, number, value)
     entriesGroup = @groupedEntries[group]
+    retVal = ""
     if not entriesGroup.nil?
       entry = entriesGroup[number]
       if not entry.nil?
-        entry.send(@entryFunctions[value])
-      else
-        ""
+        retVal = entry.send(@entryFunctions[value])
       end
-    else
-      ""
     end
+    retVal
+  end
+  
+  def handleSubmittedReport(params)
+    self.init
+    
+    puts @groupedEntries
+    
+    params.each { |key, value|
+      if key.match('entry_[0-9]+_[0-9]+')
+        entryPlace = key.split('_')
+        entryNo = entryPlace[1].to_i
+        entryGroup = entryPlace[2].to_i
+        
+        #entry = @groupedEntries[entryGroup][entryNo]
+        entriesGroup = @groupedEntries[entryNo]
+        if not entriesGroup.nil?
+          entry = entriesGroup[entryGroup]
+        end
+        
+        if entry.nil?
+          entry = @report.report_entries.new
+
+          dtStart = @report.period_start.to_datetime
+          dtCur = dtStart + 8.hours
+          newDate = DateTime.now
+          if @code.codegroup == DAILY
+            entry.duration_in_hours = 1.0
+            newDate = dtCur + entryNo.days + entryGroup.hours
+          elsif @code.codegroup == WEEKLY
+            newDate = dtCur + entryNo.weeks + entryGroup.days
+            entry.duration_in_hours = 8.0
+          elsif @code.codegroup == HOURLY
+            newDate = dtCur + entryNo.hours + entryGroup.minutes
+            entry.duration_in_hours = 1.0/60.0
+          end
+          entry.date = newDate
+        end
+
+        value.each { |valKey, valValue|
+          entryMeth = valKey+"="
+          value = valValue
+          entry.send(entryMeth, value)
+        }
+        entry.save
+      end
+    }
   end
 end

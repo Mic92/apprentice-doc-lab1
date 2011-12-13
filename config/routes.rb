@@ -3,6 +3,8 @@ ApprenticeDocLab1::Application.routes.draw do
 
   get "report_bot/unchecked"
 
+  resources :report_template_entries, :only => [ :edit, :update ]
+  
   resources :users
 
   resources :print_reports, :only => [ :show ]

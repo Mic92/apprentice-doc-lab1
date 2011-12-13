@@ -101,11 +101,12 @@ class ReportsController < ApplicationController
     if @new.period_start != nil && @new.period_end != nil
       if @new.period_start >= @report.period_start && @new.period_end <= @report.period_end
         @entries = @report.report_entries.order('date asc')
-
-        if @entries.first.date.to_date < @new.period_start || @entries.last.date.to_date > @new.period_start
-          # Durch die Änderung würden Einträge nicht mehr im Zeitraum des Berichts liegen.
-          flash.now[:alert] = 'Diese Änderung führt zu einem Konflikt mit den Einträgen dieses Berichts.'
-          render 'edit' and return
+        if @entries.length > 0
+          if @entries.first.date.to_date < @new.period_start || @entries.last.date.to_date > @new.period_start
+            # Durch die Änderung würden Einträge nicht mehr im Zeitraum des Berichts liegen.
+            flash.now[:alert] = 'Diese Änderung führt zu einem Konflikt mit den Einträgen dieses Berichts.'
+            render 'edit' and return
+          end
         end
       elsif (@new.period_start - @report.period_start) == (@new.period_end - @report.period_end)
         # Beide Daten wurden um den gleichen Wert verschoben, verschiebe die Einträge auch um diesen Wert.

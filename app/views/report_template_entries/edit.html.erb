@@ -1,0 +1,11 @@
+<%= form_tag({:controller => "report_template_entries", :action => "update"}, :method => "put", :class => "edit_report_form") %>
+
+  <%=raw @displayCode %>
+
+  <br />
+  <br />
+  
+  <div class="actions">
+  <%= submit_tag "Änderungen speichern" %>
+  </div>
+  
