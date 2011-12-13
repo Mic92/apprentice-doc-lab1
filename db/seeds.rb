@@ -57,7 +57,7 @@ job = Job.create(
 
 code = Code.create(
   :name => 'Code 1',
-  :codegroup => 3,
+  :codegroup => PrintReportsHelper::WEEKLY,
   :code => 'Vor- und Zuname <u>[v]userforename[/v] [v]username[/v]</u> Ausbildungsabteilung:<u>[v]jobname[/v]</u><br />
   <b>Ausbildungsnachweis Nr. </b><u>[v]reportnumber[/v]</u> Monat <u>[v]reportmonth[/v] [v]reportyear[/v]</u> <u>[v]trainingyear[/v].</u> Ausbildungsjahr<br />
 
@@ -72,7 +72,7 @@ code = Code.create(
       </tr>
 
       <tr>
-      <td rowspan="7">1. Woche</td>
+      <td rowspan="6">1. Woche</td>
       </tr>
       <tr>
       <td>[e]entry[0][0].text[e]</td>
@@ -89,12 +89,9 @@ code = Code.create(
       <tr>
       <td>[e]entry[0][4].text[e]</td>
       </tr>
-      <tr>
-      <td>[e]entry[0][5].text[e]</td>
-      </tr>
 
       <tr>
-      <td rowspan="7">2. Woche</td>
+      <td rowspan="6">2. Woche</td>
       </tr>
       <tr>
       <td>[e]entry[1][0].text[e]</td>
@@ -111,12 +108,9 @@ code = Code.create(
       <tr>
       <td>[e]entry[1][4].text[e]</td>
       </tr>
-      <tr>
-      <td>[e]entry[1][5].text[e]</td>
-      </tr>
 
       <tr>
-      <td rowspan="7">3. Woche</td>
+      <td rowspan="6">3. Woche</td>
       </tr>
       <tr>
       <td>[e]entry[2][0].text[e]</td>
@@ -133,12 +127,9 @@ code = Code.create(
       <tr>
       <td>[e]entry[2][4].text[e]</td>
       </tr>
-      <tr>
-      <td>[e]entry[2][5].text[e]</td>
-      </tr>
 
       <tr>
-      <td rowspan="7">4. Woche</td>
+      <td rowspan="6">4. Woche</td>
       </tr>
       <tr>
       <td>[e]entry[3][0].text[e]</td>
@@ -155,8 +146,200 @@ code = Code.create(
       <tr>
       <td>[e]entry[3][4].text[e]</td>
       </tr>
+
       <tr>
-      <td>[e]entry[3][5].text[e]</td>
+      <td rowspan="6">5. Woche</td>
+      </tr>
+      <tr>
+      <td>[e]entry[4][0].text[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[4][1].text[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[4][2].text[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[4][3].text[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[4][4].text[e]</td>
+      </tr>
+      </table>
+
+      <br /><br /><br />
+      <b>Besondere Bemerkungen</b><br />
+      <table border=\'1\' width=595px style="border-collapse:collapse;">
+      <colgroup>
+        <col width=50%>
+          <col width=50%>
+          </colgroup>
+          <tr>
+          <td>Auszubildender</td>
+          <td>Ausbildender bzw. Ausbilder</td>
+          </tr>
+          <tr>
+          <td><br /><br /><br /></td>
+          <td><br /><br /><br /></td>
+          </tr>
+          </table>
+          <br />
+
+          <b>F&uuml;r die Richtigkeit</b><br />
+          <table border=\'1\' width=595px style="border-collapse:collapse;">
+          <colgroup>
+            <col width=50%>
+              <col width=50%>
+              </colgroup>
+              <tr>
+              <td><br /><br />
+              <u>[v]currentdate[/v]</u><br />
+              Datum, Unterschrift des Auszubildenden
+              </td>
+              <td><br /><br />
+              <u>[v]currentdate[/v]</u><br />
+              Datum, Unterschrift des Ausbildenden bzw. Ausbilders
+              </td>
+              </tr>
+              </table>'
+)
+
+code2 = Code.create(
+  :name => 'Code 2',
+  :codegroup => PrintReportsHelper::DAILY,
+  :code => 'Vor- und Zuname <u>[v]userforename[/v] [v]username[/v]</u> Ausbildungsabteilung:<u>[v]jobname[/v]</u><br />
+  <b>Ausbildungsnachweis Nr. </b><u>[v]reportnumber[/v]</u> Monat <u>[v]reportmonth[/v] [v]reportyear[/v]</u> <u>[v]trainingyear[/v].</u> Ausbildungsjahr<br />
+
+  <table border="1" width=595px style="border-collapse:collapse;">
+  <colgroup>
+    <col width=10%>
+      <col width=80%>
+      <col width=10%>
+      </colgroup>
+      <tr>
+      <th>Tag</th>
+      <th>Ausgef&uuml;hrte Arbeiten, Unterricht</th>
+      <th>Dauer</th>
+      </tr>
+
+      <tr>
+      <td rowspan="6">Montag</td>
+      </tr>
+      <tr>
+      <td>[e]entry[0][0].text[e]</td>
+      <td>[e]entry[0][0].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[0][1].text[e]</td>
+      <td>[e]entry[0][1].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[0][2].text[e]</td>
+      <td>[e]entry[0][2].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[0][3].text[e]</td>
+      <td>[e]entry[0][3].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[0][4].text[e]</td>
+      <td>[e]entry[0][4].duration_in_hours[e]</td>
+      </tr>
+
+      <tr>
+      <td rowspan="6">Dienstag</td>
+      </tr>
+      <tr>
+      <td>[e]entry[1][0].text[e]</td>
+      <td>[e]entry[1][0].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[1][1].text[e]</td>
+      <td>[e]entry[1][1].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[1][2].text[e]</td>
+      <td>[e]entry[1][2].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[1][3].text[e]</td>
+      <td>[e]entry[1][3].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[1][4].text[e]</td>
+      <td>[e]entry[1][4].duration_in_hours[e]</td>
+      </tr>
+
+      <tr>
+      <td rowspan="6">Mittwoch</td>
+      </tr>
+      <tr>
+      <td>[e]entry[2][0].text[e]</td>
+      <td>[e]entry[2][0].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[2][1].text[e]</td>
+      <td>[e]entry[2][1].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[2][2].text[e]</td>
+      <td>[e]entry[2][2].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[2][3].text[e]</td>
+      <td>[e]entry[2][3].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[2][4].text[e]</td>
+      <td>[e]entry[2][4].duration_in_hours[e]</td>
+      </tr>
+
+      <tr>
+      <td rowspan="6">Donnerstag</td>
+      </tr>
+      <tr>
+      <td>[e]entry[3][0].text[e]</td>
+      <td>[e]entry[3][0].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[3][1].text[e]</td>
+      <td>[e]entry[3][1].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[3][2].text[e]</td>
+      <td>[e]entry[3][2].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[3][3].text[e]</td>
+      <td>[e]entry[3][3].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[3][4].text[e]</td>
+      <td>[e]entry[3][4].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+
+      <td rowspan="6">Freitag</td>
+      </tr>
+      <tr>
+      <td>[e]entry[4][0].text[e]</td>
+      <td>[e]entry[4][0].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[4][1].text[e]</td>
+      <td>[e]entry[4][1].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[4][2].text[e]</td>
+      <td>[e]entry[4][2].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[4][3].text[e]</td>
+      <td>[e]entry[4][3].duration_in_hours[e]</td>
+      </tr>
+      <tr>
+      <td>[e]entry[4][4].text[e]</td>
+      <td>[e]entry[4][4].duration_in_hours[e]</td>
       </tr>
       </table>
 
@@ -204,6 +387,13 @@ template = Template.create(
   :ihk_id => ihk.id
 )
 
+template2 = Template.create(
+  :name => 'Vorlage 2',
+  :code_id => code2.id,
+  :job_id => job.id,
+  :ihk_id => ihk.id
+)
+
 admin = User.create(
   :name     => 'Administrator',
   :forename => 'Admin',
@@ -244,9 +434,25 @@ azubi = User.create(
   :pw_recovery_hash => 'fail'
 )
 
+azubi2 = User.create(
+  :name     => 'Auszubildender',
+  :forename => 'Azubi',
+  :email    => 'azubi2@swt.de',
+  :password => '12345678',
+  :password_confirmation => '12345678',
+  :trainingyear => 1,
+  :role_id  => azubiRole.id,
+  :business_id => business.id,
+  :template_id => template2.id,
+  :pw_expired_at => Time.now.utc,
+  :pw_recovery_hash => 'fail'
+)
+
 ausbilder.apprentices << azubi
+ausbilder.apprentices << azubi2
 
 azubi.save
+azubi2.save
 
 report = azubi.reports.create(
   :reportnumber => 1,
@@ -377,4 +583,12 @@ report.report_entries.create(
   :text => 'Urlaub'
 )
 ###################################################################
+report = azubi2.reports.create(
+  :reportnumber => 1,
+  :period_start => Date.new(2012,1,2),
+  :period_end => Date.new(2012,1,9)
+)
+
+report.build_status(:stype => Status.personal)
+report.save
 

@@ -36,7 +36,7 @@ class ReportTemplateEntriesController < ApplicationController
     
     self.handleSubmittedReport(params)
     
-    redirect_to report_path @report
+    redirect_to report_path(@report)
   end
 
 end

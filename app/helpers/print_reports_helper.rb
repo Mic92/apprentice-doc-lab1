@@ -22,7 +22,7 @@ module PrintReportsHelper
     @entryFunctions = Hash.new
     @entryFunctions['text'] = :text
     @entryFunctions['date'] = :date
-    @entryFunctions['durations_in_hours'] = :durations_in_hours
+    @entryFunctions['duration_in_hours'] = :duration_in_hours
   end
 
   def groupEntries
@@ -98,12 +98,12 @@ module PrintReportsHelper
   end
   
   def displayValueFormat(value,entryNo,entryGroup,entryValue)
-    "&nbsp;"+value
+    "&nbsp;"+value.to_s
   end
 
   def editValueFormat(value,entryNo,entryGroup,entryValue)
     pream = "entry_#{entryNo}_#{entryGroup}"
-    "<input id=\"#{pream}_#{entryValue}\" name=\"#{pream}[#{entryValue}]\" type=\"text\" style=\"width:99%;\" value=\"#{value}\" />"
+    "<input id=\"#{pream}_#{entryValue}\" name=\"#{pream}[#{entryValue}]\" type=\"text\" style=\"width:95%;\" value=\"#{value}\" />"
   end
   
   # entry point of this class
