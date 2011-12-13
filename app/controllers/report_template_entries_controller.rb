@@ -25,8 +25,6 @@ class ReportTemplateEntriesController < ApplicationController
     self.prepare
     
     self.editRawCode
-    
-    render :layout => 'editprintlayout'
   end
 
   def update
