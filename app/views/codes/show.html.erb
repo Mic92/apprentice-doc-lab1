@@ -1,6 +1,16 @@
 <p>
-  <b>Name:</b>
-  <%= @code.name %>
+  <b>Name:</b><%= @code.name %><br />
+  <b>Einteilung:</b>
+<% if @code.codegroup == PrintReportsHelper::HOURLY %> 
+Stündlich
+<% end %>
+<% if @code.codegroup == PrintReportsHelper::DAILY %> 
+Täglich
+<% end %>
+<% if @code.codegroup == PrintReportsHelper::WEEKLY %> 
+Wöchentlich
+<% end %>
+  <br/>
   <b>Code:</b><br />
   <%=raw @code.code %>
 </p>

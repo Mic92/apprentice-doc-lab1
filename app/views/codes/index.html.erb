@@ -1,11 +1,24 @@
 <table>
 <tr>
 <th>Name</th>
+<th>Einteilung</th>
 </tr>
 
 <% @codes.each do |code| %>
 <tr>
 <td><%= code.name %></td>
+
+<td>
+<% if code.codegroup == PrintReportsHelper::HOURLY %> 
+Stündlich
+<% end %>
+<% if code.codegroup == PrintReportsHelper::DAILY %> 
+Täglich
+<% end %>
+<% if code.codegroup == PrintReportsHelper::WEEKLY %> 
+Wöchentlich
+<% end %>
+</td>
 <td><%= link_to 'Details', code %></td>
 <td><%= link_to 'Bearbeiten', edit_code_path(code) %></td>
 <td><%= link_to 'Löschen', code, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
