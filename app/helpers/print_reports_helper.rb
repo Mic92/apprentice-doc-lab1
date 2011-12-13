@@ -205,6 +205,13 @@ module PrintReportsHelper
         value.each { |valKey, valValue|
           entryMeth = valKey+"="
           value = valValue
+          # quick fix
+          if valKey.eql?('duration_in_hours')
+            value = value.to_i
+            if value == 0
+              value = 0.5
+            end
+          end
           entry.send(entryMeth, value)
         }
         entry.save
