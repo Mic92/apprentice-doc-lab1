@@ -96,7 +96,7 @@ class UsersController < ApplicationController
     end
 
     @user = User.new(params[:user])
-    if @user == nil || @user.role_id == nil
+    if @user == nil
       render 'new'
     elsif current_user.role.admin?
         
@@ -105,20 +105,24 @@ class UsersController < ApplicationController
         else
           render 'new'
         end
+      
       elsif current_user.role.modify?
-        
-        @role = Role.find(@user.role_id)
-        if @role.admin? || @role.modify?
-          render 'new'     
-        else
-          @user = current_user.apprentices.build(params[:user])
-          if @user.save
-            redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich erstellt.'
+        if @user.role_id == nil
+          @user.errors.add(:role, "muss ausgefüllt werden")
+          render 'new'
+        else  
+          @role = Role.find(@user.role_id)
+          if @role.admin? || @role.modify?
+            render 'new'     
           else
-            render 'new'
+            @user = current_user.apprentices.build(params[:user])
+            if @user.save
+              redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich erstellt.'
+            else
+              render 'new'
+            end
           end
         end
-        
       else redirect_to welcome_path
     end
     

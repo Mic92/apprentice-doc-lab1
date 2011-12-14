@@ -3,35 +3,34 @@
 <% else %>
 <h1>Auszubildenden erstellen</h1>
 <% end %>
-
 <%= form_for @user do |f| %>
   <% if @user.errors.any? %>
-  <div id="error_explanation">
-    <h2><%= @user.errors.count %> Fehler verhinderten die Erstellung des Benutzers:</h2>
-    <ul>
+    <div id="error_explanation">
+      <h2> Es sind Fehler aufgetreten:</h2>
+
+      <ul>
       <% @user.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
-    </ul>
-  </div>
-<% end %>
-
+      </ul>
+    </div>
+  <% end %>
 
   <table>
   <tr>
   <th></th> <th></th>
   </tr>
   <tr>  
-  <td>  <%= f.label "Vorname:" %> </td>
+  <td>  <%= f.label "Vorname: *" %> </td>
   <td>  <%= f.text_field :forename %> </td>
   </tr>
   <tr>  
-  <td>  <%= f.label "Name:" %> </td>
+  <td>  <%= f.label "Name: *" %> </td>
   <td>  <%= f.text_field :name %> </td>
   </tr>
   <tr>  
-  <td>  <%= f.label "Email:" %> </td>
-  <td>  <%= f.text_field :email %> </td>
+  <td>  <%= f.label "Email: *" %> </td>
+  <td>  <%= f.text_field :email %></td>
   </tr>  
   <tr>  
   <td>  <%= f.label "Straße:" %> </td>
@@ -50,15 +49,16 @@
   <td>  <%= f.text_field :trainingyear %> </td>
   </tr>  
   <tr>
-  <td>  <%= f.label "Rechte-Profil" %> </td>
-  <td>  <%= f.collection_select(:role_id, @roles, :id, :name, :prompt => true) %> </td>
+  <td>  <%= f.label "Rechte-Profil: *" %> </td>
+  <td>  <%= f.collection_select(:role_id, @roles, :id, :name, :prompt => true) %></td>
   </tr>
   <tr>
-  <td>  <%= f.label "Druckansicht" %> </td>
+  <td>  <%= f.label "Druckansicht: *" %> </td>
   <td>  <%= f.collection_select(:template_id, @templates, :id, :name, :prompt => true) %> </td>
   </tr>
   
   </table>
+  <i> * Pflichtfelder <br/> </i>
   <br/>
   <%= f.submit "Benutzer erstellen"%>
   <%= link_to "Abbrechen", users_path %>
