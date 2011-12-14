@@ -24,4 +24,10 @@ class UserMailer < ActionMailer::Base
     @unchecked_reports_num = data[:unchecked_reports_num]
     mail(:to => @user.email, :subject => "Apprentice Doc Lab: Sie haben noch " +  @unchecked_reports_num.to_s + " vorgelegte Berichte, die nicht ueberprueft wurden")
   end
+
+  def unwritten_reports_mail(data)
+    @user = data[:apprentice]
+    @date_array = data[:date_array]
+    mail(:to => @user.email, :subject => "TODO Ausgabe der Monate+Jahr, an denen ein Bericht fehlt")
+  end
 end

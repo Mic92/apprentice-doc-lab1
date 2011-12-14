@@ -47,7 +47,7 @@ class ReportBotController < ApplicationController
         #@month_v = @month
         #get commited and accepted reports
         @reports = apprentice.reports.select {|report| report.status.stype == Status.commited || report.status.stype == Status.accepted }
-
+        @date_array = []
         #gehe durch jeden monat, der im zurückliegendem zeitraum liegt
         while i < ReportBotController.apprentice_period_inmonths + 1
           @date_v -= 1.months
@@ -60,19 +60,23 @@ class ReportBotController < ApplicationController
             if report.period_start.to_time >= @vtime_start && report.period_end.to_time <= @vtime_end
               #Report ist innerhalb des Monats
               @daycount -= workdays( report.period_start.to_time, report.period_end.to_time )
-            elsif false#TODO
+            elsif report.period_start.to_time < @vtime_start && report.period_end.to_time <= @vtime_end
               #Report ist teilweise am Anfang des Monats
-              #TODO
-            elsif false#TODO
+              @daycount -= workdays( @vtime_start, report.period_end.to_time )
+            elsif report.period_start.to_time >= @vtime_start && report.period_end.to_time > @vtime_end
               #Report ist teilweise am Ende des Monats
-              #TODO
+              @daycount -= workdays( report.period_start.to_time, @vtime_end )
             end
-            #TODO
           end
-
-          #TODO überprüfen, ob an jedem wochentag etwas eingereicht wurde
-
+          if @daycount > 0
+            @date_array << [@date_v.year, @date_v.month]
+          end
           i += 1
+        end
+        #whileloop ist zu ende, email mit monaten senden, für die ein bericht fehlt
+        if @date_array != []
+          @data = { :apprentice => apprentice, :date_array => @date_array }
+          UserMailer.unwritten_reports_mail(@data).deliver  #TODO richtige mail schreiben
         end
       end
     end
