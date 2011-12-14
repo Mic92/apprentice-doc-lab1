@@ -115,7 +115,7 @@ RSpec.configure do |config|
       :name => 'Mustermann',
       :forename => 'Max',
       :zipcode => '01234',
-      :street => 'Musterstraße',
+      :street => 'Musterstraße 12',
       :city => 'Musterstadt',
       :email => 'max@mustermann.de',
 	  :salt => '1700b3ac65a142efb7af2db02a1d4c403b1ea1fd854baedc8fb29626347871fd',

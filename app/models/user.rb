@@ -29,12 +29,24 @@ class User < ActiveRecord::Base
   has_many :reports
   has_many :apprentices, :class_name => "User", :foreign_key => "instructor_id"
   belongs_to :template
-
-  validates :role_id, :name, :forename, :template_id, :presence => true
+  validates :name, :forename, :presence => true,
+            :format => { :with => /\A([A-ZÄÖÜ][a-zäöüß]+)((\s|\-){1}[A-ZÄÖÜ][a-zäöüß]+)*\Z/ },
+            :length => { :maximum => 30 }
+            
+  validates :role_id, :template_id, :presence => true
   validates :email, :uniqueness => true, :presence => true,
             :format => { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
             :length => { :in => 5..40}
-
+  
+  validates :street, :allow_blank => true,
+            :format => { :with => /\A[A-ZÄÜÖ][a-zäöüß]+((\s|\-)?[A-ZÄÜÖ][a-z]+)*\s([0-9]{1,3}[a-z]?)\Z/ },
+            :length => { :in => 5..40}
+  
+  validates :city, :allow_blank => true,
+            :format => { :with => /\A([A-ZÄÖÜ][a-zäöüß]+)((\s|\-){1}[A-ZÄÖÜ][a-zäöüß]+)*\Z/ },
+            :length => { :maximum => 30 }
+            
+  
   validates :zipcode, :allow_blank => true,
             :numericality => { :only_integer => true },
             :length => { :is => 5}

@@ -39,7 +39,7 @@ class UsersController < ApplicationController
 # Die Methode 'show' zeigt das eigene Profil an.
 
   def show
-    if current_user.role.admin?
+    if current_user.role.admin? && current_user != User.find(params[:id])
       @user = User.find(params[:id])
       @role = Role.find(@user.role_id)
     else
@@ -108,7 +108,7 @@ class UsersController < ApplicationController
       
       elsif current_user.role.modify?
         if @user.role_id == nil
-          @user.errors.add(:role, "muss ausgefüllt werden")
+          @user.errors.add(:role, "muss ausgewählt werden")
           render 'new'
         else  
           @role = Role.find(@user.role_id)
@@ -139,25 +139,34 @@ class UsersController < ApplicationController
     else
       @user = current_user
     end
-    @attr = params[:user]
-    if @attr == nil || (params[:user][:password] != params[:user][:password_confirmation] && params[:user][:password].length < 8)
-      render 'edit'
-    else
-      if params[:user][:role_id] == nil || @user == current_user
-        @role = Role.find(current_user.role_id)
-      else
-        @role = Role.find(params[:user][:role_id])
-      end
-      @attr = params[:user].merge(:role_id => @role.id)
-      if current_user.role.admin? 
+    if params[:user] != nil
+      @attr = params[:user]
+      if @attr == nil || (params[:user][:password] != params[:user][:password_confirmation] && params[:user][:password].length < 8)
         @user.update_attributes(@user.attributes.merge(@attr))
-        redirect_to user_path(@user), :notice => 'Das Profil wurde erfolgreich bearbeitet.'
-      elsif (@role.modify? && !current_user.role.modify? )|| @role.admin?
-       render 'edit'
-       else 
-       @user.update_attributes(@user.attributes.merge(@attr))
-       redirect_to user_path(@user), :notice => 'Das Profil wurde erfolgreich bearbeitet.'
-      end     
+        render 'edit'
+      else
+        if params[:user][:role_id] == nil || @user == current_user
+          @role = Role.find(current_user.role_id)
+        else
+          @role = Role.find(params[:user][:role_id])
+        end
+        @attr = params[:user].merge(:role_id => @role.id)
+        if current_user.role.admin?
+          if @user.update_attributes(@user.attributes.merge(@attr))
+            redirect_to user_path(@user), :notice => 'Das Profil wurde erfolgreich bearbeitet.'
+          else
+            render 'edit'
+          end
+        elsif (@role.modify? && !current_user.role.modify? )|| @role.admin?
+         render 'edit'
+         elsif @user.update_attributes(@user.attributes.merge(@attr))
+          redirect_to user_path(@user), :notice => 'Das Profil wurde erfolgreich bearbeitet.'
+         else
+          render 'edit'
+        end     
+      end
+    else
+      render 'edit'
     end
   end
 

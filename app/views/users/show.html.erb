@@ -4,6 +4,7 @@
 <h1><%= "Profil von #{@user.forename} #{@user.name}"%></h1>
 <% end %>
 
+
 <%= form_for @user do |f| %>
   <%= f.label "Sie sind angemeldet als #{@user.role.name}"%>
   <br />
