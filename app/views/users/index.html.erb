@@ -20,6 +20,7 @@
     <% if current_user.role.admin? %>
       <th> Rechte-Profil </th>
       <th> </th>
+      <th> </th>
     <% end %>
     
   </tr>
@@ -32,6 +33,9 @@
       <td class="center"><%= u.name %></td>
       <% if current_user.role.admin? %>
         <td class="center"><%= u.role.name %>
+      <% end %>
+      <% if current_user.role.admin? %>
+        <td><%= link_to 'Bearbeiten', edit_user_path(u) %></td>
       <% end %>
       <% if current_user.role.admin? || current_user.role.modify? %>
         <% if !u.deleted? %>

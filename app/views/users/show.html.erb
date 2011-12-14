@@ -1,4 +1,8 @@
+<% if @user == current_user %>
 <h1>Mein Profil</h1>
+<% else %>
+<h1><%= "Profil von #{@user.forename} #{@user.name}"%></h1>
+<% end %>
 
 <%= form_for @user do |f| %>
   <%= f.label "Sie sind angemeldet als #{@user.role.name}"%>
@@ -18,7 +22,8 @@
   <tr>  
   <td><b>  <%= f.label "Email:" %></b>  </td>
   <td>  <%= f.label @user.email %> </td>
-  </tr>  
+  </tr>
+  <% if @user == current_user %>    
   <tr>  
   <td><b>  <%= f.label "Straße:" %></b>  </td>
   <td>  <%= f.label @user.street %> </td>
@@ -35,6 +40,7 @@
   <td><b>  <%= f.label "Ausbildungsjahr:" %></b>  </td>
   <td>  <%= f.label @user.trainingyear %> </td>
   </tr>
+  <% end %>
   </table>
   
 <% end %>

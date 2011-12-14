@@ -39,7 +39,12 @@ class UsersController < ApplicationController
 # Die Methode 'show' zeigt das eigene Profil an.
 
   def show
-    @user = current_user
+    if current_user.role.admin?
+      @user = User.find(params[:id])
+      @role = Role.find(@user.role_id)
+    else
+      @user = current_user
+    end
   end
   
 # Die Methode 'new' erzeugt einen neuen Nutzer, wenn man Administrator oder Ausbilder ist. Für Auszubildene ist die Methode gesperrt.
@@ -61,7 +66,10 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
-    @templates = Template.all   
+    @templates = Template.all
+    @template = @user.template_id
+    @roles = Role.all
+    @role = @user.role_id
   end
 
 # Die Methode 'create' erstellt einen neuen Benutzer, sofern dieser über valide Attribute verfügt.
@@ -120,22 +128,27 @@ class UsersController < ApplicationController
 # Die Methode 'update' aktualisiert das eigene Benutzerprofil mit validen Daten. 
 
   def update
+    @roles = Role.all
     @templates = Template.all
-    @user = current_user
+    if current_user.role.admin?
+      @user = User.find(params[:id])
+    else
+      @user = current_user
+    end
     @attr = params[:user]
     if @attr == nil || (params[:user][:password] != params[:user][:password_confirmation] && params[:user][:password].length < 8)
       render 'edit'
     else
-      if params[:user][:role_id] == nil
+      if params[:user][:role_id] == nil || @user == current_user
         @role = Role.find(current_user.role_id)
       else
         @role = Role.find(params[:user][:role_id])
       end
-      @attr = params[:user].merge(:role_id => @role)
-      if current_user.role.admin?
+      @attr = params[:user].merge(:role_id => @role.id)
+      if current_user.role.admin? 
         @user.update_attributes(@user.attributes.merge(@attr))
         redirect_to user_path(@user), :notice => 'Das Profil wurde erfolgreich bearbeitet.'
-      elsif @role.modify? || @role.admin?
+      elsif (@role.modify? && !current_user.role.modify? )|| @role.admin?
        render 'edit'
        else 
        @user.update_attributes(@user.attributes.merge(@attr))
@@ -183,7 +196,9 @@ class UsersController < ApplicationController
   private
     def correct_user
       @user = User.find(params[:id])
-      redirect_to welcome_path unless current_user?(@user)
+      if !current_user.role.admin?
+        redirect_to welcome_path unless current_user?(@user)
+      end
     end
 
 end

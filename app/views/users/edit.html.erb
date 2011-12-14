@@ -1,5 +1,8 @@
+<% if @user == current_user %>
 <h1>Mein Profil bearbeiten</h1>
-
+<% else %>
+<h1>Profil bearbeiten</h1>
+<% end %>
 <%= form_for @user do |f| %>
   <%= f.label "Sie sind angemeldet als #{@user.role.name}"%>
   
@@ -29,11 +32,12 @@
   <tr>  
   <td><b>  <%= f.label "Email:" %></b>  </td>
   <td>  <%= f.text_field :email %> </td>
-  </tr>  
+  </tr>
+  <% if @user == current_user %>  
   <tr>  
   <td><b>  <%= f.label "Straße:" %></b>  </td>
   <td>  <%= f.text_field :street %> </td>
-  </tr>  
+  </tr>
   <tr>  
   <td><b>  <%= f.label "Postleitzahl:" %></b>  </td>
   <td>  <%= f.text_field :zipcode %> </td>
@@ -54,15 +58,25 @@
   <td><b><%= f.label "Passwort bestätigen:" %></b></td>
   <td> <%= f.password_field :password_confirmation %></td>
   </tr>
+  <% end %>
   <tr>
   <td><b>  <%= f.label "Druckansicht" %> </b></td>
-  <td>  <%= f.collection_select(:template_id, @templates, :id, :name, :prompt => true) %> </td>
+  <td>  <%= f.collection_select(:template_id, @templates, :id, :name, :selected => @template) %> </td>
   </tr>
+  <% if current_user.role.admin? %>
+    <tr>
+    <td><b>  <%= f.label "Rechte-Profil" %></b> </td>
+    <td>  <%= f.collection_select(:role_id, @roles, :id, :name, :selected => @role ) %> </td>
+    </tr>    
+  <% end %>
   </table>
   <br />
   
   <%= f.submit "Einstellungen speichern" %>
-  <%= link_to "Abbrechen", user_path(@user) %>
-  
+  <% if current_user.role.admin? %>
+    <%= link_to "Abbrechen", users_path %>
+  <% else %>
+    <%= link_to "Abbrechen", user_path(@user) %>
+  <% end %>
 
 <% end %>

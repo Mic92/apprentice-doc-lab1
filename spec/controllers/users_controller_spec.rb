@@ -66,11 +66,11 @@ describe UsersController do
         assigns(:user).should eq(@admin)
       end
       
-      it "should NOT show other users attributes" do
+      it "should show other users attributes" do
         get 'show', :id => @ausbilder
-        response.should redirect_to(welcome_path)
+        assigns(:user).should eq(@ausbilder)
         get 'show', :id => @azubi
-        response.should redirect_to(welcome_path)
+        assigns(:user).should eq(@azubi)
       end
     end
 
@@ -99,7 +99,7 @@ describe UsersController do
       
       it "should not find other users" do
         get 'edit', :id =>@azubi
-        response.should redirect_to(welcome_path)
+        assigns(:user).should eq(@azubi)
       end
     end
 
