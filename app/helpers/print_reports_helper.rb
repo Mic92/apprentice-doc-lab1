@@ -17,6 +17,8 @@ module PrintReportsHelper
     @simpleFunctions['currentdate'] = :currentdate
     @simpleFunctions['trainingyear'] = :trainingyear
     @simpleFunctions['reportnumber'] = :reportnumber
+    @simpleFunctions['reportweekstart'] = :reportweekstart
+    @simpleFunctions['reportweekend'] = :reportweekend
     #...
 
     @entryFunctions = Hash.new
@@ -150,6 +152,14 @@ module PrintReportsHelper
     @report.period_start.year
   end
   
+  def reportweekstart
+    @report.period_start.cweek
+  end
+
+  def reportweekend
+    @report.period_end.cweek
+  end
+
   def currentdate
     DateTime.now.strftime('%d.%m.%Y')
   end

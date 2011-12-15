@@ -59,7 +59,7 @@ code = Code.create(
   :name => 'Code 1',
   :codegroup => PrintReportsHelper::WEEKLY,
   :code => 'Vor- und Zuname <u>[v]userforename[/v] [v]username[/v]</u> Ausbildungsabteilung:<u>[v]jobname[/v]</u><br />
-  <b>Ausbildungsnachweis Nr. </b><u>[v]reportnumber[/v]</u> Monat <u>[v]reportmonth[/v] [v]reportyear[/v]</u> <u>[v]trainingyear[/v].</u> Ausbildungsjahr<br />
+  <b>Ausbildungsnachweis Nr. </b><u>[v]reportweekstart[/v]</u> Monat <u>[v]reportmonth[/v] [v]reportyear[/v]</u> <u>[v]trainingyear[/v].</u> Ausbildungsjahr<br />
 
   <table border="1" width=595px style="border-collapse:collapse;">
   <colgroup>
@@ -208,7 +208,7 @@ code2 = Code.create(
   :name => 'Code 2',
   :codegroup => PrintReportsHelper::DAILY,
   :code => 'Vor- und Zuname <u>[v]userforename[/v] [v]username[/v]</u> Ausbildungsabteilung:<u>[v]jobname[/v]</u><br />
-  <b>Ausbildungsnachweis Nr. </b><u>[v]reportnumber[/v]</u> Monat <u>[v]reportmonth[/v] [v]reportyear[/v]</u> <u>[v]trainingyear[/v].</u> Ausbildungsjahr<br />
+  <b>Ausbildungsnachweis Nr. </b><u>[v]reportweekstart[/v]</u> Monat <u>[v]reportmonth[/v] [v]reportyear[/v]</u> <u>[v]trainingyear[/v].</u> Ausbildungsjahr<br />
 
   <table border="1" width=595px style="border-collapse:collapse;">
   <colgroup>
