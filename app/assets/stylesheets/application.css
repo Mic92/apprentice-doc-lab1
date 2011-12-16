@@ -6,14 +6,14 @@
  *= require_tree .
  */
 
-section {
+section.main {
   position: absolute;
   left: 180px;
   top: 51px;
   padding: 10px;
 }
 
-header {
+header.main {
   position:fixed;
   top:0px;
   left:0px;
@@ -24,7 +24,7 @@ header {
   background-color: #ddf;
 }
 
-nav {
+nav.main {
   position: fixed;
   top: 50px;
   left: 0px;
@@ -34,17 +34,17 @@ nav {
   background-color: #ddf;
 }
 
-ul {
+ul.main {
   margin: 0px;
   padding: 10px;
   list-style-position: inside;
 }
 
-tr:nth-child(even) {
+tr.main:nth-child(even) {
   background-color: lightgrey;
 }
 
-td, th {
+td.main, th.main {
   padding: 5px;
 }
 
@@ -56,27 +56,27 @@ body {
   line-height: 18px;
 }
 
-p, ol, ul, td {
+p.main, ol.main, ul.main, td.main {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
   line-height: 18px;
 }
 
-pre {
+pre.main {
   background-color: #eee;
   padding: 10px;
   font-size: 11px;
 }
 
-a {
+a.main {
   color: #000;
 }
 
-a:visited {
+a.main:visited {
   color: #666;
 }
 
-a:hover {
+a.main:hover {
   color: #fff;
   background-color: #000;
 }

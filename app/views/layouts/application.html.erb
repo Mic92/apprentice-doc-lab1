@@ -7,43 +7,42 @@
     <%= csrf_meta_tags %>
   </head>
 <body>
-  <section>
+  <section class="main">
     <% flash.each do |key, value| %>
       <div class="flash <%= key %>"><%= value %></div>
     <% end %>
       <%= yield %>
     <%= debug(params) if Rails.env.development? %>
   </section>
-  <header>
+  <header class="main">
     <strong>Gruppe 11 - Ausbildungsnachweise</strong>
     <br />
     <em><%= @title %></em>
   </header>
-  <nav>
-    <ul>
+  <nav class="main">
+    <ul class="main">
       <% if signed_in? %>
         <% @role = current_user.role %>
-        <li><%= link_to 'Startseite', welcome_path %></li>
+        <li class="main"><%= link_to 'Startseite', welcome_path, :class => 'main' %></li>
         <% if @role.read == true or @role.commit == true or @role.export == true or @role.check == true %>
-          <li><%= link_to 'Berichts-Verwaltung', reports_path %></li>
+          <li class="main"><%= link_to 'Berichts-Verwaltung', reports_path, :class => 'main' %></li>
         <% end %>
         <% if @role.modify == true or @role.admin == true %>
-          <li><%= link_to 'Benutzer-Verwaltung', users_path %></li>
+          <li class="main"><%= link_to 'Benutzer-Verwaltung', users_path, :class => 'main' %></li>
         <% end %>
         <% if @role.admin == true %>
-          <li><%= link_to 'Job-Verwaltung', jobs_path %></li>
-          <li><%= link_to 'IHK-Verwaltung', ihks_path %></li>
-          <li><%= link_to 'Code-Verwaltung', codes_path %></li>
-          <li><%= link_to 'Template-Verwaltung', templates_path %></li>
-          <li><%= link_to 'Rechte-Verwaltung', roles_path %>
-         
+          <li class="main"><%= link_to 'Job-Verwaltung', jobs_path, :class => 'main' %></li>
+          <li class="main"><%= link_to 'IHK-Verwaltung', ihks_path, :class => 'main' %></li>
+          <li class="main"><%= link_to 'Code-Verwaltung', codes_path, :class => 'main' %></li>
+          <li class="main"><%= link_to 'Template-Verwaltung', templates_path, :class => 'main' %></li>
+          <li class="main"><%= link_to 'Rechte-Verwaltung', roles_path, :class => 'main' %>
         <% end %>
         <br />
         <br />
-        <li><%= link_to 'Mein Profil', user_path(current_user) %></li>
-        <li><%= link_to "Ausloggen", signout_path %></li>
+        <li class="main"><%= link_to 'Mein Profil', user_path(current_user), :class => 'main' %></li>
+        <li class="main"><%= link_to "Ausloggen", signout_path, :class => 'main' %></li>
       <% else %>
-        <li><%= link_to "Einloggen", welcome_path %></li>
+        <li class="main"><%= link_to "Einloggen", welcome_path, :class => 'main' %></li>
       <% end %>
     </ul>
   </nav>
