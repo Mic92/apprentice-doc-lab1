@@ -6,12 +6,12 @@
 <% @ihks.each do |ihk| %>
 <tr class="main">
 <td class="main"><%= ihk.name %></td>
-<td class="main"><%= link_to 'Details', ihk %></td>
-<td class="main"><%= link_to 'Bearbeiten', edit_ihk_path(ihk) %></td>
-<td class="main"><%= link_to 'Löschen', ihk, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
+<td class="main"><%= link_to 'Details', ihk, :class => 'main' %></td>
+<td class="main"><%= link_to 'Bearbeiten', edit_ihk_path(ihk), :class => 'main' %></td>
+<td class="main"><%= link_to 'Löschen', ihk, :confirm => 'Sind Sie sicher?', :method => :delete, :class => 'main' %></td>
 </tr>
 <% end %>
 </table>
 <br />
 
-<%= link_to 'Neue IHK', new_ihk_path %>
+<%= link_to 'Neue IHK', new_ihk_path, :class => 'main' %>

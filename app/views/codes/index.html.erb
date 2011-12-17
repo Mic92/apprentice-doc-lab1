@@ -19,12 +19,12 @@ Täglich
 Wöchentlich
 <% end %>
 </td>
-<td class="main"><%= link_to 'Details', code %></td>
-<td class="main"><%= link_to 'Bearbeiten', edit_code_path(code) %></td>
-<td class="main"><%= link_to 'Löschen', code, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
+<td class="main"><%= link_to 'Details', code, :class => 'main' %></td>
+<td class="main"><%= link_to 'Bearbeiten', edit_code_path(code), :class => 'main' %></td>
+<td class="main"><%= link_to 'Löschen', code, :confirm => 'Sind Sie sicher?', :method => :delete, :class => 'main' %></td>
 </tr>
 <% end %>
 </table>
 <br />
 
-<%= link_to 'Neuer Code', new_code_path %>
+<%= link_to 'Neuer Code', new_code_path, :class => 'main' %>

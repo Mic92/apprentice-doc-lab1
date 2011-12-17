@@ -5,10 +5,10 @@
 <% end %>
 <p>
 <% if current_user.role.admin? %>
-  <%= link_to 'Benutzer erstellen', new_user_path %>
+  <%= link_to 'Benutzer erstellen', new_user_path, :class => 'main' %>
 <% elsif  current_user.role.modify? %>
-  <%= link_to 'Auszubildenden erstellen', new_user_path %>
-  <%= link_to 'Auszubildende verwalten', apprenticeships_path %>
+  <%= link_to 'Auszubildenden erstellen', new_user_path, :class => 'main' %>
+  <%= link_to 'Auszubildende verwalten', apprenticeships_path, :class => 'main' %>
 <% end %>
 </p>
 
@@ -39,9 +39,9 @@
       <% end %>
       <% if current_user.role.admin? || current_user.role.modify? %>
         <% if !u.deleted? %>
-          <td class="main"><%= link_to 'Deaktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete %></td>
+          <td class="main"><%= link_to 'Deaktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete, :class => 'main' %></td>
         <% else %>
-          <td class="main"><%= link_to 'Aktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete %></td>
+          <td class="main"><%= link_to 'Aktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete, :class => 'main' %></td>
         <% end %>
       <% end %>
       

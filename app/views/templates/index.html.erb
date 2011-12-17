@@ -5,12 +5,12 @@
 <% @templates.each do |template| %>
 <tr class="main">
 <td class="main"><%= template.name %></td>
-<td class="main"><%= link_to 'Details', template %></td>
-<td class="main"><%= link_to 'Bearbeiten', edit_template_path(template) %></td>
-<td class="main"><%= link_to 'Löschen', template, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
+<td class="main"><%= link_to 'Details', template, :class => 'main' %></td>
+<td class="main"><%= link_to 'Bearbeiten', edit_template_path(template), :class => 'main' %></td>
+<td class="main"><%= link_to 'Löschen', template, :confirm => 'Sind Sie sicher?', :method => :delete, :class => 'main' %></td>
 </tr>
 <% end %>
 </table>
 <br />
 
-<%= link_to 'Neue Template', new_template_path %>
+<%= link_to 'Neue Template', new_template_path, :class => 'main' %>
