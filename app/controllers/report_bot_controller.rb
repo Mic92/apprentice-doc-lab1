@@ -36,36 +36,33 @@ class ReportBotController < ApplicationController
     @apprentices = User.joins(:role).where( :roles => {:commit => true} )
     @year = Time.now.year
     @month = Time.now.month
-    #@day = Time.now.day
 
     @apprentices.each do |apprentice|
-      if apprentice.deleted != true
-
+      if apprentice.deleted != true #&& apprentice.trainingbegin != nil
         i = 1
-        @date_v = Time.now
-        #@year_v = @year
-        #@month_v = @month
+        @date_v = Time.mktime(@year, @month)
         #get commited and accepted reports
         @reports = apprentice.reports.select {|report| report.status.stype == Status.commited || report.status.stype == Status.accepted }
         @date_array = []
         #gehe durch jeden monat, der im zurückliegendem zeitraum liegt
-        while i < ReportBotController.apprentice_period_inmonths + 1
+        while i < ReportBotController.apprentice_period_inmonths + 1  #TODO frage nach, ob man nicht über den Ausbildungsanfang hinweg ist
           @date_v -= 1.months
-          @vtime_start = Time.mktime(@date_v.year, @date_v.month)
-          @vtime_end = Time.mktime(@date_v.year, @date_v.month) + 1.months
           #berechne, wie viele Arbeitstage in dem zu prüfendem Monat sind
-          @daycount = workdays( @vtime_start, @vtime_end )
+          @daycount = workdays( @date_v, @date_v + 1.months)
           #ziehe von dem Arbeitstagcounter die Tage ab, für die ein Report existiert
           @reports.each do |report|
-            if report.period_start.to_time >= @vtime_start && report.period_end.to_time <= @vtime_end
+            @r_start = report.period_start.to_time
+            @r_end = report.period_end.to_time + 1.days
+            # + 1.days weil der period_end Eintrag um 1 Tag abweicht, da es den Tag symbolisiert und nicht die wirkliche zeitliche Endgrenze
+            if @r_start >= @date_v && @r_end <= @date_v + 1.months
               #Report ist innerhalb des Monats
-              @daycount -= workdays( report.period_start.to_time, report.period_end.to_time )
-            elsif report.period_start.to_time < @vtime_start && report.period_end.to_time <= @vtime_end
+              @daycount -= workdays( @r_start, @r_end) 
+            elsif @r_start < @date_v && @r_end <= @date_v + 1.months
               #Report ist teilweise am Anfang des Monats
-              @daycount -= workdays( @vtime_start, report.period_end.to_time )
-            elsif report.period_start.to_time >= @vtime_start && report.period_end.to_time > @vtime_end
+              @daycount -= workdays( @date_v, @r_end)
+            elsif @r_start >= @date_v && @r_end > @date_v + 1.months
               #Report ist teilweise am Ende des Monats
-              @daycount -= workdays( report.period_start.to_time, @vtime_end )
+              @daycount -= workdays( @r_start, @date_v + 1.months )
             end
           end
           if @daycount > 0
