@@ -431,7 +431,8 @@ azubi = User.create(
   :business_id => business.id,
   :template_id => template.id,
   :pw_expired_at => Time.now.utc,
-  :pw_recovery_hash => 'fail'
+  :pw_recovery_hash => 'fail',
+  :trainingbegin => Date.new(2011,3,1)
 )
 
 azubi2 = User.create(
