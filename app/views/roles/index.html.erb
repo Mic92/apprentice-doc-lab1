@@ -1,21 +1,21 @@
 <h1> Verwaltung der Rechte-Profile </h1>
 
 <br />
-<table>
-  <tr>
-  <th>Rechte-Profil</th>
-  <th> </th>
-  <th> </th>
+<table class="main">
+  <tr class="main">
+  <th class="main">Rechte-Profil</th>
+  <th class="main"> </th>
+  <th class="main"> </th>
   </tr>
 
   <% @roles.each do |r| %>
-  <tr>
+  <tr class="main">
   <td class="center"> <%= r.name %></td>
-  <td> <%= link_to 'Bearbeiten', edit_role_path(r)%></td>
+  <td class="main"> <%= link_to 'Bearbeiten', edit_role_path(r)%></td>
   <% if r.id > 3 %>
-  <td> <%= link_to 'Entfernen', role_path(r), :confirm => 'Sind Sie sicher?', :method => :delete %></td>
+  <td class="main"> <%= link_to 'Entfernen', role_path(r), :confirm => 'Sind Sie sicher?', :method => :delete %></td>
   <% else %>
-    <td> - </td>
+    <td class="main"> - </td>
   <% end %>
   </tr>
   <% end %>

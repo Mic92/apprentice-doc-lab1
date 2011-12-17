@@ -16,45 +16,45 @@
     </div>
   <% end %>
 
-  <table>
-  <tr>
-  <th></th> <th></th>
+  <table class="main">
+  <tr class="main">
+  <th class="main"></th> <th class="main"></th>
   </tr>
-  <tr>  
-  <td>  <%= f.label "Vorname: *" %> </td>
-  <td>  <%= f.text_field :forename %> </td>
+  <tr class="main">  
+  <td class="main">  <%= f.label "Vorname: *" %> </td>
+  <td class="main">  <%= f.text_field :forename %> </td>
   </tr>
-  <tr>  
-  <td>  <%= f.label "Name: *" %> </td>
-  <td>  <%= f.text_field :name %> </td>
+  <tr class="main">  
+  <td class="main">  <%= f.label "Name: *" %> </td>
+  <td class="main">  <%= f.text_field :name %> </td>
   </tr>
-  <tr>  
-  <td>  <%= f.label "Email: *" %> </td>
-  <td>  <%= f.text_field :email %></td>
+  <tr class="main">  
+  <td class="main">  <%= f.label "Email: *" %> </td>
+  <td class="main">  <%= f.text_field :email %></td>
   </tr>  
-  <tr>  
-  <td>  <%= f.label "Straße:" %> </td>
-  <td>  <%= f.text_field :street %> </td>
+  <tr class="main">  
+  <td class="main">  <%= f.label "Straße:" %> </td>
+  <td class="main">  <%= f.text_field :street %> </td>
   </tr>  
-  <tr>  
-  <td>  <%= f.label "Postleitzahl:" %> </td>
-  <td>  <%= f.text_field :zipcode %> </td>
+  <tr class="main">  
+  <td class="main">  <%= f.label "Postleitzahl:" %> </td>
+  <td class="main">  <%= f.text_field :zipcode %> </td>
   </tr>  
-  <tr>  
-  <td>  <%= f.label "Ort:" %> </td>
-  <td>  <%= f.text_field :city %> </td>
+  <tr class="main">  
+  <td class="main">  <%= f.label "Ort:" %> </td>
+  <td class="main">  <%= f.text_field :city %> </td>
   </tr>  
-  <tr>  
-  <td>  <%= f.label "Ausbildungsjahr:" %> </td>
-  <td>  <%= f.text_field :trainingyear %> </td>
+  <tr class="main">  
+  <td class="main">  <%= f.label "Ausbildungsjahr:" %> </td>
+  <td class="main">  <%= f.text_field :trainingyear %> </td>
   </tr>  
-  <tr>
-  <td>  <%= f.label "Rechte-Profil: *" %> </td>
-  <td>  <%= f.collection_select(:role_id, @roles, :id, :name, :prompt => true) %></td>
+  <tr class="main">
+  <td class="main">  <%= f.label "Rechte-Profil: *" %> </td>
+  <td class="main">  <%= f.collection_select(:role_id, @roles, :id, :name, :prompt => true) %></td>
   </tr>
-  <tr>
-  <td>  <%= f.label "Druckansicht: *" %> </td>
-  <td>  <%= f.collection_select(:template_id, @templates, :id, :name, :prompt => true) %> </td>
+  <tr class="main">
+  <td class="main">  <%= f.label "Druckansicht: *" %> </td>
+  <td class="main">  <%= f.collection_select(:template_id, @templates, :id, :name, :prompt => true) %> </td>
   </tr>
   
   </table>

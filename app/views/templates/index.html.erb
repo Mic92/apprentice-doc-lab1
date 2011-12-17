@@ -1,13 +1,13 @@
-<table>
-<tr>
-<th>Name</th>
+<table class="main">
+<tr class="main">
+<th class="main">Name</th>
 </tr>
 <% @templates.each do |template| %>
-<tr>
-<td><%= template.name %></td>
-<td><%= link_to 'Details', template %></td>
-<td><%= link_to 'Bearbeiten', edit_template_path(template) %></td>
-<td><%= link_to 'Löschen', template, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
+<tr class="main">
+<td class="main"><%= template.name %></td>
+<td class="main"><%= link_to 'Details', template %></td>
+<td class="main"><%= link_to 'Bearbeiten', edit_template_path(template) %></td>
+<td class="main"><%= link_to 'Löschen', template, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
 </tr>
 <% end %>
 </table>

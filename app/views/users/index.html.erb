@@ -13,21 +13,21 @@
 </p>
 
 <p>
-<table>
-  <tr>
-    <th> Vorname </th>
-    <th> Name </th>
+<table class="main">
+  <tr class="main">
+    <th class="main"> Vorname </th>
+    <th class="main"> Name </th>
     <% if current_user.role.admin? %>
-      <th> Rechte-Profil </th>
-      <th> </th>
-      <th> </th>
+      <th class="main"> Rechte-Profil </th>
+      <th class="main"> </th>
+      <th class="main"> </th>
     <% end %>
     
   </tr>
   
   <% @users.each do |u| %>
 
-    <tr>
+    <tr class="main">
       
       <td class="center"><%= u.forename %></td>
       <td class="center"><%= u.name %></td>
@@ -35,13 +35,13 @@
         <td class="center"><%= u.role.name %>
       <% end %>
       <% if current_user.role.admin? %>
-        <td><%= link_to 'Bearbeiten', edit_user_path(u) %></td>
+        <td class="main"><%= link_to 'Bearbeiten', edit_user_path(u) %></td>
       <% end %>
       <% if current_user.role.admin? || current_user.role.modify? %>
         <% if !u.deleted? %>
-          <td><%= link_to 'Deaktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete %></td>
+          <td class="main"><%= link_to 'Deaktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete %></td>
         <% else %>
-          <td><%= link_to 'Aktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete %></td>
+          <td class="main"><%= link_to 'Aktivieren', user_path(u), :confirm => "Sind sie sicher?", :method => :delete %></td>
         <% end %>
       <% end %>
       

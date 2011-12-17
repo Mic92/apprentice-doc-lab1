@@ -1,14 +1,14 @@
-<table>
-<tr>
-<th>Name</th>
+<table class="main">
+<tr class="main">
+<th class="main">Name</th>
 </tr>
 
 <% @ihks.each do |ihk| %>
-<tr>
-<td><%= ihk.name %></td>
-<td><%= link_to 'Details', ihk %></td>
-<td><%= link_to 'Bearbeiten', edit_ihk_path(ihk) %></td>
-<td><%= link_to 'Löschen', ihk, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
+<tr class="main">
+<td class="main"><%= ihk.name %></td>
+<td class="main"><%= link_to 'Details', ihk %></td>
+<td class="main"><%= link_to 'Bearbeiten', edit_ihk_path(ihk) %></td>
+<td class="main"><%= link_to 'Löschen', ihk, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
 </tr>
 <% end %>
 </table>

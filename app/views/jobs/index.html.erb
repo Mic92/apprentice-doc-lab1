@@ -1,14 +1,14 @@
-<table>
-<tr>
-<th>Name</th>
+<table class="main">
+<tr class="main">
+<th class="main">Name</th>
 </tr>
 
 <% @jobs.each do |job| %>
-<tr>
-<td><%= job.name %></td>
-<td><%= link_to 'Details', job %></td>
-<td><%= link_to 'Bearbeiten', edit_job_path(job) %></td>
-<td><%= link_to 'Löschen', job, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
+<tr class="main">
+<td class="main"><%= job.name %></td>
+<td class="main"><%= link_to 'Details', job %></td>
+<td class="main"><%= link_to 'Bearbeiten', edit_job_path(job) %></td>
+<td class="main"><%= link_to 'Löschen', job, :confirm => 'Sind Sie sicher?', :method => :delete %></td>
 </tr>
 <% end %>
 </table>
