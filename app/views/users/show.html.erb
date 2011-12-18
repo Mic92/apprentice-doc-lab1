@@ -6,7 +6,6 @@
 
 
 <%= form_for @user do |f| %>
-  <%= f.label "Sie sind angemeldet als #{@user.role.name}"%>
   <br />
   <table class="main">
   <tr class="main">
@@ -23,8 +22,7 @@
   <tr class="main">  
   <td class="main"><b>  <%= f.label "Email:" %></b>  </td>
   <td class="main">  <%= f.label @user.email %> </td>
-  </tr>
-  <% if @user == current_user %>    
+  </tr> 
   <tr class="main">  
   <td class="main"><b>  <%= f.label "Straße:" %></b>  </td>
   <td class="main">  <%= f.label @user.street %> </td>
@@ -37,9 +35,14 @@
   <td class="main"><b>  <%= f.label "Ort:" %></b>  </td>
   <td class="main">  <%= f.label @user.city %> </td>
   </tr>
+  <% if @user.role.commit? %>
   <tr class="main">  
   <td class="main"><b>  <%= f.label "Ausbildungsjahr:" %></b>  </td>
   <td class="main">  <%= f.label @user.trainingyear %> </td>
+  </tr>
+  <tr class="main">
+  <td class="main"><b> <%= f.label "Ausbildungsbeginn:" %></b></td>
+  <td class="main">  <%= l @user.trainingbegin %> </td>
   </tr>
   <% end %>
   </table>

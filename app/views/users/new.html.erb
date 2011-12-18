@@ -47,7 +47,11 @@
   <tr class="main">  
   <td class="main">  <%= f.label "Ausbildungsjahr:" %> </td>
   <td class="main">  <%= f.text_field :trainingyear %> </td>
-  </tr>  
+  </tr>
+  <tr class="main">
+  <td class="main">  <%= f.label "Ausbildungsbeginn:" %> </td>
+  <td class="main">  <%= f.date_select :trainingbegin %> </td>
+  </tr>
   <tr class="main">
   <td class="main">  <%= f.label "Rechte-Profil: *" %> </td>
   <td class="main">  <%= f.collection_select(:role_id, @roles, :id, :name, :prompt => true) %></td>

@@ -4,7 +4,6 @@
 <h1>Profil bearbeiten</h1>
 <% end %>
 <%= form_for @user do |f| %>
-  <%= f.label "Sie sind angemeldet als #{@user.role.name}"%>
   
   <% if @user.errors.any? %>
   <div id="error_explanation">
@@ -32,8 +31,7 @@
   <tr class="main">  
   <td class="main"><b>  <%= f.label "Email:" %></b>  </td>
   <td class="main">  <%= f.text_field :email %> </td>
-  </tr>
-  <% if @user == current_user %>  
+  </tr> 
   <tr class="main">  
   <td class="main"><b>  <%= f.label "Straße:" %></b>  </td>
   <td class="main">  <%= f.text_field :street %> </td>
@@ -43,13 +41,19 @@
   <td class="main">  <%= f.text_field :zipcode %> </td>
   </tr>  
   <tr class="main">  
-  <td class="main"><b>  <%= f.label "Ausbildungsjahr:" %> </b></td>
-  <td class="main">  <%= f.text_field :trainingyear %> </td>
-  </tr>  
-  <tr class="main">  
   <td class="main"><b>  <%= f.label "Ort:" %></b>  </td>
   <td class="main">  <%= f.text_field :city %> </td>
   </tr>
+  <% if @user.role.commit? %>
+  <tr class="main">  
+  <td class="main"><b>  <%= f.label "Ausbildungsjahr:" %> </b></td>
+  <td class="main">  <%= f.text_field :trainingyear %> </td>
+  </tr>
+  <tr class="main">
+  <td class="main"><b>  <%= f.label "Ausbildungsbeginn:" %></b></td>
+  <td class="main">   <%= f.date_select :trainingbegin %>
+  <% end %>  
+  <% if @user == current_user %> 
   <tr class="main">
   <td class="main"><b><%= f.label "Passwort:" %></b></td>
   <td class="main"> <%= f.password_field :password %></td>
