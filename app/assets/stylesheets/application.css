@@ -80,7 +80,9 @@ a.main:hover {
   color: #fff;
   background-color: #000;
 }
-
+.deactivated {
+  color: grey;
+}
 .center {
   text-align: center;
 }

@@ -32,9 +32,11 @@
   </tr>
   
   <% @users.each do |u| %>
-
-    <tr class="main">
-      
+    <% if u.deleted? %>
+      <tr class="main deactivated">
+    <% else %>
+      <tr class="main">
+    <% end %>  
       <td class="center"><%= u.forename %></td>
       <td class="center"><%= u.name %></td>
       <% if current_user.role.admin? %>

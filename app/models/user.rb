@@ -79,7 +79,7 @@ class User < ActiveRecord::Base
       if string != nil
         find(:all, :conditions => [ 'name LIKE ? or forename LIKE ?', "%#{string}%", "%#{string}%"] ) 
       else
-        find(:all)
+        find(:all, :order => "deleted")
       end
     end
     def encrypt_new_password
