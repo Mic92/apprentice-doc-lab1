@@ -30,9 +30,9 @@ class UsersController < ApplicationController
 # Für Auszubildende hat die Methode keine Verwendung und ist gesperrt.
   def index
     if current_user.role.admin?
-      @users = User.all
+      @users = User.search(params[:search])
     elsif current_user.role.modify?
-      @users = current_user.apprentices
+      @users = current_user.apprentices.search(params[:search])
       else redirect_to welcome_path
     end    
   end

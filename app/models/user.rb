@@ -74,7 +74,14 @@ class User < ActiveRecord::Base
   end
 
   private
-
+    
+    def self.search(string)
+      if string != nil
+        find(:all, :conditions => [ 'name LIKE ? or forename LIKE ?', "%#{string}%", "%#{string}%"] ) 
+      else
+        find(:all)
+      end
+    end
     def encrypt_new_password
       self.salt = make_salt unless has_password?(password)
       self.hashed_password = encrypt(password)
