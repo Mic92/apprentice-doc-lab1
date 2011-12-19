@@ -61,13 +61,21 @@ class ReportsController < ApplicationController
   def new
     @report = Report.new
     # Setze die Werte, mit denen die Felder vorausgefüllt werden.
-    if Report.all.blank?
-      @date = Date.today
-    else
-      @date = Report.order('period_start asc, period_end asc').last.period_end + 1.month
+#    if Report.all.blank?
+    @date = Date.today.beginning_of_day
+#    else
+#      @date = Report.order('period_start asc, period_end asc').last.period_end + 1.month
+#    end
+    if not current_user.template.nil?
+      codegroup = current_user.template.code.codegroup
+      if codegroup == PrintReportsHelper::DAILY
+        @date = @date.beginning_of_week
+      elsif codegroup == PrintReportsHelper::WEEKLY
+        @date = @date.beginning_of_month.beginning_of_week
+      end
     end
-    @report.period_start = @date.beginning_of_month
-    @report.period_end = @date.end_of_month
+    @report.period_start = @date
+#    @report.period_end = @date.end_of_month
   end
 
   # Zeigt das Formular zum Bearbeiten eines vorhandenen Berichts.
@@ -82,7 +90,22 @@ class ReportsController < ApplicationController
     # Jeder Bericht muss einen Status haben, also erstelle ihn zusammen mit dem Bericht.
     @report.build_status(:stype => Status.personal)
     @report.reportnumber = current_user.reports.count + 1
-
+    
+    dateStart = @report.period_start
+    dateEnd = dateStart
+    
+    if not current_user.template.nil?
+      codegroup = current_user.template.code.codegroup
+      if codegroup == PrintReportsHelper::HOURLY
+        # nothing to do
+      elsif codegroup == PrintReportsHelper::DAILY
+        dateEnd = dateStart + 1.week - 1.day
+      elsif codegroup == PrintReportsHelper::WEEKLY
+        dateEnd = dateStart + 5.weeks - 1.day
+      end
+    end
+    @report.period_end = dateEnd
+    
     if @report.save
       redirect_to reports_path, :notice => 'Bericht wurde erfolgreich erstellt.'
     else

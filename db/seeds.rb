@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -90,7 +91,7 @@ code = Code.create(
       <td>[e]entry[0][4].text[e]</td>
       </tr>
 
-      <tr>
+      <tr# -*- coding: utf-8 -*->
       <td rowspan="6">2. Woche</td>
       </tr>
       <tr>
