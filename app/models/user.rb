@@ -51,6 +51,10 @@ class User < ActiveRecord::Base
             :numericality => { :only_integer => true },
             :length => { :is => 5}
             
+  validates :trainingyear, :allow_blank => true,
+            :numericality => { :only_integer => true, :less_than_or_equal_to => 10, :greater_than => 0}
+            
+            
             
   validates :password, :confirmation => true, :length => { :in => 8..40 }, :presence => true, :if => :password_required?
   validates :password_confirmation, :presence => true, :if => :password_required?
