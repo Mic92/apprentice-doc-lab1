@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
             :length => { :in => 5..40}
   
   validates :street, :allow_blank => true,
-            :format => { :with => /\A[A-ZÄÜÖ][a-zäöüß]+((\s|\-)?[A-ZÄÜÖ][a-z]+)*\s([0-9]{1,3}[a-z]?)\Z/ },
+            :format => { :with => /\A[A-ZÄÜÖ][a-zäöüß]+[\.]?((\s|\-)?[A-ZÄÜÖ][a-zäöüß]+([\.]?))*\s([0-9]{1,3}[a-z]?)\Z/ },
             :length => { :in => 5..40}
   
   validates :city, :allow_blank => true,
@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
     
     def self.search(string)
       if string != nil
-        find(:all, :conditions => [ 'name LIKE ? or forename LIKE ?', "%#{string}%", "%#{string}%"] ) 
+        find(:all, :conditions => [ 'name LIKE ? or forename LIKE ?', "%#{string}%", "%#{string}%"], :order => "deleted")
       else
         find(:all, :order => "deleted")
       end

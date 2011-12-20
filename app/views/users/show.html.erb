@@ -36,14 +36,17 @@
   <td class="main">  <%= f.label @user.city %> </td>
   </tr>
   <% if @user.role.commit? %>
-  <tr class="main">  
-  <td class="main"><b>  <%= f.label "Ausbildungsjahr:" %></b>  </td>
-  <td class="main">  <%= f.label @user.trainingyear %> </td>
-  </tr>
-  <tr class="main">
-  <td class="main"><b> <%= f.label "Ausbildungsbeginn:" %></b></td>
-  <td class="main">  <%= l @user.trainingbegin %> </td>
-  </tr>
+   
+    <tr class="main">  
+    <td class="main"><b>  <%= f.label "Ausbildungsjahr:" %></b>  </td>
+    <td class="main">  <%= f.label @user.trainingyear %> </td>
+    </tr>
+    <% if @user.trainingbegin != nil %>
+      <tr class="main">
+      <td class="main"><b> <%= f.label "Ausbildungsbeginn:" %></b></td>
+      <td class="main">  <%= l @user.trainingbegin %> </td>
+      </tr>
+    <% end %>
   <% end %>
   </table>
   
