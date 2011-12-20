@@ -90,10 +90,10 @@ class ReportsController < ApplicationController
     # Jeder Bericht muss einen Status haben, also erstelle ihn zusammen mit dem Bericht.
     @report.build_status(:stype => Status.personal)
     @report.reportnumber = current_user.reports.count + 1
-    
+
     dateStart = @report.period_start
     dateEnd = dateStart
-    
+
     if not current_user.template.nil?
       codegroup = current_user.template.code.codegroup
       if codegroup == PrintReportsHelper::HOURLY
@@ -105,9 +105,13 @@ class ReportsController < ApplicationController
       end
     end
     @report.period_end = dateEnd
-    
-    if @report.save
-      redirect_to reports_path, :notice => 'Bericht wurde erfolgreich erstellt.'
+
+    if no_time_overlap(@report)
+      if @report.save
+        redirect_to reports_path, :notice => 'Bericht wurde erfolgreich erstellt.'
+      else
+        render 'new'
+      end
     else
       render 'new'
     end
@@ -137,11 +141,15 @@ class ReportsController < ApplicationController
         @report.report_entries.each { |e| e.update_attribute(:date, (e.date + @shift.days)) }
       end
 
-      if params[:report] != nil && @report.update_attributes(params[:report])
-        # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
-        # freigegeben werden kann.
-        @report.status.update_attributes(:stype => Status.personal)
-        redirect_to reports_path, :notice => 'Bericht wurde erfolgreich bearbeitet.'
+      if no_time_overlap(@report)
+        if params[:report] != nil && @report.update_attributes(params[:report])
+          # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
+          # freigegeben werden kann.
+          @report.status.update_attributes(:stype => Status.personal)
+          redirect_to reports_path, :notice => 'Bericht wurde erfolgreich bearbeitet.'
+        else
+          render 'edit'
+        end
       else
         render 'edit'
       end
@@ -176,5 +184,22 @@ class ReportsController < ApplicationController
     def not_accepted
       @report = Report.find(params[:id])
       redirect_to reports_path, :alert => 'Da der Bericht schon akzeptiert wurde sind Änderungen nicht mehr möglich' if @report.status.stype == Status.accepted
+    end
+
+    def no_time_overlap(report)
+      if report.period_start and report.period_end
+        reports = current_user.reports.where("(period_start <= :period_start AND period_end >= :period_start) OR
+                                             (period_start <= :period_end AND period_end >= :period_end) OR
+                                             (period_start >= :period_start AND period_end <= :period_end )",
+                                             :period_start => report.period_start,
+                                             :period_end => report.period_end)
+        if reports.length > 0
+          report.errors[:base] << 'Es darf keine zeitlichen Überlappungen mit anderen Berichten geben.'
+          return false
+        else
+          return true
+        end
+      end
+      return false
     end
 end
