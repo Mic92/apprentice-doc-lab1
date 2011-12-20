@@ -4,7 +4,8 @@ class Role < ActiveRecord::Base
   
   # validations
   
-  validates :name, :uniqueness => true, :presence => true
+  validates :name, :uniqueness => true, :presence => true,
+            :length => { :maximum => 30 }
   validates :read, :commit, :export, :check, :modify, :admin, :inclusion => { :in => [true, false] }
   
   
