@@ -6,7 +6,13 @@ class UserMailer < ActionMailer::Base
       :subject => "It works!")
 
   end
-
+  
+  def welcome_mail(user, password)
+    @user = user
+    @password = password
+    mail(:to => @user.email, :subject => "Apprentice Doc Lab: Dein neuer Account")
+  end
+  
   def password_recovery_mail(user, password)
     @user = user
     @password = password

@@ -101,6 +101,7 @@ class UsersController < ApplicationController
     elsif current_user.role.admin?
         
         if @user.save
+          UserMailer.welcome_mail(@user, @password).deliver
           redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich erstellt.'
         else
           render 'new'
@@ -117,6 +118,7 @@ class UsersController < ApplicationController
           else
             @user = current_user.apprentices.build(params[:user])
             if @user.save
+              UserMailer.welcome_mail(@user, @password).deliver
               redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich erstellt.'
             else
               render 'new'
