@@ -27,12 +27,142 @@ class ReportBotController < ApplicationController
     12
   end
 
+  def monthname (month)
+    case month
+      when 1
+        'Januar'
+      when 2
+        'Februar'
+      when 3
+        'März'
+      when 4
+        'April'
+      when 5
+        'Mai'
+      when 6
+        'Juni'
+      when 7
+        'Juli'
+      when 8
+        'August'
+      when 9
+        'September'
+      when 10
+        'Oktober'
+      when 11
+        'November'
+      when 12
+        'Dezember'
+      else
+        'ERROR, ' + month.to_s + ' is not a month'
+    end
+  end
+
   def workdays (startdate, enddate)
-    #TODO richtige tagesberechnung
-    enddate.yday - startdate.yday
+    @days = Date.new(enddate.year, enddate.month, enddate.day).ld - Date.new(startdate.year, startdate.month, startdate.day).ld
+    if @days < 0
+      @days = 'ERROR, wrong order of dates'
+    end
+    case startdate.wday
+      when 1  #monday
+        if @days <= 5
+          @w_days = @days
+        else
+          @w_days = 0
+          while @days > 5
+            @days -= 7
+            @w_days += 5
+          end
+          if @days > 0
+            @w_days += @days
+          end
+        end
+      when 2  #tuesday
+        if @days <= 4
+          @w_days = @days
+        else
+          @w_days = 4
+          @days -= 6
+          while @days > 5
+            @days -= 7
+            @w_days += 5
+          end
+          if @days > 0
+            @w_days += @days
+          end
+        end
+      when 3  #wednesday
+        if @days <= 3
+          @w_days = @days
+        else
+          @w_days = 3
+          @days -= 5
+          while @days > 5
+            @days -= 7
+            @w_days += 5
+          end
+          if @days > 0
+            @w_days += @days
+          end
+        end
+      when 4  #thursday
+        if @days <= 2
+          @w_days = @days
+        else
+          @w_days = 2
+          @days -= 4
+          while @days > 5
+            @days -= 7
+            @w_days += 5
+          end
+          if @days > 0
+            @w_days += @days
+          end
+        end
+      when 5  #friday
+        if @days <= 1
+          @w_days = @days
+        else
+          @w_days = 1
+          @days -= 3
+          while @days > 5
+            @days -= 7
+            @w_days += 5
+          end
+          if @days > 0
+            @w_days += @days
+          end
+        end
+      when 6  #saturday
+        @w_days = 0
+        @days -= 2
+        while @days > 5
+          @days -= 7
+          @w_days += 5
+        end
+        if @days > 0
+          @w_days += @days
+        end
+      when 0  #sunday
+        @w_days = 0
+        @days -= 1
+        while @days > 5
+          @days -= 7
+          @w_days += 5
+        end
+        if @days > 0
+          @w_days += @days
+        end
+      else
+        @w_days = 'ERROR'
+    end
+    @w_days
   end
 
   def unwritten
+    if request.remote_ip == 0.0   #TODO ip prüfen
+      @debug3 = request.remote_ip
+    end
     @apprentices = User.joins(:role).where( :roles => {:commit => true} )
     @year = Time.now.year
     @month = Time.now.month
@@ -69,7 +199,7 @@ class ReportBotController < ApplicationController
             end
           end
           if @daycount > 0
-            @date_array << [@date_v.year, @date_v.month]
+            @date_array << [@date_v.year, monthname(@date_v.month)]
           end
           i += 1
         end
@@ -94,21 +224,23 @@ class ReportBotController < ApplicationController
           end
         end
         if @daycount > 0
-          @date_array << [apprentice.trainingbegin.to_time.year, apprentice.trainingbegin.to_time.month]
+          @date_array << [apprentice.trainingbegin.to_time.year, monthname(apprentice.trainingbegin.to_time.month)]
         end
         #email mit monaten senden, für die ein bericht fehlt
         if @date_array != []
           @data = { :apprentice => apprentice, :date_array => @date_array }
-          UserMailer.unwritten_reports_mail(@data).deliver  #TODO richtige mail schreiben
+          UserMailer.unwritten_reports_mail(@data).deliver
         end
       end
       if apprentice.deleted != true && apprentice.trainingbegin == nil
-        #TODO Mail schreiben, dass Ausbildungsbegin leer ist
+        @data = { :user => apprentice }
+        UserMailer.unset_trainingsbegin_mail(@data).deliver
       end
     end
   end
 
   def unchecked
+    #TODO localhost prüfen
     @instructors = User.joins(:role).where( :roles => {:check => true} )
     #für jeden Ausbilder, der nicht deaktiviert ist
     @instructors.each do |instructor|
