@@ -181,16 +181,20 @@ class UsersController < ApplicationController
 # Eigenen Account deaktivieren
     @user = User.find(params[:id])
     if current_user == @user
-      @user.deleted = true
-      @user.save!
-      redirect_to root_path, :notice => 'Ihr Account wurde erfolgreich deaktiviert.'
-      
+      if @user.role.admin? && !adminremovable?
+        redirect_to users_path, :notice => 'Benutzer konnte nicht deaktiviert werden. Mindestens ein Admin im System ist erforderlich.'
+      else
+        @user.deleted = true
+        @user.save!
+        redirect_to root_path, :notice => 'Ihr Account wurde erfolgreich deaktiviert.'
+        sign_out
+      end
 # Anderen Account de-/aktivieren als Administrator
     elsif current_user.role.admin?
       if @user.deleted == false
-        @user.deleted = true
-        @user.save!
-        redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich deaktiviert.'
+          @user.deleted = true 
+          @user.save!
+          redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich deaktiviert.'
       else
         @user.deleted = false
         @user.save!

@@ -87,6 +87,24 @@ module SessionsHelper
   def admin
     redirect_to welcome_path, :alert => right_notice unless current_user.role.admin?
   end
+  
+  def adminremovable?
+    @admin_count = 0
+    @roles_with_admin = Role.where(:admin => true)
+    @roles_with_admin.each do |r|
+      if r.users != nil
+        @users  = r.users
+        @users.each do |u|
+          @admin_count += 1 unless u.deleted?          
+        end
+      end
+    end
+    if @admin_count > 1
+      return true
+    else
+      return false
+    end
+  end
 
   private
 
