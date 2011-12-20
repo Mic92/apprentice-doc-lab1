@@ -3,7 +3,7 @@
 <%= form_for @report do |f| %>
   <% if @report.errors.any? %>
     <div id="error_explanation">
-      <h2><%= t('errors.template.header', :model=> 'Bericht', :count=> @entry.errors.count) %></h2>
+      <h2><%= t('errors.template.header', :model=> 'Bericht', :count=> @report.errors.count) %></h2>
       <h2><%= t('errors.template.body') %></h2>
       <ul>
         <% @report.errors.full_messages.each do |msg| %>
