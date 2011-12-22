@@ -48,10 +48,18 @@ class RolesController < ApplicationController
 
   def update
     @role = Role.find(params[:id])
-
-    if params[:role] != nil && @role.update_attributes(params[:role])
-      redirect_to roles_path, :notice => "Das Rechte-Profil #{@role.name} wurde erfolgreich bearbeitet."
+    if params[:role] != nil
+      if (params[:id].to_i == current_user.role_id) && (params[:role][:admin].to_i == 0)
+        flash.now[:error] = "Das Administrator-Recht kann nicht selbst entfernt werden!"
+        render 'edit'          
+      elsif @role.update_attributes(params[:role])   
+          redirect_to roles_path, :notice => "Das Rechte-Profil #{@role.name} wurde erfolgreich bearbeitet."
+        else
+          flash.now[:error] = "Es ist ein Fehler aufgetreten"
+          render 'edit'
+        end
     else
+      flash.now[:error] = "Es ist ein Fehler aufgetreten"
       render 'edit'
     end
   end
@@ -64,6 +72,6 @@ class RolesController < ApplicationController
     else
       redirect_to roles_path, :notice => "Das Rechte-Profil konnte nicht entfernt werden, da ihm Benutzer zugewiesen sind."
     end
-
   end
+  
 end

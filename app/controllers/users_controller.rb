@@ -147,17 +147,22 @@ class UsersController < ApplicationController
         @user.update_attributes(@user.attributes.merge(@attr))
         render 'edit'
       else
-        if params[:user][:role_id] == nil || @user == current_user
+        if params[:user][:role_id] == nil || (@user == current_user && !current_user.role.admin?)
           @role = Role.find(current_user.role_id)
         else
           @role = Role.find(params[:user][:role_id])
         end
         @attr = params[:user].merge(:role_id => @role.id)
         if current_user.role.admin?
-          if @user.update_attributes(@user.attributes.merge(@attr))
-            redirect_to user_path(@user), :notice => 'Das Profil wurde erfolgreich bearbeitet.'
-          else
+          if current_user.role_id != params[:user][:role_id].to_i && !adminremovable?
+            flash.now[:error] = "Das Rechte-Profil kann nicht geändert werden. Mindestens ein Administrator im System ist erforderlich."
             render 'edit'
+          else
+            if @user.update_attributes(@user.attributes.merge(@attr))
+              redirect_to user_path(@user), :notice => 'Das Profil wurde erfolgreich bearbeitet.'
+            else
+              render 'edit'
+            end
           end
         elsif (@role.modify? && !current_user.role.modify? )|| @role.admin?
          render 'edit'
@@ -182,7 +187,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     if current_user == @user
       if @user.role.admin? && !adminremovable?
-        redirect_to users_path, :notice => 'Benutzer konnte nicht deaktiviert werden. Mindestens ein Admin im System ist erforderlich.'
+        redirect_to users_path, :notice => 'Benutzer konnte nicht deaktiviert werden. Mindestens ein Administrator im System ist erforderlich.'
       else
         @user.deleted = true
         @user.save!
