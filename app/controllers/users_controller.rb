@@ -154,7 +154,7 @@ class UsersController < ApplicationController
         end
         @attr = params[:user].merge(:role_id => @role.id)
         if current_user.role.admin?
-          if current_user.role_id != params[:user][:role_id].to_i && !adminremovable?
+          if current_user.role_id != params[:user][:role_id].to_i && @user.role.admin? && !adminremovable? 
             flash.now[:error] = "Das Rechte-Profil kann nicht geändert werden. Mindestens ein Administrator im System ist erforderlich."
             render 'edit'
           else
