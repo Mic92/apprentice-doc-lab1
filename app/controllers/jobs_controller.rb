@@ -3,7 +3,12 @@ class JobsController < ApplicationController
   before_filter :admin
 
   def index
-    @jobs = Job.all
+    search = params[:search]
+    if search.nil?
+      @jobs = Job.order('name').all
+    else
+      @jobs = Job.where(['name LIKE ?', "%#{search}%"]).order('name')
+    end
     @title = "Job Liste"
     respond_to do |format|
       format.html

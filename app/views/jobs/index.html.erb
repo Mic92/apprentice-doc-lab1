@@ -1,3 +1,10 @@
+<%= form_tag jobs_path, :method => 'get' do %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Job finden", :name => nil %>
+  </p>
+<% end %>
+
 <table class="main">
 <tr class="main">
 <th class="main">Name</th>
