@@ -160,110 +160,114 @@ class ReportBotController < ApplicationController
   end
 
   def unwritten
-    if request.remote_ip == 0.0   #TODO ip prüfen
-      @debug3 = request.remote_ip
-    end
-    @apprentices = User.joins(:role).where( :roles => {:commit => true} )
-    @year = Time.now.year
-    @month = Time.now.month
+    if request.remote_ip == "127.0.0.1"
+      @apprentices = User.joins(:role).where( :roles => {:commit => true} )
+      @year = Time.now.year
+      @month = Time.now.month
 
-    @apprentices.each do |apprentice|
-      if apprentice.deleted != true && apprentice.trainingbegin != nil
-        i = 1
-        @date_v = Time.mktime(@year, @month)
-        #get commited and accepted reports
-        @reports = apprentice.reports.select {|report| report.status.stype == Status.commited || report.status.stype == Status.accepted }
-        @date_array = []
-        #gehe durch jeden monat, der im zurückliegendem zeitraum liegt
-        while i < ReportBotController.apprentice_period_inmonths + 1 && apprentice.trainingbegin.to_time < @date_v - 1.months
-          @date_v -= 1.months
-          #berechne, wie viele Arbeitstage in dem zu prüfendem Monat sind
-          @daycount = workdays( @date_v, @date_v + 1.months)
-          #ziehe von dem Arbeitstagcounter die Tage ab, für die ein Report existiert
+      @apprentices.each do |apprentice|
+        if apprentice.deleted != true && apprentice.trainingbegin != nil
+          i = 1
+          @date_v = Time.mktime(@year, @month)
+          #get commited and accepted reports
+          @reports = apprentice.reports.select {|report| report.status.stype == Status.commited || report.status.stype == Status.accepted }
+          @date_array = []
+          #gehe durch jeden monat, der im zurückliegendem zeitraum liegt
+          while i < ReportBotController.apprentice_period_inmonths + 1 && apprentice.trainingbegin.to_time < @date_v - 1.months
+            @date_v -= 1.months
+            #berechne, wie viele Arbeitstage in dem zu prüfendem Monat sind
+            @daycount = workdays( @date_v, @date_v + 1.months)
+            #ziehe von dem Arbeitstagcounter die Tage ab, für die ein Report existiert
+            @reports.each do |report|
+              @r_start = report.period_start.to_time
+              @r_end = report.period_end.to_time + 1.days
+              # + 1.days weil der period_end Eintrag um 1 Tag abweicht, da es den Tag symbolisiert und nicht die wirkliche zeitliche Endgrenze
+              if @r_start >= @date_v && @r_end <= @date_v + 1.months
+                #Report ist innerhalb des Monats
+                @daycount -= workdays( @r_start, @r_end)
+              elsif @r_start < @date_v && @r_end > @date_v + 1.months
+                #Report umfasst den Zeitraum
+                @daycount -= workdays( @date_v, @date_v + 1.months)
+              elsif @r_start < @date_v && @r_end > @date_v
+                #Report ist teilweise am Anfang des Monats
+                @daycount -= workdays( @date_v, @r_end)
+              elsif @r_start < @date_v + 1.months && @r_end > @date_v + 1.months
+                #Report ist teilweise am Ende des Monats
+                @daycount -= workdays( @r_start, @date_v + 1.months )
+              end
+            end
+            if @daycount > 0
+              @date_array << [@date_v.year, monthname(@date_v.month)]
+            end
+            i += 1
+          end
+          #whileloop ist zu ende, für den verbleibenden Zeitraum, anfangend vom Ausbildungsbeginn prüfen
+          @daycount = workdays( apprentice.trainingbegin.to_time, @date_v)
           @reports.each do |report|
             @r_start = report.period_start.to_time
             @r_end = report.period_end.to_time + 1.days
             # + 1.days weil der period_end Eintrag um 1 Tag abweicht, da es den Tag symbolisiert und nicht die wirkliche zeitliche Endgrenze
-            if @r_start >= @date_v && @r_end <= @date_v + 1.months
+            if @r_start >= apprentice.trainingbegin.to_time && @r_end <= @date_v
               #Report ist innerhalb des Monats
               @daycount -= workdays( @r_start, @r_end)
-            elsif @r_start < @date_v && @r_end > @date_v + 1.months
+            elsif @r_start < apprentice.trainingbegin.to_time && @r_end > @date_v
               #Report umfasst den Zeitraum
-              @daycount -= workdays( @date_v, @date_v + 1.months)
-            elsif @r_start < @date_v && @r_end > @date_v
+              @daycount -= workdays( apprentice.trainingbegin.to_time, @date_v)
+            elsif @r_start < apprentice.trainingbegin.to_time && @r_end > apprentice.trainingbegin.to_time
               #Report ist teilweise am Anfang des Monats
-              @daycount -= workdays( @date_v, @r_end)
-            elsif @r_start < @date_v + 1.months && @r_end > @date_v + 1.months
+              @daycount -= workdays( apprentice.trainingbegin.to_time, @r_end)
+            elsif @r_start < @date_v && @r_end > @date_v
               #Report ist teilweise am Ende des Monats
-              @daycount -= workdays( @r_start, @date_v + 1.months )
+              @daycount -= workdays( @r_start, @date_v )
             end
           end
           if @daycount > 0
-            @date_array << [@date_v.year, monthname(@date_v.month)]
+            @date_array << [apprentice.trainingbegin.to_time.year, monthname(apprentice.trainingbegin.to_time.month)]
           end
-          i += 1
-        end
-        #whileloop ist zu ende, für den verbleibenden Zeitraum, anfangend vom Ausbildungsbeginn prüfen
-        @daycount = workdays( apprentice.trainingbegin.to_time, @date_v)
-        @reports.each do |report|
-          @r_start = report.period_start.to_time
-          @r_end = report.period_end.to_time + 1.days
-          # + 1.days weil der period_end Eintrag um 1 Tag abweicht, da es den Tag symbolisiert und nicht die wirkliche zeitliche Endgrenze
-          if @r_start >= apprentice.trainingbegin.to_time && @r_end <= @date_v
-            #Report ist innerhalb des Monats
-            @daycount -= workdays( @r_start, @r_end)
-          elsif @r_start < apprentice.trainingbegin.to_time && @r_end > @date_v
-            #Report umfasst den Zeitraum
-            @daycount -= workdays( apprentice.trainingbegin.to_time, @date_v)
-          elsif @r_start < apprentice.trainingbegin.to_time && @r_end > apprentice.trainingbegin.to_time
-            #Report ist teilweise am Anfang des Monats
-            @daycount -= workdays( apprentice.trainingbegin.to_time, @r_end)
-          elsif @r_start < @date_v && @r_end > @date_v
-            #Report ist teilweise am Ende des Monats
-            @daycount -= workdays( @r_start, @date_v )
+          #email mit monaten senden, für die ein bericht fehlt
+          if @date_array != []
+            @data = { :apprentice => apprentice, :date_array => @date_array }
+            UserMailer.unwritten_reports_mail(@data).deliver
           end
         end
-        if @daycount > 0
-          @date_array << [apprentice.trainingbegin.to_time.year, monthname(apprentice.trainingbegin.to_time.month)]
-        end
-        #email mit monaten senden, für die ein bericht fehlt
-        if @date_array != []
-          @data = { :apprentice => apprentice, :date_array => @date_array }
-          UserMailer.unwritten_reports_mail(@data).deliver
+        if apprentice.deleted != true && apprentice.trainingbegin == nil
+          @data = { :user => apprentice }
+          UserMailer.unset_trainingsbegin_mail(@data).deliver
         end
       end
-      if apprentice.deleted != true && apprentice.trainingbegin == nil
-        @data = { :user => apprentice }
-        UserMailer.unset_trainingsbegin_mail(@data).deliver
-      end
+    else
+      redirect_to welcome_path and return
     end
   end
 
   def unchecked
-    #TODO localhost prüfen
+    if request.remote_ip == "127.0.0.1"
     @instructors = User.joins(:role).where( :roles => {:check => true} )
     #für jeden Ausbilder, der nicht deaktiviert ist
-    @instructors.each do |instructor|
-      if instructor.deleted != true
-        @unchecked_reports_num = 0
-        #gehe durch alle Azubis, die nicht deaktiviert sind
-        instructor.apprentices.each do |apprentice|
-          if apprentice.deleted != true
-            #für all ihre Berichte
-            apprentice.reports.each do |report|
-              #if report was commited before period
-              if report.status.stype == Status.commited && report.status.updated_at < Time.now - ReportBotController.instructor_period
-                @unchecked_reports_num += 1
+      @instructors.each do |instructor|
+        if instructor.deleted != true
+          @unchecked_reports_num = 0
+          #gehe durch alle Azubis, die nicht deaktiviert sind
+          instructor.apprentices.each do |apprentice|
+            if apprentice.deleted != true
+              #für all ihre Berichte
+              apprentice.reports.each do |report|
+                #if report was commited before period
+                if report.status.stype == Status.commited && report.status.updated_at < Time.now - ReportBotController.instructor_period
+                  @unchecked_reports_num += 1
+                end
               end
             end
           end
-        end
-        #if instructor has unchecked reports, which are older than the period, send email
-        if @unchecked_reports_num > 0
-          @data = { :instructor => instructor, :unchecked_reports_num => @unchecked_reports_num }
-          UserMailer.unchecked_reports_mail(@data).deliver
+          #if instructor has unchecked reports, which are older than the period, send email
+          if @unchecked_reports_num > 0
+            @data = { :instructor => instructor, :unchecked_reports_num => @unchecked_reports_num }
+            UserMailer.unchecked_reports_mail(@data).deliver
+          end
         end
       end
+    else
+      redirect_to welcome_path and return
     end
   end
 end

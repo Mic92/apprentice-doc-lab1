@@ -1,7 +1,7 @@
 <%= form_for(:session, :url => sessions_path) do |f| %>
   <div class="field">
     <%= f.label "Emailadresse:" %><br />
-    <%= f.text_field :email %>
+    <%= f.text_field :email, :maxlength => 40 %>
   </div>
   <div class="field">
     <%= f.label "Passwort:" %><br />

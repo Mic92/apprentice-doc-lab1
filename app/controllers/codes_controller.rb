@@ -3,7 +3,12 @@ class CodesController < ApplicationController
   before_filter :admin
   
   def index
-    @codes = Code.all
+    search = params[:search]
+    if search.nil?
+      @codes = Code.order('name').all
+    else
+      @codes = Code.where(['name LIKE ?', "%#{search}%"]).order('name')
+    end
     @title = "Code Liste"
     respond_to do |format|
       format.html

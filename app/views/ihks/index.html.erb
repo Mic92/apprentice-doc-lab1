@@ -1,3 +1,10 @@
+<%= form_tag ihks_path, :method => 'get' do %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "IHK finden", :name => nil %>
+  </p>
+<% end %>
+
 <table class="main">
 <tr class="main">
 <th class="main">Name</th>

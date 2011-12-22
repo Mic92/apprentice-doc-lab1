@@ -22,32 +22,32 @@
   </tr>
   <tr class="main">  
   <td class="main"><b>  <%= f.label "Vorname:" %></b> </td>
-  <td class="main">  <%= f.text_field :forename%> </td>
+  <td class="main">  <%= f.text_field :forename, :maxlength => 30 %> </td>
   </tr>
   <tr class="main">  
   <td class="main"><b> <%= f.label "Name:" %></b> </td>
-  <td class="main">  <%= f.text_field :name %> </td>
+  <td class="main">  <%= f.text_field :name, :maxlength => 30 %> </td>
   </tr>
   <tr class="main">  
   <td class="main"><b>  <%= f.label "Email:" %></b>  </td>
-  <td class="main">  <%= f.text_field :email %> </td>
+  <td class="main">  <%= f.text_field :email, :maxlength => 40 %> </td>
   </tr> 
   <tr class="main">  
   <td class="main"><b>  <%= f.label "Straße:" %></b>  </td>
-  <td class="main">  <%= f.text_field :street %> </td>
+  <td class="main">  <%= f.text_field :street, :maxlength => 40 %> </td>
   </tr>
   <tr class="main">  
   <td class="main"><b>  <%= f.label "Postleitzahl:" %></b>  </td>
-  <td class="main">  <%= f.text_field :zipcode %> </td>
+  <td class="main">  <%= f.text_field :zipcode, :maxlength => 5 %> </td>
   </tr>  
   <tr class="main">  
   <td class="main"><b>  <%= f.label "Ort:" %></b>  </td>
-  <td class="main">  <%= f.text_field :city %> </td>
+  <td class="main">  <%= f.text_field :city, :maxlength => 30 %> </td>
   </tr>
   <% if @user.role.commit? %>
   <tr class="main">  
   <td class="main"><b>  <%= f.label "Ausbildungsjahr:" %> </b></td>
-  <td class="main">  <%= f.text_field :trainingyear %> </td>
+  <td class="main">  <%= f.text_field :trainingyear, :maxlength => 2 %> </td>
   </tr>
   <tr class="main">
   <td class="main"><b>  <%= f.label "Ausbildungsbeginn:" %></b></td>
