@@ -47,6 +47,7 @@ class TemplatesController < ApplicationController
   end
 
   def create
+    fetchJobIhkCode
     @template = Template.new(params[:template])
     
     respond_to do |format|
@@ -60,6 +61,7 @@ class TemplatesController < ApplicationController
   end
 
   def update
+    fetchJobIhkCode
     @template = Template.find(params[:id])
 
     respond_to do |format|
