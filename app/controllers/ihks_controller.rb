@@ -3,7 +3,12 @@ class IhksController < ApplicationController
   before_filter :admin
 
   def index
-    @ihks = Ihk.all
+    search = params[:search]
+    if search.nil?
+      @ihks = Ihk.order('name').all
+    else
+      @ihks = Ihk.where(['name LIKE ?', "%#{search}%"]).order('name')
+    end
     @title = "IHK Liste"
 
     respond_to do |format|
