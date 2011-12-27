@@ -201,28 +201,30 @@ class ReportBotController < ApplicationController
             end
             i += 1
           end
-          #whileloop ist zu ende, für den verbleibenden Zeitraum, anfangend vom Ausbildungsbeginn prüfen
-          @daycount = workdays( apprentice.trainingbegin.to_time, @date_v)
-          @reports.each do |report|
-            @r_start = report.period_start.to_time
-            @r_end = report.period_end.to_time + 1.days
-            # + 1.days weil der period_end Eintrag um 1 Tag abweicht, da es den Tag symbolisiert und nicht die wirkliche zeitliche Endgrenze
-            if @r_start >= apprentice.trainingbegin.to_time && @r_end <= @date_v
-              #Report ist innerhalb des Monats
-              @daycount -= workdays( @r_start, @r_end)
-            elsif @r_start < apprentice.trainingbegin.to_time && @r_end > @date_v
-              #Report umfasst den Zeitraum
-              @daycount -= workdays( apprentice.trainingbegin.to_time, @date_v)
-            elsif @r_start < apprentice.trainingbegin.to_time && @r_end > apprentice.trainingbegin.to_time
-              #Report ist teilweise am Anfang des Monats
-              @daycount -= workdays( apprentice.trainingbegin.to_time, @r_end)
-            elsif @r_start < @date_v && @r_end > @date_v
-              #Report ist teilweise am Ende des Monats
-              @daycount -= workdays( @r_start, @date_v )
+          if Time.now - apprentice.trainingbegin.to_time < ReportBotController.apprentice_period_inmonths.months
+            #whileloop ist zu ende, für den verbleibenden Zeitraum, anfangend vom Ausbildungsbeginn prüfen
+            @daycount = workdays( apprentice.trainingbegin.to_time, @date_v)
+            @reports.each do |report|
+              @r_start = report.period_start.to_time
+              @r_end = report.period_end.to_time + 1.days
+              # + 1.days weil der period_end Eintrag um 1 Tag abweicht, da es den Tag symbolisiert und nicht die wirkliche zeitliche Endgrenze
+              if @r_start >= apprentice.trainingbegin.to_time && @r_end <= @date_v
+                #Report ist innerhalb des Monats
+                @daycount -= workdays( @r_start, @r_end)
+              elsif @r_start < apprentice.trainingbegin.to_time && @r_end > @date_v
+                #Report umfasst den Zeitraum
+                @daycount -= workdays( apprentice.trainingbegin.to_time, @date_v)
+              elsif @r_start < apprentice.trainingbegin.to_time && @r_end > apprentice.trainingbegin.to_time
+                #Report ist teilweise am Anfang des Monats
+                @daycount -= workdays( apprentice.trainingbegin.to_time, @r_end)
+              elsif @r_start < @date_v && @r_end > @date_v
+                #Report ist teilweise am Ende des Monats
+                @daycount -= workdays( @r_start, @date_v )
+              end
             end
-          end
-          if @daycount > 0
-            @date_array << [apprentice.trainingbegin.to_time.year, monthname(apprentice.trainingbegin.to_time.month)]
+            if @daycount > 0
+              @date_array << [apprentice.trainingbegin.to_time.year, monthname(apprentice.trainingbegin.to_time.month)]
+            end
           end
           #email mit monaten senden, für die ein bericht fehlt
           if @date_array != []
