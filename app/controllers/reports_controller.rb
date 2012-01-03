@@ -40,8 +40,9 @@ class ReportsController < ApplicationController
   # * Freigeben (commit): alle Berichte des Benutzers
   # * Prüfen (check): alle Berichte der dem Benutzer zugewiesenen Azubis
   def index
+    setupPager(current_user.reports,params)
     if current_user.role.commit?
-      @reports = current_user.reports.order('period_start asc, period_end asc')
+      @reports = pager(current_user.reports).order('period_start asc, period_end asc')
     elsif current_user.role.check?
       if params[:all]
         @reports = Report.joins(:status).where(:statuses => { :stype => Status.commited }).order('period_start asc, period_end asc')

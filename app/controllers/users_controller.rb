@@ -29,8 +29,9 @@ class UsersController < ApplicationController
 # Die Methode 'index' zeigt einem Administrator alle Benutzer an, Ausbilder werden ihre Auszubildenden angezeigt.
 # Für Auszubildende hat die Methode keine Verwendung und ist gesperrt.
   def index
+    setupPager(User, params)
     if current_user.role.admin?
-      @users = User.search(params[:search])
+      @users = pager(User).search(params[:search])
     elsif current_user.role.modify?
       @users = current_user.apprentices.search(params[:search])
       else redirect_to welcome_path

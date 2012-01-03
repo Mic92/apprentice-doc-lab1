@@ -3,7 +3,8 @@ class TemplatesController < ApplicationController
   before_filter :admin
 
   def index
-    @templates = Template.all
+    setupPager(Template, params)
+    @templates = pager(Template).all
     @title = "Vorlagenliste"
 
     respond_to do |format|

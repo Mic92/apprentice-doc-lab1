@@ -5,6 +5,12 @@
   </p>
 <% end %>
 
+<% m = method(:ihks_path) %>
+<%= pagerViewStart(m) %>
+<%= pagerViewPrev(m) %>
+<%= pagerViewNext(m) %>
+<%= pagerViewEnd(m) %>
+
 <table class="main">
 <tr class="main">
 <th class="main">Name</th>

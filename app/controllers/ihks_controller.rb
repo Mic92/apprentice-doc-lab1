@@ -3,11 +3,12 @@ class IhksController < ApplicationController
   before_filter :admin
 
   def index
+    setupPager(Ihk, params)
     search = params[:search]
     if search.nil?
-      @ihks = Ihk.order('name').all
+      @ihks = pager(Ihk).order('name').all
     else
-      @ihks = Ihk.where(['name LIKE ?', "%#{search}%"]).order('name')
+      @ihks = pager(Ihk,@page).where(['name LIKE ?', "%#{search}%"]).order('name')
     end
     @title = "IHK Liste"
 

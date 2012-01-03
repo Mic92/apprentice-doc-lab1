@@ -18,6 +18,12 @@
   </p>
 <% end %>
 
+<% m = method(:users_path) %>
+<%= pagerViewStart(m) %>
+<%= pagerViewPrev(m) %>
+<%= pagerViewNext(m) %>
+<%= pagerViewEnd(m) %>
+
 <p>
 <table class="main">
   <tr class="main">

@@ -1,5 +1,11 @@
 <h1>Berichte-Übersicht</h1>
 
+<% m = method(:reports_path) %>
+<%= pagerViewStart(m) %>
+<%= pagerViewPrev(m) %>
+<%= pagerViewNext(m) %>
+<%= pagerViewEnd(m) %>
+
 <table class="main">
   <tr class="main">
     <th class="main">Vom</th>

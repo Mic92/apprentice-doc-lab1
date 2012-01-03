@@ -3,11 +3,12 @@ class CodesController < ApplicationController
   before_filter :admin
   
   def index
+    setupPager(Code, params)
     search = params[:search]
     if search.nil?
-      @codes = Code.order('name').all
+      @codes = pager(Code).order('name').all
     else
-      @codes = Code.where(['name LIKE ?', "%#{search}%"]).order('name')
+      @codes = pager(Code).where(['name LIKE ?', "%#{search}%"]).order('name')
     end
     @title = "Code Liste"
     respond_to do |format|
