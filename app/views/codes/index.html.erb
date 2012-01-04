@@ -1,7 +1,9 @@
+<h1><%= title %></h1>
+
 <%= form_tag codes_path, :method => 'get' do %>
   <p>
     <%= text_field_tag :search, params[:search] %>
-    <%= submit_tag "Code finden", :name => nil %>
+    <%= submit_tag "Schablone finden", :name => nil %>
   </p>
 <% end %>
 
@@ -40,4 +42,4 @@ Wöchentlich
 </table>
 <br />
 
-<%= link_to 'Neuer Code', new_code_path, :class => 'main' %>
+<%= link_to 'Neue Schablone', new_code_path, :class => 'main' %>

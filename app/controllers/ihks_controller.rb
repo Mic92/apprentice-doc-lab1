@@ -19,7 +19,7 @@ class IhksController < ApplicationController
 
   def show
     @ihk = Ihk.find(params[:id])
-    @title = "IHK anzeigen"
+    @title = "IHK Details"
     respond_to do |format|
       format.html
     end

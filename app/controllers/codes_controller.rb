@@ -10,7 +10,7 @@ class CodesController < ApplicationController
     else
       @codes = pager(Code).where(['name LIKE ?', "%#{search}%"]).order('name')
     end
-    @title = "Code Liste"
+    @title = "Schablonen-Liste"
     respond_to do |format|
       format.html
     end
@@ -18,7 +18,7 @@ class CodesController < ApplicationController
 
   def show
     @code = Code.find(params[:id])
-    @title = "Code anzeigen"
+    @title = "Schablonen-Details"
     respond_to do |format|
       format.html
     end
@@ -26,7 +26,7 @@ class CodesController < ApplicationController
 
   def edit
     @code = Code.find(params[:id])
-    @title = "Code bearbeiten"
+    @title = "Schablone bearbeiten"
 
     respond_to do |format|
       format.html
@@ -35,7 +35,7 @@ class CodesController < ApplicationController
 
   def new
     @code = Code.new
-    @title = "Code anlegen"
+    @title = "Schablone anlegen"
 
     respond_to do |format|
       format.html

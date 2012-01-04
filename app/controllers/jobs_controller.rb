@@ -18,7 +18,7 @@ class JobsController < ApplicationController
 
   def show
     @job = Job.find(params[:id])
-    @title = "Job anzeigen"
+    @title = "Job Details"
     respond_to do |format|
       format.html
     end

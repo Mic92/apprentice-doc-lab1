@@ -14,7 +14,7 @@ class TemplatesController < ApplicationController
 
   def show
     @template = Template.find(params[:id])
-    @title = "Vorlage anzeigen"
+    @title = "Vorlagen-Details"
 
     respond_to do |format|
       format.html
