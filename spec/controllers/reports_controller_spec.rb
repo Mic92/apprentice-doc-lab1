@@ -23,6 +23,8 @@ require 'spec_helper'
 describe ReportsController do
   before(:each) do
     @user = User.create valid_attributes_user
+    @user.create_template valid_attributes_template
+    @user.template.create_code valid_attributes_code
     @role = Role.create valid_attributes_role_azubi
     @role.users << @user
   end
@@ -50,7 +52,7 @@ describe ReportsController do
     describe "for users with commit right" do
       it "should only find all reports associated with the user" do
         get 'index'
-        assigns(:reports).should eq(@user.reports.order('period_start asc, period_end asc'))
+        assigns(:reports).should eq(@user.reports.offset(0).limit(25).order('period_start asc, period_end asc'))
       end
     end
 
@@ -112,17 +114,7 @@ describe ReportsController do
     describe "without existing reports" do
       it "should provide the beginning and the end of the current month as pre-selected values" do
         get 'new'
-        assigns(:report).period_start.should eq(Date.today.beginning_of_month)
-        assigns(:report).period_end.should eq(Date.today.end_of_month)
-      end
-    end
-
-    describe "with existing reports" do
-      it "should provide the beginning and the end of the month after the last report as pre-selected values" do
-        @report = @user.reports.create valid_attributes_report.merge(:period_start => '2011-10-01', :period_end => '2011-10-31')
-        get 'new'
-        assigns(:report).period_start.should eq('2011-11-01'.to_date)
-        assigns(:report).period_end.should eq('2011-11-30'.to_date)
+        assigns(:report).period_start.should eq(Date.today.beginning_of_month.beginning_of_week)
       end
     end
   end

@@ -34,18 +34,24 @@ describe "reports/index.html.erb" do
     @exporter = mock_model(User, :name => 'Exporter',
                            :forename => 'One',
                            :role => @export_role)
-    @personal_status = mock_model(Status, :name => 'nicht vorgelegt')
-    @rejected_status = mock_model(Status, :name => 'abgelehnt')
+    @personal_status = mock_model(Status, :name => 'nicht vorgelegt', :stype => Status.personal)
+    @rejected_status = mock_model(Status, :name => 'abgelehnt', :stype => Status.rejected)
+    @personal_entries = mock_model(ReportEntry, :blank? => true)
+    @rejected_entries = mock_model(ReportEntry, :blank? => true)
     @report1 = mock_model(Report, :period_start => '2011-10-01'.to_date,
                           :period_end => '2011-10-31'.to_date,
                           :user => @apprentice,
-                          :status => @personal_status)
+                          :status => @personal_status,
+                          :report_entries => @personal_entries)
     @report2 = mock_model(Report, :period_start => '2011-11-01'.to_date,
                           :period_end => '2011-11-30'.to_date,
                           :user => @apprentice,
-                          :status => @rejected_status)
+                          :status => @rejected_status,
+                          :report_entries => @rejected_entries)
     assign(:reports, [ @report1, @report2 ])
     assign(:current_user, @apprentice)
+    assign(:pageCount, 1)
+    assign(:page, 0)
   end
 
   it "should display the beginning dates" do

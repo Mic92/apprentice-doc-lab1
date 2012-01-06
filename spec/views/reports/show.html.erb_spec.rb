@@ -93,11 +93,6 @@ describe "reports/show.html.erb" do
                               "href=\"/reports/#{@personal_report.id}/report_entries/#{@entry2.id}\"")
     end
 
-    it "should have a link to create a new entry" do
-      render
-      rendered.should include("href=\"#{new_report_report_entry_path(@personal_report)}\"")
-    end
-
     it "should have a link to commit the report if he has at least one entry" do
       render
       rendered.should include("href=\"#{reviews_path}?report_id=#{@personal_report.id}\"")
