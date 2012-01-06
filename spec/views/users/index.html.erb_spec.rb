@@ -38,6 +38,8 @@ describe "users/index.html.erb" do
                               :role => @admin_role,
                               :deleted? => false)
     assign(:users, [@admin, @apprentice, @instructor])
+    assign(:pageCount, 1)
+    assign(:page, 0)
   end
   
   describe "admin view" do
