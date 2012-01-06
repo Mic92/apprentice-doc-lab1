@@ -107,7 +107,7 @@ class ReportsController < ApplicationController
       end
       @report.period_end = dateEnd
 
-      if no_time_overlap(@report)
+      if no_time_overlap(@report,false)
         if @report.save
           redirect_to reports_path, :notice => 'Bericht wurde erfolgreich erstellt.'
         else
@@ -145,7 +145,7 @@ class ReportsController < ApplicationController
         @report.report_entries.each { |e| e.update_attribute(:date, (e.date + @shift.days)) }
       end
 
-      #if no_time_overlap(@report)
+      if no_time_overlap(@report,true)
         if params[:report] != nil && @report.update_attributes(params[:report])
           # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
           # freigegeben werden kann.
@@ -154,9 +154,9 @@ class ReportsController < ApplicationController
         else
           render 'edit'
         end
-      #else
-      #  render 'edit'
-      #end
+      else
+        render 'edit'
+      end
     else
       render 'edit'
     end
@@ -190,7 +190,7 @@ class ReportsController < ApplicationController
       redirect_to reports_path, :alert => 'Da der Bericht schon akzeptiert wurde sind Änderungen nicht mehr möglich' if @report.status.stype == Status.accepted
     end
 
-    def no_time_overlap(report)
+    def no_time_overlap(report,update)
       if report.period_start and report.period_end
         reports = current_user.reports.where("(period_start <= :period_start AND period_end >= :period_start) OR
                                              (period_start <= :period_end AND period_end >= :period_end) OR
@@ -198,6 +198,9 @@ class ReportsController < ApplicationController
                                              :period_start => report.period_start,
                                              :period_end => report.period_end)
         if reports.length > 0
+          if update && reports.length == 1 && reports.first.id == report.id
+            return true
+          end
           report.errors[:base] << 'Es darf keine zeitlichen Überlappungen mit anderen Berichten geben.'
           return false
         else
