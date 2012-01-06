@@ -31,7 +31,7 @@ module PrintReportsHelper
     @reportEntries = @report.report_entries ||= []
     @groupedEntries = []
     grouper = Hash.new
-    
+
     dtStart = @report.period_start.to_datetime
     dtEnd = @report.period_end.to_datetime
     dtCur = dtStart
@@ -52,7 +52,7 @@ module PrintReportsHelper
       grouper[key] = []
       dtCur += offset
     end
-    
+
     #group each entry to the timeframe
     @reportEntries.each do |entry|
       dt = entry.date.to_datetime
@@ -62,7 +62,7 @@ module PrintReportsHelper
         key = dt.cweek
       elsif @code.codegroup == HOURLY
         key = "#{dt.yday}-#{dt.hour}"
-      end      
+      end
       if grouper[key].nil?
         grouper[key] = []
       end
@@ -77,7 +77,7 @@ module PrintReportsHelper
       @displayCode.gsub!("[v]#{key}[/v]",self.send(value).to_s)
     }
   end
-  
+
   def replaceEditableValues(formatMethod)
     #replace complex values
     @splitted = @displayCode.split("[e]")
@@ -98,7 +98,7 @@ module PrintReportsHelper
       @displayCode << value
     end
   end
-  
+
   def displayValueFormat(value,entryNo,entryGroup,entryValue)
     "&nbsp;"+value.to_s
   end
@@ -107,7 +107,7 @@ module PrintReportsHelper
     pream = "entry_#{entryNo}_#{entryGroup}"
     "<input id=\"#{pream}_#{entryValue}\" name=\"#{pream}[#{entryValue}]\" type=\"text\" style=\"width:95%;\" value=\"#{value}\" />"
   end
-  
+
   # entry point of this class
   def handleRawCode
     self.init
@@ -120,7 +120,7 @@ module PrintReportsHelper
   def editRawCode
     self.init
     self.replaceNonEditableValues
-    
+
     self.replaceEditableValues(method(:editValueFormat))
   end
 
@@ -131,11 +131,11 @@ module PrintReportsHelper
   def userforename
     @user.forename ||= ''
   end
-  
+
   def trainingyear
     @user.trainingyear ||= ''
   end
-  
+
   def reportnumber
     @report.reportnumber ||= ''
   end
@@ -143,15 +143,15 @@ module PrintReportsHelper
   def jobname
     @user.template.job.name ||= ''
   end
-  
+
   def reportmonth
-    @report.period_start.strftime('%B')
+    l @report.period_start, :format => "%B"
   end
-  
+
   def reportyear
     @report.period_start.year
   end
-  
+
   def reportweekstart
     @report.period_start.cweek
   end
@@ -175,24 +175,24 @@ module PrintReportsHelper
     end
     retVal
   end
-  
+
   def handleSubmittedReport(params)
     self.init
-    
+
     puts @groupedEntries
-    
+
     params.each { |key, value|
       if key.match('entry_[0-9]+_[0-9]+')
         entryPlace = key.split('_')
         entryNo = entryPlace[1].to_i
         entryGroup = entryPlace[2].to_i
-        
+
         #entry = @groupedEntries[entryGroup][entryNo]
         entriesGroup = @groupedEntries[entryNo]
         if not entriesGroup.nil?
           entry = entriesGroup[entryGroup]
         end
-        
+
         if entry.nil?
           entry = @report.report_entries.new
 
