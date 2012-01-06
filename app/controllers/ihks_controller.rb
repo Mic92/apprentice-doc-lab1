@@ -8,7 +8,7 @@ class IhksController < ApplicationController
     if search.nil?
       @ihks = pager(Ihk).order('name').all
     else
-      @ihks = pager(Ihk,@page).where(['name LIKE ?', "%#{search}%"]).order('name')
+      @ihks = pager(Ihk).where(['name LIKE ?', "%#{search}%"]).order('name')
     end
     @title = "IHK Liste"
 
@@ -44,7 +44,7 @@ class IhksController < ApplicationController
 
   def create
     @ihk = Ihk.new(params[:ihk])
-    
+
     respond_to do |format|
       if @ihk.save
         format.html { redirect_to @ihk, notice: 'Die IHK wurde erfolgreich angelegt' }

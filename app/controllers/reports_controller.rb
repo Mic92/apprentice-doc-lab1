@@ -91,25 +91,28 @@ class ReportsController < ApplicationController
     # Jeder Bericht muss einen Status haben, also erstelle ihn zusammen mit dem Bericht.
     @report.build_status(:stype => Status.personal)
     @report.reportnumber = current_user.reports.count + 1
+    if !@report.period_start.nil?
+      dateStart = @report.period_start
+      dateEnd = dateStart
 
-    dateStart = @report.period_start
-    dateEnd = dateStart
-
-    if not current_user.template.nil?
-      codegroup = current_user.template.code.codegroup
-      if codegroup == PrintReportsHelper::HOURLY
-        # nothing to do
-      elsif codegroup == PrintReportsHelper::DAILY
-        dateEnd = dateStart + 1.week - 1.day
-      elsif codegroup == PrintReportsHelper::WEEKLY
-        dateEnd = dateStart + 5.weeks - 1.day
+      if not current_user.template.nil?
+        codegroup = current_user.template.code.codegroup
+        if codegroup == PrintReportsHelper::HOURLY
+          # nothing to do
+        elsif codegroup == PrintReportsHelper::DAILY
+          dateEnd = dateStart + 1.week - 1.day
+        elsif codegroup == PrintReportsHelper::WEEKLY
+          dateEnd = dateStart + 5.weeks - 1.day
+        end
       end
-    end
-    @report.period_end = dateEnd
+      @report.period_end = dateEnd
 
-    if no_time_overlap(@report)
-      if @report.save
-        redirect_to reports_path, :notice => 'Bericht wurde erfolgreich erstellt.'
+      if no_time_overlap(@report)
+        if @report.save
+          redirect_to reports_path, :notice => 'Bericht wurde erfolgreich erstellt.'
+        else
+          render 'new'
+        end
       else
         render 'new'
       end
@@ -130,7 +133,7 @@ class ReportsController < ApplicationController
       if @new.period_start >= @report.period_start && @new.period_end <= @report.period_end
         @entries = @report.report_entries.order('date asc')
         if @entries.length > 0
-          if @entries.first.date.to_date < @new.period_start || @entries.last.date.to_date > @new.period_start
+          if @entries.first.date < @new.period_start || @entries.last.date > @new.period_start
             # Durch die Änderung würden Einträge nicht mehr im Zeitraum des Berichts liegen.
             flash.now[:alert] = 'Diese Änderung führt zu einem Konflikt mit den Einträgen dieses Berichts.'
             render 'edit' and return
@@ -142,7 +145,7 @@ class ReportsController < ApplicationController
         @report.report_entries.each { |e| e.update_attribute(:date, (e.date + @shift.days)) }
       end
 
-      if no_time_overlap(@report)
+      #if no_time_overlap(@report)
         if params[:report] != nil && @report.update_attributes(params[:report])
           # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
           # freigegeben werden kann.
@@ -151,9 +154,9 @@ class ReportsController < ApplicationController
         else
           render 'edit'
         end
-      else
-        render 'edit'
-      end
+      #else
+      #  render 'edit'
+      #end
     else
       render 'edit'
     end
