@@ -27,6 +27,10 @@ class ReportBotController < ApplicationController
     12
   end
 
+  def self.check_for_localhost
+    true
+  end
+
   def monthname (month)
     case month
       when 1
@@ -160,7 +164,7 @@ class ReportBotController < ApplicationController
   end
 
   def unwritten
-    if request.remote_ip == "127.0.0.1"
+    if request.remote_ip == "127.0.0.1" || !ReportBotController.check_for_localhost
       @apprentices = User.joins(:role).where( :roles => {:commit => true} )
       @year = Time.now.year
       @month = Time.now.month
@@ -243,7 +247,7 @@ class ReportBotController < ApplicationController
   end
 
   def unchecked
-    if request.remote_ip == "127.0.0.1"
+    if request.remote_ip == "127.0.0.1" || !ReportBotController.check_for_localhost
     @instructors = User.joins(:role).where( :roles => {:check => true} )
     #für jeden Ausbilder, der nicht deaktiviert ist
       @instructors.each do |instructor|

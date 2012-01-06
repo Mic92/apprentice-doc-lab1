@@ -1,11 +1,8 @@
-<h1>ReportBot#unchecked</h1>
-<p>Find me in app/views/report_bot/unchecked.html.erb</p>
-<br>
-<br>
-anz instructoren: 
-<%= @debug_num %><br>
-anz azubis insg: 
-<%= @debug_num2 %><br>
-anz reports insg: 
-<%= @debug_num3 %><br>
-<%= @instructors %>
+<h1>ReportBot</h1>
+<p>
+  <%= "Es wurden Benutzer mit dem Recht Berichte zu bewerten daran erinnert, dass sie noch Berichte prüfen müssen, die schon länger vorgelegt sind, als es der konfigurierte Zeitraum ("%>
+  <%=ReportBotController.instructor_period/(1.days) %>
+  <%= " Tage) vorsieht." %>
+  <br><br>
+  <%= link_to 'zurück', :controller => "report_bot", :class => 'main', :action => "show" %>
+</p>

@@ -1,17 +1,6 @@
-<h1>ReportBot#unwritten</h1>
-<p>Find me in app/views/report_bot/unwritten.html.erb</p>
-array mit monaten:<br> 
-<%= @date_array %><br>
-array mit reports:<br> 
-<%= @reports %><br>
-letztes date_v:<br> 
-<%= @date_v %><br>
-letztes @daycount:<br> 
-<%= @daycount %><br>
-<br>
-debug1:<br> 
-<%= @debug1 %><br>
-debug2:<br> 
-<%= @debug2 %><br>
-debug3:<br> 
-<%= @debug3.to_f %><br>
+<h1>ReportBot</h1>
+<p>
+  <%= "Sofern ein User mit dem Recht zum Berichte erstellen noch offene Berichte hat (ausgehend für die letzten " +  ReportBotController.apprentice_period_inmonths.to_s + " Monate bis zu seinem Ausbildungsbeginn), wurde ihm eine Erinnerungsemail mit den Monaten für noch fehlende Berichte zugesendet." %>
+  <br><br>
+  <%= link_to 'zurück', :controller => "report_bot", :class => 'main', :action => "show" %>
+</p>
