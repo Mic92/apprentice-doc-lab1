@@ -36,7 +36,7 @@
           <li class="main"><%= link_to 'Berichtsschablonen-Verwaltung', codes_path, :class => 'main' %></li>
           <li class="main"><%= link_to 'Vorlagen-Verwaltung', templates_path, :class => 'main' %></li>
           <li class="main"><%= link_to 'Rechte-Verwaltung', roles_path, :class => 'main' %>
-          <li class="main"><%= link_to 'Berichtserinnerung', :controller => "report_bot", :class => 'main', :action => "show" %>
+          <li class="main"><%= link_to 'Berichtserinnerung', report_bot_show_path, :class => 'main' %>
         <% end %>
         <br />
         <br />

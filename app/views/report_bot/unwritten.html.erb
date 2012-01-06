@@ -2,5 +2,5 @@
 <p>
   <%= "Sofern ein User mit dem Recht zum Berichte erstellen noch offene Berichte hat (ausgehend für die letzten " +  ReportBotController.apprentice_period_inmonths.to_s + " Monate bis zu seinem Ausbildungsbeginn), wurde ihm eine Erinnerungsemail mit den Monaten für noch fehlende Berichte zugesendet." %>
   <br><br>
-  <%= link_to 'zurück', :controller => "report_bot", :class => 'main', :action => "show" %>
+  <%= link_to 'zurück', report_bot_show_path, :class => 'main' %>
 </p>
