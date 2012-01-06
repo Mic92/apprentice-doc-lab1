@@ -3,12 +3,9 @@
 <% if current_user.role.commit? %>
   <% if @report.status.stype == Status.personal && !@report.report_entries.blank? %>
     <%= link_to 'Bericht vorlegen', reviews_path(:report_id => @report), :method => :post, :class => 'main' %>
-    |
   <% elsif @report.status.stype == Status.commited %>
     <%= link_to 'Bericht zurückziehen', review_path(@report), :method => :delete, :class => 'main' %>
-    |
   <% end %>
-  <%= link_to 'Eintrag anlegen', new_report_report_entry_path(@report), :class => 'main' %>
 <% elsif current_user.role.check? %>
   <% if @report.status.stype == Status.commited %>
     <%= link_to 'Bericht akzeptieren', review_path(@report), :method => :delete, :class => 'main' %>
@@ -33,7 +30,6 @@
       <td class="main center"><%= entry.duration_in_hours.to_i %> Stunden <%= (entry.duration_in_hours.hours / 1.minute % 60).to_i %> Minuten</td>
       <td class="main"><%= entry.text %></td>
       <% if current_user.role.commit? %>
-        <td class="main"><%= link_to 'Bearbeiten', edit_report_report_entry_path(@report, entry), :class => 'main' %></td>
         <td class="main"><%= link_to 'Löschen', report_report_entry_path(@report, entry), :confirm => "Sind Sie sicher?", :method => :delete, :class => 'main' %></td>
       <% end %>
     </tr>
