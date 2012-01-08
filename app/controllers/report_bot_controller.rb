@@ -164,7 +164,7 @@ class ReportBotController < ApplicationController
   end
 
   def unwritten
-    if request.remote_ip == "127.0.0.1" || !ReportBotController.check_for_localhost
+    if request.remote_ip == "127.0.0.1" || !ReportBotController.check_for_localhost || current_user.role.admin?
       @apprentices = User.joins(:role).where( :roles => {:commit => true} )
       @year = Time.now.year
       @month = Time.now.month
@@ -247,7 +247,7 @@ class ReportBotController < ApplicationController
   end
 
   def unchecked
-    if request.remote_ip == "127.0.0.1" || !ReportBotController.check_for_localhost
+    if request.remote_ip == "127.0.0.1" || !ReportBotController.check_for_localhost || current_user.role.admin?
     @instructors = User.joins(:role).where( :roles => {:check => true} )
     #für jeden Ausbilder, der nicht deaktiviert ist
       @instructors.each do |instructor|
