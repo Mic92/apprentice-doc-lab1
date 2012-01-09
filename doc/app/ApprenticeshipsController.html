@@ -123,6 +123,8 @@
   
     <li><a href="./JobsHelper.html">JobsHelper</a>
   
+    <li><a href="./PagerHelper.html">PagerHelper</a>
+  
     <li><a href="./PasswordsController.html">PasswordsController</a>
   
     <li><a href="./PrintReportsController.html">PrintReportsController</a>
@@ -138,6 +140,10 @@
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
   
     <li><a href="./ReportEntry.html">ReportEntry</a>
+  
+    <li><a href="./ReportTemplateEntriesController.html">ReportTemplateEntriesController</a>
+  
+    <li><a href="./ReportTemplateEntriesHelper.html">ReportTemplateEntriesHelper</a>
   
     <li><a href="./ReportsController.html">ReportsController</a>
   
@@ -231,13 +237,13 @@ nicht zugewiesen werden.</p>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@apprentice</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:apprentice_id</span>])
     <span class="ruby-keyword">if</span> <span class="ruby-ivar">@apprentice</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@apprentice</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin</span>
-      <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Benutzer ist kein Auszubildender.'</span>
+      <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:alert</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Benutzer ist kein Auszubildender.'</span>
     <span class="ruby-keyword">else</span>
       <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@apprentice</span>
       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Auszubildende wurde zugewiesen.'</span>
     <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Auszubildende konnte nicht zugewiesen werden.'</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:alert</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Auszubildende konnte nicht zugewiesen werden.'</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- create-source -->
@@ -275,7 +281,7 @@ weiter.</p>
     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-ivar">@apprentice</span>)
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Die Zuweisung wurde entfernt.'</span>
   <span class="ruby-keyword">else</span>
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Die Zuweisung konnte nicht entfernt werden.'</span>
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:alert</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Die Zuweisung konnte nicht entfernt werden.'</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- destroy-source -->

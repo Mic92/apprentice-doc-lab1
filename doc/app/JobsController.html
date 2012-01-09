@@ -131,6 +131,8 @@
   
     <li><a href="./JobsHelper.html">JobsHelper</a>
   
+    <li><a href="./PagerHelper.html">PagerHelper</a>
+  
     <li><a href="./PasswordsController.html">PasswordsController</a>
   
     <li><a href="./PrintReportsController.html">PrintReportsController</a>
@@ -146,6 +148,10 @@
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
   
     <li><a href="./ReportEntry.html">ReportEntry</a>
+  
+    <li><a href="./ReportTemplateEntriesController.html">ReportTemplateEntriesController</a>
+  
+    <li><a href="./ReportTemplateEntriesHelper.html">ReportTemplateEntriesHelper</a>
   
     <li><a href="./ReportsController.html">ReportsController</a>
   
@@ -226,7 +232,7 @@
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 39</span>
+            <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 45</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-ivar">@job</span> = <span class="ruby-constant">Job</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:job</span>])
   
@@ -265,7 +271,7 @@
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 64</span>
+            <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 70</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-ivar">@job</span> = <span class="ruby-constant">Job</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@job</span>.<span class="ruby-identifier">destroy</span>
@@ -300,7 +306,7 @@
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 21</span>
+            <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 27</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
   <span class="ruby-ivar">@job</span> = <span class="ruby-constant">Job</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;Job bearbeiten&quot;</span>
@@ -337,7 +343,13 @@
           <div class="method-source-code" id="index-source">
             <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 5</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
-  <span class="ruby-ivar">@jobs</span> = <span class="ruby-constant">Job</span>.<span class="ruby-identifier">all</span>
+  <span class="ruby-identifier">setupPager</span>(<span class="ruby-constant">Job</span>, <span class="ruby-identifier">params</span>)
+  <span class="ruby-identifier">search</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:search</span>]
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">search</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-ivar">@jobs</span> = <span class="ruby-identifier">pager</span>(<span class="ruby-constant">Job</span>).<span class="ruby-identifier">order</span>(<span class="ruby-string">'name'</span>).<span class="ruby-identifier">all</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@jobs</span> = <span class="ruby-identifier">pager</span>(<span class="ruby-constant">Job</span>).<span class="ruby-identifier">where</span>([<span class="ruby-string">'name LIKE ?'</span>, <span class="ruby-node">&quot;%#{search}%&quot;</span>]).<span class="ruby-identifier">order</span>(<span class="ruby-string">'name'</span>)
+  <span class="ruby-keyword">end</span>
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;Job Liste&quot;</span>
   <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span>
@@ -369,7 +381,7 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 30</span>
+            <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 36</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@job</span> = <span class="ruby-constant">Job</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;Job anlegen&quot;</span>
@@ -404,10 +416,10 @@
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 13</span>
+            <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 19</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-ivar">@job</span> = <span class="ruby-constant">Job</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-  <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;Job anzeigen&quot;</span>
+  <span class="ruby-ivar">@title</span> = <span class="ruby-string">&quot;Job Details&quot;</span>
   <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span>
   <span class="ruby-keyword">end</span>
@@ -438,7 +450,7 @@
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 52</span>
+            <pre><span class="ruby-comment"># File app/controllers/jobs_controller.rb, line 58</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-ivar">@job</span> = <span class="ruby-constant">Job</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 

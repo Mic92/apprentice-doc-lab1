@@ -72,6 +72,9 @@
     <li class="module">
     <a href="JobsHelper.html">JobsHelper</a>
   </li>
+    <li class="module">
+    <a href="PagerHelper.html">PagerHelper</a>
+  </li>
     <li class="class">
     <a href="PasswordsController.html">PasswordsController</a>
   </li>
@@ -105,6 +108,12 @@
     <ul class="initially-hidden">
       <li><a href="ReportEntry.html#label-Eintrag">Eintrag</a>
     </ul>
+  </li>
+    <li class="class">
+    <a href="ReportTemplateEntriesController.html">ReportTemplateEntriesController</a>
+  </li>
+    <li class="module">
+    <a href="ReportTemplateEntriesHelper.html">ReportTemplateEntriesHelper</a>
   </li>
     <li class="class">
     <a href="ReportsController.html">ReportsController</a>
@@ -162,11 +171,13 @@
   
     <li class="method"><a href="Status.html#method-c-accepted">::accepted &mdash; Status</a>
   
-    <li class="method"><a href="ReportBotController.html#method-c-apprentice_period">::apprentice_period &mdash; ReportBotController</a>
+    <li class="method"><a href="ReportBotController.html#method-c-apprentice_period_inmonths">::apprentice_period_inmonths &mdash; ReportBotController</a>
   
     <li class="method"><a href="User.html#method-c-authenticate">::authenticate &mdash; User</a>
   
     <li class="method"><a href="User.html#method-c-authenticate_with_salt">::authenticate_with_salt &mdash; User</a>
+  
+    <li class="method"><a href="ReportBotController.html#method-c-check_for_localhost">::check_for_localhost &mdash; ReportBotController</a>
   
     <li class="method"><a href="Status.html#method-c-commited">::commited &mdash; Status</a>
   
@@ -178,7 +189,11 @@
   
     <li class="method"><a href="SessionsHelper.html#method-i-admin">#admin &mdash; SessionsHelper</a>
   
+    <li class="method"><a href="SessionsHelper.html#method-i-adminremovable-3F">#adminremovable? &mdash; SessionsHelper</a>
+  
     <li class="method"><a href="SessionsHelper.html#method-i-authenticate">#authenticate &mdash; SessionsHelper</a>
+  
+    <li class="method"><a href="PagerHelper.html#method-i-calcPageCount">#calcPageCount &mdash; PagerHelper</a>
   
     <li class="method"><a href="SessionsHelper.html#method-i-check">#check &mdash; SessionsHelper</a>
   
@@ -186,29 +201,31 @@
   
     <li class="method"><a href="PrintReportsController.html#method-i-correct_user">#correct_user &mdash; PrintReportsController</a>
   
-    <li class="method"><a href="JobsController.html#method-i-create">#create &mdash; JobsController</a>
+    <li class="method"><a href="ReportTemplateEntriesController.html#method-i-correct_user">#correct_user &mdash; ReportTemplateEntriesController</a>
   
-    <li class="method"><a href="ReportEntriesController.html#method-i-create">#create &mdash; ReportEntriesController</a>
+    <li class="method"><a href="JobsController.html#method-i-create">#create &mdash; JobsController</a>
   
     <li class="method"><a href="CodesController.html#method-i-create">#create &mdash; CodesController</a>
   
-    <li class="method"><a href="TemplatesController.html#method-i-create">#create &mdash; TemplatesController</a>
-  
     <li class="method"><a href="PasswordsController.html#method-i-create">#create &mdash; PasswordsController</a>
   
-    <li class="method"><a href="UsersController.html#method-i-create">#create &mdash; UsersController</a>
+    <li class="method"><a href="ReportsController.html#method-i-create">#create &mdash; ReportsController</a>
+  
+    <li class="method"><a href="IhksController.html#method-i-create">#create &mdash; IhksController</a>
   
     <li class="method"><a href="ReviewsController.html#method-i-create">#create &mdash; ReviewsController</a>
   
     <li class="method"><a href="SessionsController.html#method-i-create">#create &mdash; SessionsController</a>
   
-    <li class="method"><a href="IhksController.html#method-i-create">#create &mdash; IhksController</a>
+    <li class="method"><a href="ApprenticeshipsController.html#method-i-create">#create &mdash; ApprenticeshipsController</a>
   
     <li class="method"><a href="RolesController.html#method-i-create">#create &mdash; RolesController</a>
   
-    <li class="method"><a href="ApprenticeshipsController.html#method-i-create">#create &mdash; ApprenticeshipsController</a>
+    <li class="method"><a href="TemplatesController.html#method-i-create">#create &mdash; TemplatesController</a>
   
-    <li class="method"><a href="ReportsController.html#method-i-create">#create &mdash; ReportsController</a>
+    <li class="method"><a href="ReportEntriesController.html#method-i-create">#create &mdash; ReportEntriesController</a>
+  
+    <li class="method"><a href="UsersController.html#method-i-create">#create &mdash; UsersController</a>
   
     <li class="method"><a href="SessionsHelper.html#method-i-current_user">#current_user &mdash; SessionsHelper</a>
   
@@ -220,45 +237,53 @@
   
     <li class="method"><a href="SessionsHelper.html#method-i-deny_access">#deny_access &mdash; SessionsHelper</a>
   
-    <li class="method"><a href="ReviewsController.html#method-i-destroy">#destroy &mdash; ReviewsController</a>
-  
-    <li class="method"><a href="CodesController.html#method-i-destroy">#destroy &mdash; CodesController</a>
-  
     <li class="method"><a href="UsersController.html#method-i-destroy">#destroy &mdash; UsersController</a>
+  
+    <li class="method"><a href="JobsController.html#method-i-destroy">#destroy &mdash; JobsController</a>
   
     <li class="method"><a href="RolesController.html#method-i-destroy">#destroy &mdash; RolesController</a>
   
-    <li class="method"><a href="ReportEntriesController.html#method-i-destroy">#destroy &mdash; ReportEntriesController</a>
-  
-    <li class="method"><a href="IhksController.html#method-i-destroy">#destroy &mdash; IhksController</a>
+    <li class="method"><a href="ReportsController.html#method-i-destroy">#destroy &mdash; ReportsController</a>
   
     <li class="method"><a href="TemplatesController.html#method-i-destroy">#destroy &mdash; TemplatesController</a>
   
-    <li class="method"><a href="ReportsController.html#method-i-destroy">#destroy &mdash; ReportsController</a>
+    <li class="method"><a href="IhksController.html#method-i-destroy">#destroy &mdash; IhksController</a>
   
-    <li class="method"><a href="ApprenticeshipsController.html#method-i-destroy">#destroy &mdash; ApprenticeshipsController</a>
+    <li class="method"><a href="ReviewsController.html#method-i-destroy">#destroy &mdash; ReviewsController</a>
   
     <li class="method"><a href="SessionsController.html#method-i-destroy">#destroy &mdash; SessionsController</a>
   
-    <li class="method"><a href="JobsController.html#method-i-destroy">#destroy &mdash; JobsController</a>
+    <li class="method"><a href="CodesController.html#method-i-destroy">#destroy &mdash; CodesController</a>
+  
+    <li class="method"><a href="ReportEntriesController.html#method-i-destroy">#destroy &mdash; ReportEntriesController</a>
+  
+    <li class="method"><a href="ApprenticeshipsController.html#method-i-destroy">#destroy &mdash; ApprenticeshipsController</a>
+  
+    <li class="method"><a href="PrintReportsHelper.html#method-i-displayValueFormat">#displayValueFormat &mdash; PrintReportsHelper</a>
+  
+    <li class="method"><a href="ReportTemplateEntriesController.html#method-i-edit">#edit &mdash; ReportTemplateEntriesController</a>
+  
+    <li class="method"><a href="TemplatesController.html#method-i-edit">#edit &mdash; TemplatesController</a>
+  
+    <li class="method"><a href="ReportEntriesController.html#method-i-edit">#edit &mdash; ReportEntriesController</a>
+  
+    <li class="method"><a href="IhksController.html#method-i-edit">#edit &mdash; IhksController</a>
+  
+    <li class="method"><a href="RolesController.html#method-i-edit">#edit &mdash; RolesController</a>
   
     <li class="method"><a href="CodesController.html#method-i-edit">#edit &mdash; CodesController</a>
   
     <li class="method"><a href="ReviewsController.html#method-i-edit">#edit &mdash; ReviewsController</a>
   
-    <li class="method"><a href="ReportEntriesController.html#method-i-edit">#edit &mdash; ReportEntriesController</a>
-  
-    <li class="method"><a href="RolesController.html#method-i-edit">#edit &mdash; RolesController</a>
+    <li class="method"><a href="JobsController.html#method-i-edit">#edit &mdash; JobsController</a>
   
     <li class="method"><a href="UsersController.html#method-i-edit">#edit &mdash; UsersController</a>
   
-    <li class="method"><a href="JobsController.html#method-i-edit">#edit &mdash; JobsController</a>
-  
     <li class="method"><a href="ReportsController.html#method-i-edit">#edit &mdash; ReportsController</a>
   
-    <li class="method"><a href="TemplatesController.html#method-i-edit">#edit &mdash; TemplatesController</a>
+    <li class="method"><a href="PrintReportsHelper.html#method-i-editRawCode">#editRawCode &mdash; PrintReportsHelper</a>
   
-    <li class="method"><a href="IhksController.html#method-i-edit">#edit &mdash; IhksController</a>
+    <li class="method"><a href="PrintReportsHelper.html#method-i-editValueFormat">#editValueFormat &mdash; PrintReportsHelper</a>
   
     <li class="method"><a href="PrintReportsHelper.html#method-i-entry">#entry &mdash; PrintReportsHelper</a>
   
@@ -270,81 +295,107 @@
   
     <li class="method"><a href="PrintReportsHelper.html#method-i-handleRawCode">#handleRawCode &mdash; PrintReportsHelper</a>
   
+    <li class="method"><a href="PrintReportsHelper.html#method-i-handleSubmittedReport">#handleSubmittedReport &mdash; PrintReportsHelper</a>
+  
     <li class="method"><a href="User.html#method-i-has_password-3F">#has_password? &mdash; User</a>
   
     <li class="method"><a href="RolesController.html#method-i-index">#index &mdash; RolesController</a>
   
-    <li class="method"><a href="TemplatesController.html#method-i-index">#index &mdash; TemplatesController</a>
-  
-    <li class="method"><a href="ReportsController.html#method-i-index">#index &mdash; ReportsController</a>
+    <li class="method"><a href="ApprenticeshipsController.html#method-i-index">#index &mdash; ApprenticeshipsController</a>
   
     <li class="method"><a href="JobsController.html#method-i-index">#index &mdash; JobsController</a>
   
     <li class="method"><a href="IhksController.html#method-i-index">#index &mdash; IhksController</a>
   
-    <li class="method"><a href="ApprenticeshipsController.html#method-i-index">#index &mdash; ApprenticeshipsController</a>
-  
     <li class="method"><a href="UsersController.html#method-i-index">#index &mdash; UsersController</a>
   
+    <li class="method"><a href="ReportsController.html#method-i-index">#index &mdash; ReportsController</a>
+  
     <li class="method"><a href="CodesController.html#method-i-index">#index &mdash; CodesController</a>
+  
+    <li class="method"><a href="TemplatesController.html#method-i-index">#index &mdash; TemplatesController</a>
   
     <li class="method"><a href="PrintReportsHelper.html#method-i-init">#init &mdash; PrintReportsHelper</a>
   
     <li class="method"><a href="PrintReportsHelper.html#method-i-jobname">#jobname &mdash; PrintReportsHelper</a>
   
+    <li class="method"><a href="ReportBotController.html#method-i-monthname">#monthname &mdash; ReportBotController</a>
+  
     <li class="method"><a href="Status.html#method-i-name">#name &mdash; Status</a>
   
     <li class="method"><a href="CodesController.html#method-i-new">#new &mdash; CodesController</a>
   
-    <li class="method"><a href="PasswordsController.html#method-i-new">#new &mdash; PasswordsController</a>
-  
     <li class="method"><a href="RolesController.html#method-i-new">#new &mdash; RolesController</a>
-  
-    <li class="method"><a href="UsersController.html#method-i-new">#new &mdash; UsersController</a>
-  
-    <li class="method"><a href="ReportEntriesController.html#method-i-new">#new &mdash; ReportEntriesController</a>
   
     <li class="method"><a href="SessionsController.html#method-i-new">#new &mdash; SessionsController</a>
   
-    <li class="method"><a href="TemplatesController.html#method-i-new">#new &mdash; TemplatesController</a>
+    <li class="method"><a href="ReportEntriesController.html#method-i-new">#new &mdash; ReportEntriesController</a>
   
-    <li class="method"><a href="IhksController.html#method-i-new">#new &mdash; IhksController</a>
+    <li class="method"><a href="TemplatesController.html#method-i-new">#new &mdash; TemplatesController</a>
   
     <li class="method"><a href="ReportsController.html#method-i-new">#new &mdash; ReportsController</a>
   
+    <li class="method"><a href="UsersController.html#method-i-new">#new &mdash; UsersController</a>
+  
     <li class="method"><a href="JobsController.html#method-i-new">#new &mdash; JobsController</a>
+  
+    <li class="method"><a href="PasswordsController.html#method-i-new">#new &mdash; PasswordsController</a>
+  
+    <li class="method"><a href="IhksController.html#method-i-new">#new &mdash; IhksController</a>
+  
+    <li class="method"><a href="PagerHelper.html#method-i-pager">#pager &mdash; PagerHelper</a>
+  
+    <li class="method"><a href="PagerHelper.html#method-i-pagerViewEnd">#pagerViewEnd &mdash; PagerHelper</a>
+  
+    <li class="method"><a href="PagerHelper.html#method-i-pagerViewNext">#pagerViewNext &mdash; PagerHelper</a>
+  
+    <li class="method"><a href="PagerHelper.html#method-i-pagerViewPrev">#pagerViewPrev &mdash; PagerHelper</a>
+  
+    <li class="method"><a href="PagerHelper.html#method-i-pagerViewStart">#pagerViewStart &mdash; PagerHelper</a>
   
     <li class="method"><a href="UserMailer.html#method-i-password_recovery_mail">#password_recovery_mail &mdash; UserMailer</a>
   
     <li class="method"><a href="UserMailer.html#method-i-password_verification_mail">#password_verification_mail &mdash; UserMailer</a>
   
+    <li class="method"><a href="ReportTemplateEntriesController.html#method-i-prepare">#prepare &mdash; ReportTemplateEntriesController</a>
+  
     <li class="method"><a href="SessionsHelper.html#method-i-read">#read &mdash; SessionsHelper</a>
+  
+    <li class="method"><a href="PrintReportsHelper.html#method-i-replaceEditableValues">#replaceEditableValues &mdash; PrintReportsHelper</a>
+  
+    <li class="method"><a href="PrintReportsHelper.html#method-i-replaceNonEditableValues">#replaceNonEditableValues &mdash; PrintReportsHelper</a>
   
     <li class="method"><a href="PrintReportsHelper.html#method-i-reportmonth">#reportmonth &mdash; PrintReportsHelper</a>
   
     <li class="method"><a href="PrintReportsHelper.html#method-i-reportnumber">#reportnumber &mdash; PrintReportsHelper</a>
   
+    <li class="method"><a href="PrintReportsHelper.html#method-i-reportweekend">#reportweekend &mdash; PrintReportsHelper</a>
+  
+    <li class="method"><a href="PrintReportsHelper.html#method-i-reportweekstart">#reportweekstart &mdash; PrintReportsHelper</a>
+  
     <li class="method"><a href="PrintReportsHelper.html#method-i-reportyear">#reportyear &mdash; PrintReportsHelper</a>
   
     <li class="method"><a href="SessionsHelper.html#method-i-right_notice">#right_notice &mdash; SessionsHelper</a>
   
-    <li class="method"><a href="TemplatesController.html#method-i-show">#show &mdash; TemplatesController</a>
+    <li class="method"><a href="PagerHelper.html#method-i-setupPager">#setupPager &mdash; PagerHelper</a>
+  
+    <li class="method"><a href="ReportsController.html#method-i-show">#show &mdash; ReportsController</a>
+  
+    <li class="method"><a href="UsersController.html#method-i-show">#show &mdash; UsersController</a>
+  
+    <li class="method"><a href="JobsController.html#method-i-show">#show &mdash; JobsController</a>
   
     <li class="method"><a href="PasswordsController.html#method-i-show">#show &mdash; PasswordsController</a>
   
     <li class="method"><a href="SessionsController.html#method-i-show">#show &mdash; SessionsController</a>
   
-    <li class="method"><a href="JobsController.html#method-i-show">#show &mdash; JobsController</a>
-  
-    <li class="method"><a href="ReportsController.html#method-i-show">#show &mdash; ReportsController</a>
+    <li class="method"><a href="TemplatesController.html#method-i-show">#show &mdash; TemplatesController</a>
   
     <li class="method"><a href="CodesController.html#method-i-show">#show &mdash; CodesController</a>
   
-    <li class="method"><a href="IhksController.html#method-i-show">#show &mdash; IhksController</a>
-  
-    <li class="method"><a href="UsersController.html#method-i-show">#show &mdash; UsersController</a>
-  
     <li class="method"><a href="PrintReportsController.html#method-i-show">#show &mdash; PrintReportsController</a>
+  
+    <li class="method"><a href="IhksController.html#method-i-show">#show &mdash; IhksController</a>
   
     <li class="method"><a href="SessionsHelper.html#method-i-sign_in">#sign_in &mdash; SessionsHelper</a>
   
@@ -362,29 +413,39 @@
   
     <li class="method"><a href="UserMailer.html#method-i-unchecked_reports_mail">#unchecked_reports_mail &mdash; UserMailer</a>
   
+    <li class="method"><a href="UserMailer.html#method-i-unset_trainingsbegin_mail">#unset_trainingsbegin_mail &mdash; UserMailer</a>
+  
     <li class="method"><a href="ReportBotController.html#method-i-unwritten">#unwritten &mdash; ReportBotController</a>
   
-    <li class="method"><a href="ReportEntriesController.html#method-i-update">#update &mdash; ReportEntriesController</a>
+    <li class="method"><a href="UserMailer.html#method-i-unwritten_reports_mail">#unwritten_reports_mail &mdash; UserMailer</a>
   
     <li class="method"><a href="JobsController.html#method-i-update">#update &mdash; JobsController</a>
   
-    <li class="method"><a href="CodesController.html#method-i-update">#update &mdash; CodesController</a>
+    <li class="method"><a href="TemplatesController.html#method-i-update">#update &mdash; TemplatesController</a>
+  
+    <li class="method"><a href="ReportEntriesController.html#method-i-update">#update &mdash; ReportEntriesController</a>
+  
+    <li class="method"><a href="IhksController.html#method-i-update">#update &mdash; IhksController</a>
+  
+    <li class="method"><a href="ReportTemplateEntriesController.html#method-i-update">#update &mdash; ReportTemplateEntriesController</a>
+  
+    <li class="method"><a href="RolesController.html#method-i-update">#update &mdash; RolesController</a>
   
     <li class="method"><a href="ReportsController.html#method-i-update">#update &mdash; ReportsController</a>
   
     <li class="method"><a href="ReviewsController.html#method-i-update">#update &mdash; ReviewsController</a>
   
+    <li class="method"><a href="CodesController.html#method-i-update">#update &mdash; CodesController</a>
+  
     <li class="method"><a href="UsersController.html#method-i-update">#update &mdash; UsersController</a>
-  
-    <li class="method"><a href="RolesController.html#method-i-update">#update &mdash; RolesController</a>
-  
-    <li class="method"><a href="IhksController.html#method-i-update">#update &mdash; IhksController</a>
-  
-    <li class="method"><a href="TemplatesController.html#method-i-update">#update &mdash; TemplatesController</a>
   
     <li class="method"><a href="PrintReportsHelper.html#method-i-userforename">#userforename &mdash; PrintReportsHelper</a>
   
     <li class="method"><a href="PrintReportsHelper.html#method-i-username">#username &mdash; PrintReportsHelper</a>
+  
+    <li class="method"><a href="UserMailer.html#method-i-welcome_mail">#welcome_mail &mdash; UserMailer</a>
+  
+    <li class="method"><a href="ReportBotController.html#method-i-workdays">#workdays &mdash; ReportBotController</a>
   
 </ul>
 

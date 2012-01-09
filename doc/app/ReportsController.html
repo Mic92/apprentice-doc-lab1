@@ -131,6 +131,8 @@
   
     <li><a href="./JobsHelper.html">JobsHelper</a>
   
+    <li><a href="./PagerHelper.html">PagerHelper</a>
+  
     <li><a href="./PasswordsController.html">PasswordsController</a>
   
     <li><a href="./PrintReportsController.html">PrintReportsController</a>
@@ -146,6 +148,10 @@
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
   
     <li><a href="./ReportEntry.html">ReportEntry</a>
+  
+    <li><a href="./ReportTemplateEntriesController.html">ReportTemplateEntriesController</a>
+  
+    <li><a href="./ReportTemplateEntriesHelper.html">ReportTemplateEntriesHelper</a>
   
     <li><a href="./ReportsController.html">ReportsController</a>
   
@@ -248,15 +254,37 @@ Bericht nicht valid, so wird das Formular erneut gezeigt.</p>
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 74</span>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 88</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">reports</span>.<span class="ruby-identifier">build</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:report</span>])
   <span class="ruby-comment"># Jeder Bericht muss einen Status haben, also erstelle ihn zusammen mit dem Bericht.</span>
   <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">build_status</span>(<span class="ruby-value">:stype</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">personal</span>)
   <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">reportnumber</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">reports</span>.<span class="ruby-identifier">count</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span>.<span class="ruby-identifier">nil?</span>
+    <span class="ruby-identifier">dateStart</span> = <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span>
+    <span class="ruby-identifier">dateEnd</span> = <span class="ruby-identifier">dateStart</span>
 
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">save</span>
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Bericht wurde erfolgreich erstellt.'</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">template</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">codegroup</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">template</span>.<span class="ruby-identifier">code</span>.<span class="ruby-identifier">codegroup</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">codegroup</span> <span class="ruby-operator">==</span> <span class="ruby-constant">PrintReportsHelper</span><span class="ruby-operator">::</span><span class="ruby-constant">HOURLY</span>
+        <span class="ruby-comment"># nothing to do</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">codegroup</span> <span class="ruby-operator">==</span> <span class="ruby-constant">PrintReportsHelper</span><span class="ruby-operator">::</span><span class="ruby-constant">DAILY</span>
+        <span class="ruby-identifier">dateEnd</span> = <span class="ruby-identifier">dateStart</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">week</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">day</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">codegroup</span> <span class="ruby-operator">==</span> <span class="ruby-constant">PrintReportsHelper</span><span class="ruby-operator">::</span><span class="ruby-constant">WEEKLY</span>
+        <span class="ruby-identifier">dateEnd</span> = <span class="ruby-identifier">dateStart</span> <span class="ruby-operator">+</span> <span class="ruby-value">5</span>.<span class="ruby-identifier">weeks</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">day</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_end</span> = <span class="ruby-identifier">dateEnd</span>
+
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">no_time_overlap</span>(<span class="ruby-ivar">@report</span>,<span class="ruby-keyword">false</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">save</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Bericht wurde erfolgreich erstellt.'</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>
+    <span class="ruby-keyword">end</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>
   <span class="ruby-keyword">end</span>
@@ -288,7 +316,7 @@ href="ReportsController.html#method-i-index">#index</a> weiter.</p>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 124</span>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 165</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">destroy</span>
@@ -321,7 +349,7 @@ href="ReportsController.html#method-i-index">#index</a> weiter.</p>
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 68</span>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 82</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 <span class="ruby-keyword">end</span></pre>
@@ -359,8 +387,9 @@ des Benutzers ab:</p>
           <div class="method-source-code" id="index-source">
             <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 41</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-identifier">setupPager</span>(<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">reports</span>,<span class="ruby-identifier">params</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">commit?</span>
-    <span class="ruby-ivar">@reports</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">reports</span>.<span class="ruby-identifier">order</span>(<span class="ruby-string">'period_start asc, period_end asc'</span>)
+    <span class="ruby-ivar">@reports</span> = <span class="ruby-identifier">pager</span>(<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">reports</span>).<span class="ruby-identifier">order</span>(<span class="ruby-string">'period_start asc, period_end asc'</span>)
   <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:all</span>]
       <span class="ruby-ivar">@reports</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:status</span>).<span class="ruby-identifier">where</span>(<span class="ruby-value">:statuses</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-value">:stype</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">commited</span> }).<span class="ruby-identifier">order</span>(<span class="ruby-string">'period_start asc, period_end asc'</span>)
@@ -395,13 +424,26 @@ des Benutzers ab:</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 60</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
-  <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">new</span>
-  <span class="ruby-comment"># Setze die Werte, mit denen die Felder vorausgefüllt werden.</span>
-  <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>.<span class="ruby-identifier">beginning_of_month</span>
-  <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_end</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>.<span class="ruby-identifier">end_of_month</span>
-<span class="ruby-keyword">end</span></pre>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 61</span>
+  <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
+    <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-comment"># Setze die Werte, mit denen die Felder vorausgefüllt werden.</span>
+<span class="ruby-comment">#    if Report.all.blank?</span>
+    <span class="ruby-ivar">@date</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">today</span>.<span class="ruby-identifier">beginning_of_day</span>
+<span class="ruby-comment">#    else</span>
+<span class="ruby-comment">#      @date = Report.order('period_start asc, period_end asc').last.period_end + 1.month</span>
+<span class="ruby-comment">#    end</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">template</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-identifier">codegroup</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">template</span>.<span class="ruby-identifier">code</span>.<span class="ruby-identifier">codegroup</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">codegroup</span> <span class="ruby-operator">==</span> <span class="ruby-constant">PrintReportsHelper</span><span class="ruby-operator">::</span><span class="ruby-constant">DAILY</span>
+        <span class="ruby-ivar">@date</span> = <span class="ruby-ivar">@date</span>.<span class="ruby-identifier">beginning_of_week</span>
+      <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">codegroup</span> <span class="ruby-operator">==</span> <span class="ruby-constant">PrintReportsHelper</span><span class="ruby-operator">::</span><span class="ruby-constant">WEEKLY</span>
+        <span class="ruby-ivar">@date</span> = <span class="ruby-ivar">@date</span>.<span class="ruby-identifier">beginning_of_month</span>.<span class="ruby-identifier">beginning_of_week</span>
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span> = <span class="ruby-ivar">@date</span>
+<span class="ruby-comment">#    @report.period_end = @date.end_of_month</span>
+  <span class="ruby-keyword">end</span></pre>
           </div><!-- new-source -->
           
         </div>
@@ -428,7 +470,7 @@ des Benutzers ab:</p>
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 54</span>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 55</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@entries</span> = <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">report_entries</span>.<span class="ruby-identifier">order</span>(<span class="ruby-string">'date asc'</span>)
@@ -461,7 +503,7 @@ Attribute nicht valid, so wird das Formular erneut gezeigt.</p>
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 89</span>
+            <pre><span class="ruby-comment"># File app/controllers/reports_controller.rb, line 125</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 
@@ -471,11 +513,12 @@ Attribute nicht valid, so wird das Formular erneut gezeigt.</p>
   <span class="ruby-keyword">if</span> <span class="ruby-ivar">@new</span>.<span class="ruby-identifier">period_start</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@new</span>.<span class="ruby-identifier">period_end</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
     <span class="ruby-keyword">if</span> <span class="ruby-ivar">@new</span>.<span class="ruby-identifier">period_start</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@new</span>.<span class="ruby-identifier">period_end</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_end</span>
       <span class="ruby-ivar">@entries</span> = <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">report_entries</span>.<span class="ruby-identifier">order</span>(<span class="ruby-string">'date asc'</span>)
-
-      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@entries</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">date</span>.<span class="ruby-identifier">to_date</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@new</span>.<span class="ruby-identifier">period_start</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@entries</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">date</span>.<span class="ruby-identifier">to_date</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@new</span>.<span class="ruby-identifier">period_start</span>
-        <span class="ruby-comment"># Durch die Änderung würden Einträge nicht mehr im Zeitraum des Berichts liegen.</span>
-        <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:alert</span>] = <span class="ruby-string">'Diese Änderung führt zu einem Konflikt mit den Einträgen dieses Berichts.'</span>
-        <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@entries</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@entries</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">date</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@new</span>.<span class="ruby-identifier">period_start</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@entries</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">date</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@new</span>.<span class="ruby-identifier">period_start</span>
+          <span class="ruby-comment"># Durch die Änderung würden Einträge nicht mehr im Zeitraum des Berichts liegen.</span>
+          <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:alert</span>] = <span class="ruby-string">'Diese Änderung führt zu einem Konflikt mit den Einträgen dieses Berichts.'</span>
+          <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span> <span class="ruby-keyword">and</span> <span class="ruby-keyword">return</span>
+        <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">elsif</span> (<span class="ruby-ivar">@new</span>.<span class="ruby-identifier">period_start</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span>) <span class="ruby-operator">==</span> (<span class="ruby-ivar">@new</span>.<span class="ruby-identifier">period_end</span> <span class="ruby-operator">-</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_end</span>)
       <span class="ruby-comment"># Beide Daten wurden um den gleichen Wert verschoben, verschiebe die Einträge auch um diesen Wert.</span>
@@ -483,11 +526,15 @@ Attribute nicht valid, so wird das Formular erneut gezeigt.</p>
       <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">report_entries</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">update_attribute</span>(<span class="ruby-value">:date</span>, (<span class="ruby-identifier">e</span>.<span class="ruby-identifier">date</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@shift</span>.<span class="ruby-identifier">days</span>)) }
     <span class="ruby-keyword">end</span>
 
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:report</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:report</span>])
-      <span class="ruby-comment"># Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder</span>
-      <span class="ruby-comment"># freigegeben werden kann.</span>
-      <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-value">:stype</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">personal</span>)
-      <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Bericht wurde erfolgreich bearbeitet.'</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">no_time_overlap</span>(<span class="ruby-ivar">@report</span>,<span class="ruby-keyword">true</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:report</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:report</span>])
+        <span class="ruby-comment"># Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder</span>
+        <span class="ruby-comment"># freigegeben werden kann.</span>
+        <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-value">:stype</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">personal</span>)
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Bericht wurde erfolgreich bearbeitet.'</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
+      <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">else</span>
       <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
     <span class="ruby-keyword">end</span>

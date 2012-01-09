@@ -78,6 +78,12 @@
     
     <li><a href="#method-i-unchecked_reports_mail">#unchecked_reports_mail</a>
     
+    <li><a href="#method-i-unset_trainingsbegin_mail">#unset_trainingsbegin_mail</a>
+    
+    <li><a href="#method-i-unwritten_reports_mail">#unwritten_reports_mail</a>
+    
+    <li><a href="#method-i-welcome_mail">#welcome_mail</a>
+    
   </ul>
 </nav>
 
@@ -125,6 +131,8 @@
   
     <li><a href="./JobsHelper.html">JobsHelper</a>
   
+    <li><a href="./PagerHelper.html">PagerHelper</a>
+  
     <li><a href="./PasswordsController.html">PasswordsController</a>
   
     <li><a href="./PrintReportsController.html">PrintReportsController</a>
@@ -140,6 +148,10 @@
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
   
     <li><a href="./ReportEntry.html">ReportEntry</a>
+  
+    <li><a href="./ReportTemplateEntriesController.html">ReportTemplateEntriesController</a>
+  
+    <li><a href="./ReportTemplateEntriesHelper.html">ReportTemplateEntriesHelper</a>
   
     <li><a href="./ReportsController.html">ReportsController</a>
   
@@ -208,7 +220,7 @@
         
         <div class="method-heading">
           <span class="method-name">password_recovery_mail</span><span
-            class="method-args">(data)</span>
+            class="method-args">(user, password)</span>
           <span class="method-click-advice">click to toggle source</span>
         </div>
         
@@ -220,10 +232,10 @@
 
           
           <div class="method-source-code" id="password_recovery_mail-source">
-            <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 10</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">password_recovery_mail</span>(<span class="ruby-identifier">data</span>)
-  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:user</span>]
-  <span class="ruby-ivar">@password</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:password</span>]
+            <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 16</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">password_recovery_mail</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">password</span>)
+  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
+  <span class="ruby-ivar">@password</span> = <span class="ruby-identifier">password</span>
   <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Apprentice Doc Lab: Dein neues Passwort&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- password_recovery_mail-source -->
@@ -252,7 +264,7 @@
 
           
           <div class="method-source-code" id="password_verification_mail-source">
-            <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 16</span>
+            <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">password_verification_mail</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:user</span>]
   <span class="ruby-ivar">@domain</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:domain</span>]
@@ -317,11 +329,11 @@
 
           
           <div class="method-source-code" id="unchecked_reports_mail-source">
-            <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 22</span>
+            <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 28</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unchecked_reports_mail</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:instructor</span>]
   <span class="ruby-ivar">@unchecked_reports_num</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:unchecked_reports_num</span>]
-  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Apprentice Doc Lab: Sie haben noch &quot;</span> <span class="ruby-operator">+</span>  <span class="ruby-ivar">@unchecked_reports_num</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; vorgelegte Berichte, die nicht ueberprueft wurden&quot;</span>)
+  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Apprentice Doc Lab: Sie haben noch &quot;</span> <span class="ruby-operator">+</span>  <span class="ruby-ivar">@unchecked_reports_num</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; vorgelegte Berichte, die nicht überprüft wurden&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- unchecked_reports_mail-source -->
           
@@ -331,6 +343,105 @@
 
         
       </div><!-- unchecked_reports_mail-method -->
+
+    
+      <div id="method-i-unset_trainingsbegin_mail" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">unset_trainingsbegin_mail</span><span
+            class="method-args">(data)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="unset_trainingsbegin_mail-source">
+            <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 44</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">unset_trainingsbegin_mail</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:user</span>]
+  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Sie haben noch nicht ihren Ausbildungsbeginn eingetragen, bitten vervollständigen Sie diesen unter 'Mein Profil'.&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- unset_trainingsbegin_mail-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- unset_trainingsbegin_mail-method -->
+
+    
+      <div id="method-i-unwritten_reports_mail" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">unwritten_reports_mail</span><span
+            class="method-args">(data)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="unwritten_reports_mail-source">
+            <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 34</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">unwritten_reports_mail</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:apprentice</span>]
+  <span class="ruby-ivar">@date_array</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:date_array</span>]
+  <span class="ruby-ivar">@buffer</span> = <span class="ruby-string">''</span>
+  <span class="ruby-ivar">@date_array</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">year_month</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@buffer</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">year_month</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">' - '</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">year_month</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\n&quot;</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Sie müssen noch einige Berichte nachreichen, unten ist eine Liste mit Jahr und Monat, in welchen noch Berichte nachgereicht werden müssen.\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@buffer</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- unwritten_reports_mail-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- unwritten_reports_mail-method -->
+
+    
+      <div id="method-i-welcome_mail" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">welcome_mail</span><span
+            class="method-args">(user, password)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="welcome_mail-source">
+            <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 10</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">welcome_mail</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">password</span>)
+  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">user</span>
+  <span class="ruby-ivar">@password</span> = <span class="ruby-identifier">password</span>
+  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Apprentice Doc Lab: Dein neuer Account&quot;</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- welcome_mail-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- welcome_mail-method -->
 
     
     </section><!-- public-instance-method-details -->

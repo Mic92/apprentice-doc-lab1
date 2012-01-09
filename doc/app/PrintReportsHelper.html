@@ -66,19 +66,35 @@
     
     <li><a href="#method-i-currentdate">#currentdate</a>
     
+    <li><a href="#method-i-displayValueFormat">#displayValueFormat</a>
+    
+    <li><a href="#method-i-editRawCode">#editRawCode</a>
+    
+    <li><a href="#method-i-editValueFormat">#editValueFormat</a>
+    
     <li><a href="#method-i-entry">#entry</a>
     
     <li><a href="#method-i-groupEntries">#groupEntries</a>
     
     <li><a href="#method-i-handleRawCode">#handleRawCode</a>
     
+    <li><a href="#method-i-handleSubmittedReport">#handleSubmittedReport</a>
+    
     <li><a href="#method-i-init">#init</a>
     
     <li><a href="#method-i-jobname">#jobname</a>
     
+    <li><a href="#method-i-replaceEditableValues">#replaceEditableValues</a>
+    
+    <li><a href="#method-i-replaceNonEditableValues">#replaceNonEditableValues</a>
+    
     <li><a href="#method-i-reportmonth">#reportmonth</a>
     
     <li><a href="#method-i-reportnumber">#reportnumber</a>
+    
+    <li><a href="#method-i-reportweekend">#reportweekend</a>
+    
+    <li><a href="#method-i-reportweekstart">#reportweekstart</a>
     
     <li><a href="#method-i-reportyear">#reportyear</a>
     
@@ -135,6 +151,8 @@
   
     <li><a href="./JobsHelper.html">JobsHelper</a>
   
+    <li><a href="./PagerHelper.html">PagerHelper</a>
+  
     <li><a href="./PasswordsController.html">PasswordsController</a>
   
     <li><a href="./PrintReportsController.html">PrintReportsController</a>
@@ -150,6 +168,10 @@
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
   
     <li><a href="./ReportEntry.html">ReportEntry</a>
+  
+    <li><a href="./ReportTemplateEntriesController.html">ReportTemplateEntriesController</a>
+  
+    <li><a href="./ReportTemplateEntriesHelper.html">ReportTemplateEntriesHelper</a>
   
     <li><a href="./ReportsController.html">ReportsController</a>
   
@@ -253,7 +275,7 @@
 
           
           <div class="method-source-code" id="currentdate-source">
-            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 127</span>
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 163</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">currentdate</span>
   <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">'%d.%m.%Y'</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -265,6 +287,100 @@
 
         
       </div><!-- currentdate-method -->
+
+    
+      <div id="method-i-displayValueFormat" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">displayValueFormat</span><span
+            class="method-args">(value,entryNo,entryGroup,entryValue)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="displayValueFormat-source">
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 102</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">displayValueFormat</span>(<span class="ruby-identifier">value</span>,<span class="ruby-identifier">entryNo</span>,<span class="ruby-identifier">entryGroup</span>,<span class="ruby-identifier">entryValue</span>)
+  <span class="ruby-string">&quot;&amp;nbsp;&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_s</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- displayValueFormat-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- displayValueFormat-method -->
+
+    
+      <div id="method-i-editRawCode" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">editRawCode</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>entry point of this class</p>
+          
+
+          
+          <div class="method-source-code" id="editRawCode-source">
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 120</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">editRawCode</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">replaceNonEditableValues</span>
+
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">replaceEditableValues</span>(<span class="ruby-identifier">method</span>(<span class="ruby-value">:editValueFormat</span>))
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- editRawCode-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- editRawCode-method -->
+
+    
+      <div id="method-i-editValueFormat" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">editValueFormat</span><span
+            class="method-args">(value,entryNo,entryGroup,entryValue)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="editValueFormat-source">
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 106</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">editValueFormat</span>(<span class="ruby-identifier">value</span>,<span class="ruby-identifier">entryNo</span>,<span class="ruby-identifier">entryGroup</span>,<span class="ruby-identifier">entryValue</span>)
+  <span class="ruby-identifier">pream</span> = <span class="ruby-node">&quot;entry_#{entryNo}_#{entryGroup}&quot;</span>
+  <span class="ruby-node">&quot;&lt;input id=\&quot;#{pream}_#{entryValue}\&quot; name=\&quot;#{pream}[#{entryValue}]\&quot; type=\&quot;text\&quot; style=\&quot;width:95%;\&quot; value=\&quot;#{value}\&quot; /&gt;&quot;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- editValueFormat-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- editValueFormat-method -->
 
     
       <div id="method-i-entry" class="method-detail ">
@@ -283,19 +399,17 @@
 
           
           <div class="method-source-code" id="entry-source">
-            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 131</span>
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 167</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">entry</span>(<span class="ruby-identifier">group</span>, <span class="ruby-identifier">number</span>, <span class="ruby-identifier">value</span>)
   <span class="ruby-identifier">entriesGroup</span> = <span class="ruby-ivar">@groupedEntries</span>[<span class="ruby-identifier">group</span>]
+  <span class="ruby-identifier">retVal</span> = <span class="ruby-string">&quot;&quot;</span>
   <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">entriesGroup</span>.<span class="ruby-identifier">nil?</span>
     <span class="ruby-identifier">entry</span> = <span class="ruby-identifier">entriesGroup</span>[<span class="ruby-identifier">number</span>]
     <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">nil?</span>
-      <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">send</span>(<span class="ruby-ivar">@entryFunctions</span>[<span class="ruby-identifier">value</span>])
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-string">&quot;&quot;</span>
+      <span class="ruby-identifier">retVal</span> = <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">send</span>(<span class="ruby-ivar">@entryFunctions</span>[<span class="ruby-identifier">value</span>])
     <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">else</span>
-    <span class="ruby-string">&quot;&quot;</span>
   <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">retVal</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- entry-source -->
           
@@ -323,12 +437,12 @@
 
           
           <div class="method-source-code" id="groupEntries-source">
-            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 28</span>
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 30</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">groupEntries</span>
   <span class="ruby-ivar">@reportEntries</span> = <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">report_entries</span> <span class="ruby-operator">||=</span> []
   <span class="ruby-ivar">@groupedEntries</span> = []
   <span class="ruby-identifier">grouper</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
-  
+
   <span class="ruby-identifier">dtStart</span> = <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span>.<span class="ruby-identifier">to_datetime</span>
   <span class="ruby-identifier">dtEnd</span> = <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_end</span>.<span class="ruby-identifier">to_datetime</span>
   <span class="ruby-identifier">dtCur</span> = <span class="ruby-identifier">dtStart</span>
@@ -349,7 +463,7 @@
     <span class="ruby-identifier">grouper</span>[<span class="ruby-identifier">key</span>] = []
     <span class="ruby-identifier">dtCur</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">offset</span>
   <span class="ruby-keyword">end</span>
-  
+
   <span class="ruby-comment">#group each entry to the timeframe</span>
   <span class="ruby-ivar">@reportEntries</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">entry</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">dt</span> = <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">date</span>.<span class="ruby-identifier">to_datetime</span>
@@ -359,7 +473,7 @@
       <span class="ruby-identifier">key</span> = <span class="ruby-identifier">dt</span>.<span class="ruby-identifier">cweek</span>
     <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@code</span>.<span class="ruby-identifier">codegroup</span> <span class="ruby-operator">==</span> <span class="ruby-constant">HOURLY</span>
       <span class="ruby-identifier">key</span> = <span class="ruby-node">&quot;#{dt.yday}-#{dt.hour}&quot;</span>
-    <span class="ruby-keyword">end</span>      
+    <span class="ruby-keyword">end</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">grouper</span>[<span class="ruby-identifier">key</span>].<span class="ruby-identifier">nil?</span>
       <span class="ruby-identifier">grouper</span>[<span class="ruby-identifier">key</span>] = []
     <span class="ruby-keyword">end</span>
@@ -393,31 +507,12 @@
 
           
           <div class="method-source-code" id="handleRawCode-source">
-            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 73</span>
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 112</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">handleRawCode</span>
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init</span>
-  <span class="ruby-comment">#replace simple values</span>
-  <span class="ruby-ivar">@simpleFunctions</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
-    <span class="ruby-ivar">@displayCode</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-node">&quot;[v]#{key}[/v]&quot;</span>,<span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">value</span>).<span class="ruby-identifier">to_s</span>)
-  }
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">replaceNonEditableValues</span>
 
-  <span class="ruby-comment">#replace complex values</span>
-  <span class="ruby-ivar">@splitted</span> = <span class="ruby-ivar">@displayCode</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;[e]&quot;</span>)
-  <span class="ruby-ivar">@displayCode</span>.<span class="ruby-identifier">clear</span>
-  <span class="ruby-ivar">@splitted</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">splitVal</span><span class="ruby-operator">|</span>
-    <span class="ruby-identifier">value</span> = <span class="ruby-identifier">splitVal</span>
-    <span class="ruby-comment">#check if value is like entries[&lt;number&gt;][&lt;number&gt;].&lt;attribute&gt;</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">splitVal</span>.<span class="ruby-identifier">match</span>(<span class="ruby-string">'entry\[[0-9]+\]\[[0-9]+\]\..*$'</span>)
-      <span class="ruby-identifier">splitVal</span>.<span class="ruby-identifier">strip!</span>
-      <span class="ruby-comment">#split the number between the []</span>
-      <span class="ruby-identifier">entry</span> = <span class="ruby-identifier">splitVal</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/[\[\]\.]/</span>)
-      <span class="ruby-identifier">entryNo</span> = <span class="ruby-identifier">entry</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
-      <span class="ruby-identifier">entryGroup</span> = <span class="ruby-identifier">entry</span>[<span class="ruby-value">3</span>].<span class="ruby-identifier">to_i</span>
-      <span class="ruby-identifier">entryValue</span> = <span class="ruby-identifier">entry</span>[<span class="ruby-value">5</span>]
-      <span class="ruby-identifier">value</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">entry</span>(<span class="ruby-identifier">entryNo</span>,<span class="ruby-identifier">entryGroup</span>,<span class="ruby-identifier">entryValue</span>)
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-ivar">@displayCode</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">value</span>
-  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">replaceEditableValues</span>(<span class="ruby-identifier">method</span>(<span class="ruby-value">:displayValueFormat</span>))
 <span class="ruby-keyword">end</span></pre>
           </div><!-- handleRawCode-source -->
           
@@ -427,6 +522,85 @@
 
         
       </div><!-- handleRawCode-method -->
+
+    
+      <div id="method-i-handleSubmittedReport" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">handleSubmittedReport</span><span
+            class="method-args">(params)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="handleSubmittedReport-source">
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 179</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">handleSubmittedReport</span>(<span class="ruby-identifier">params</span>)
+  <span class="ruby-keyword">self</span>.<span class="ruby-identifier">init</span>
+
+  <span class="ruby-identifier">puts</span> <span class="ruby-ivar">@groupedEntries</span>
+
+  <span class="ruby-identifier">params</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">match</span>(<span class="ruby-string">'entry_[0-9]+_[0-9]+'</span>)
+      <span class="ruby-identifier">entryPlace</span> = <span class="ruby-identifier">key</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">'_'</span>)
+      <span class="ruby-identifier">entryNo</span> = <span class="ruby-identifier">entryPlace</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
+      <span class="ruby-identifier">entryGroup</span> = <span class="ruby-identifier">entryPlace</span>[<span class="ruby-value">2</span>].<span class="ruby-identifier">to_i</span>
+
+      <span class="ruby-comment">#entry = @groupedEntries[entryGroup][entryNo]</span>
+      <span class="ruby-identifier">entriesGroup</span> = <span class="ruby-ivar">@groupedEntries</span>[<span class="ruby-identifier">entryNo</span>]
+      <span class="ruby-keyword">if</span> <span class="ruby-keyword">not</span> <span class="ruby-identifier">entriesGroup</span>.<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">entry</span> = <span class="ruby-identifier">entriesGroup</span>[<span class="ruby-identifier">entryGroup</span>]
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">nil?</span>
+        <span class="ruby-identifier">entry</span> = <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">report_entries</span>.<span class="ruby-identifier">new</span>
+
+        <span class="ruby-identifier">dtStart</span> = <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span>.<span class="ruby-identifier">to_datetime</span>
+        <span class="ruby-identifier">dtCur</span> = <span class="ruby-identifier">dtStart</span> <span class="ruby-operator">+</span> <span class="ruby-value">8</span>.<span class="ruby-identifier">hours</span>
+        <span class="ruby-identifier">newDate</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">now</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@code</span>.<span class="ruby-identifier">codegroup</span> <span class="ruby-operator">==</span> <span class="ruby-constant">DAILY</span>
+          <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">duration_in_hours</span> = <span class="ruby-value">1.0</span>
+          <span class="ruby-identifier">newDate</span> = <span class="ruby-identifier">dtCur</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">entryNo</span>.<span class="ruby-identifier">days</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">entryGroup</span>.<span class="ruby-identifier">hours</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@code</span>.<span class="ruby-identifier">codegroup</span> <span class="ruby-operator">==</span> <span class="ruby-constant">WEEKLY</span>
+          <span class="ruby-identifier">newDate</span> = <span class="ruby-identifier">dtCur</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">entryNo</span>.<span class="ruby-identifier">weeks</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">entryGroup</span>.<span class="ruby-identifier">days</span>
+          <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">duration_in_hours</span> = <span class="ruby-value">8.0</span>
+        <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@code</span>.<span class="ruby-identifier">codegroup</span> <span class="ruby-operator">==</span> <span class="ruby-constant">HOURLY</span>
+          <span class="ruby-identifier">newDate</span> = <span class="ruby-identifier">dtCur</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">entryNo</span>.<span class="ruby-identifier">hours</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">entryGroup</span>.<span class="ruby-identifier">minutes</span>
+          <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">duration_in_hours</span> = <span class="ruby-value">1.0</span><span class="ruby-operator">/</span><span class="ruby-value">60.0</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">date</span> = <span class="ruby-identifier">newDate</span>
+      <span class="ruby-keyword">end</span>
+
+      <span class="ruby-identifier">value</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">valKey</span>, <span class="ruby-identifier">valValue</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">entryMeth</span> = <span class="ruby-identifier">valKey</span><span class="ruby-operator">+</span><span class="ruby-string">&quot;=&quot;</span>
+        <span class="ruby-identifier">value</span> = <span class="ruby-identifier">valValue</span>
+        <span class="ruby-comment"># quick fix</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">valKey</span>.<span class="ruby-identifier">eql?</span>(<span class="ruby-string">'duration_in_hours'</span>)
+          <span class="ruby-identifier">value</span> = <span class="ruby-identifier">value</span>.<span class="ruby-identifier">to_i</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-identifier">value</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+            <span class="ruby-identifier">value</span> = <span class="ruby-value">0.5</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">entryMeth</span>, <span class="ruby-identifier">value</span>)
+      }
+      <span class="ruby-identifier">entry</span>.<span class="ruby-identifier">save</span>
+    <span class="ruby-keyword">end</span>
+  }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- handleSubmittedReport-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- handleSubmittedReport-method -->
 
     
       <div id="method-i-init" class="method-detail ">
@@ -460,12 +634,14 @@
   <span class="ruby-ivar">@simpleFunctions</span>[<span class="ruby-string">'currentdate'</span>] = <span class="ruby-value">:currentdate</span>
   <span class="ruby-ivar">@simpleFunctions</span>[<span class="ruby-string">'trainingyear'</span>] = <span class="ruby-value">:trainingyear</span>
   <span class="ruby-ivar">@simpleFunctions</span>[<span class="ruby-string">'reportnumber'</span>] = <span class="ruby-value">:reportnumber</span>
+  <span class="ruby-ivar">@simpleFunctions</span>[<span class="ruby-string">'reportweekstart'</span>] = <span class="ruby-value">:reportweekstart</span>
+  <span class="ruby-ivar">@simpleFunctions</span>[<span class="ruby-string">'reportweekend'</span>] = <span class="ruby-value">:reportweekend</span>
   <span class="ruby-comment">#...</span>
 
   <span class="ruby-ivar">@entryFunctions</span> = <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@entryFunctions</span>[<span class="ruby-string">'text'</span>] = <span class="ruby-value">:text</span>
   <span class="ruby-ivar">@entryFunctions</span>[<span class="ruby-string">'date'</span>] = <span class="ruby-value">:date</span>
-  <span class="ruby-ivar">@entryFunctions</span>[<span class="ruby-string">'durations_in_hours'</span>] = <span class="ruby-value">:durations_in_hours</span>
+  <span class="ruby-ivar">@entryFunctions</span>[<span class="ruby-string">'duration_in_hours'</span>] = <span class="ruby-value">:duration_in_hours</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- init-source -->
           
@@ -493,7 +669,7 @@
 
           
           <div class="method-source-code" id="jobname-source">
-            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 115</span>
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 143</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">jobname</span>
   <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">template</span>.<span class="ruby-identifier">job</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">||=</span> <span class="ruby-string">''</span>
 <span class="ruby-keyword">end</span></pre>
@@ -505,6 +681,86 @@
 
         
       </div><!-- jobname-method -->
+
+    
+      <div id="method-i-replaceEditableValues" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">replaceEditableValues</span><span
+            class="method-args">(formatMethod)</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="replaceEditableValues-source">
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 81</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">replaceEditableValues</span>(<span class="ruby-identifier">formatMethod</span>)
+  <span class="ruby-comment">#replace complex values</span>
+  <span class="ruby-ivar">@splitted</span> = <span class="ruby-ivar">@displayCode</span>.<span class="ruby-identifier">split</span>(<span class="ruby-string">&quot;[e]&quot;</span>)
+  <span class="ruby-ivar">@displayCode</span>.<span class="ruby-identifier">clear</span>
+  <span class="ruby-ivar">@splitted</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">splitVal</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">value</span> = <span class="ruby-identifier">splitVal</span>
+    <span class="ruby-comment">#check if value is like entries[&lt;number&gt;][&lt;number&gt;].&lt;attribute&gt;</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">splitVal</span>.<span class="ruby-identifier">match</span>(<span class="ruby-string">'entry\[[0-9]+\]\[[0-9]+\]\..*$'</span>)
+      <span class="ruby-identifier">splitVal</span>.<span class="ruby-identifier">strip!</span>
+      <span class="ruby-comment">#split the number between the []</span>
+      <span class="ruby-identifier">entry</span> = <span class="ruby-identifier">splitVal</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp">/[\[\]\.]/</span>)
+      <span class="ruby-identifier">entryNo</span> = <span class="ruby-identifier">entry</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_i</span>
+      <span class="ruby-identifier">entryGroup</span> = <span class="ruby-identifier">entry</span>[<span class="ruby-value">3</span>].<span class="ruby-identifier">to_i</span>
+      <span class="ruby-identifier">entryValue</span> = <span class="ruby-identifier">entry</span>[<span class="ruby-value">5</span>]
+      <span class="ruby-identifier">value</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">entry</span>(<span class="ruby-identifier">entryNo</span>,<span class="ruby-identifier">entryGroup</span>,<span class="ruby-identifier">entryValue</span>)
+      <span class="ruby-identifier">value</span> = <span class="ruby-identifier">formatMethod</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">value</span>,<span class="ruby-identifier">entryNo</span>,<span class="ruby-identifier">entryGroup</span>,<span class="ruby-identifier">entryValue</span>)
+    <span class="ruby-keyword">end</span>
+    <span class="ruby-ivar">@displayCode</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">value</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- replaceEditableValues-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- replaceEditableValues-method -->
+
+    
+      <div id="method-i-replaceNonEditableValues" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">replaceNonEditableValues</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="replaceNonEditableValues-source">
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 74</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">replaceNonEditableValues</span>
+  <span class="ruby-comment">#replace simple values</span>
+  <span class="ruby-ivar">@simpleFunctions</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+    <span class="ruby-ivar">@displayCode</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-node">&quot;[v]#{key}[/v]&quot;</span>,<span class="ruby-keyword">self</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">value</span>).<span class="ruby-identifier">to_s</span>)
+  }
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- replaceNonEditableValues-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- replaceNonEditableValues-method -->
 
     
       <div id="method-i-reportmonth" class="method-detail ">
@@ -523,9 +779,9 @@
 
           
           <div class="method-source-code" id="reportmonth-source">
-            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 119</span>
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 147</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">reportmonth</span>
-  <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-string">'%B'</span>)
+  <span class="ruby-identifier">l</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span>, <span class="ruby-value">:format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;%B&quot;</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- reportmonth-source -->
           
@@ -553,7 +809,7 @@
 
           
           <div class="method-source-code" id="reportnumber-source">
-            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 111</span>
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 139</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">reportnumber</span>
   <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">reportnumber</span> <span class="ruby-operator">||=</span> <span class="ruby-string">''</span>
 <span class="ruby-keyword">end</span></pre>
@@ -565,6 +821,66 @@
 
         
       </div><!-- reportnumber-method -->
+
+    
+      <div id="method-i-reportweekend" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reportweekend</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="reportweekend-source">
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 159</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reportweekend</span>
+  <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_end</span>.<span class="ruby-identifier">cweek</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reportweekend-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reportweekend-method -->
+
+    
+      <div id="method-i-reportweekstart" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">reportweekstart</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="reportweekstart-source">
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 155</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">reportweekstart</span>
+  <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span>.<span class="ruby-identifier">cweek</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- reportweekstart-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- reportweekstart-method -->
 
     
       <div id="method-i-reportyear" class="method-detail ">
@@ -583,7 +899,7 @@
 
           
           <div class="method-source-code" id="reportyear-source">
-            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 123</span>
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 151</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">reportyear</span>
   <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">period_start</span>.<span class="ruby-identifier">year</span>
 <span class="ruby-keyword">end</span></pre>
@@ -613,7 +929,7 @@
 
           
           <div class="method-source-code" id="trainingyear-source">
-            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 107</span>
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 135</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">trainingyear</span>
   <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">trainingyear</span> <span class="ruby-operator">||=</span> <span class="ruby-string">''</span>
 <span class="ruby-keyword">end</span></pre>
@@ -643,7 +959,7 @@
 
           
           <div class="method-source-code" id="userforename-source">
-            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 103</span>
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 131</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">userforename</span>
   <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">forename</span> <span class="ruby-operator">||=</span> <span class="ruby-string">''</span>
 <span class="ruby-keyword">end</span></pre>
@@ -673,7 +989,7 @@
 
           
           <div class="method-source-code" id="username-source">
-            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 99</span>
+            <pre><span class="ruby-comment"># File app/helpers/print_reports_helper.rb, line 127</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">username</span>
   <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">||=</span> <span class="ruby-string">''</span>
 <span class="ruby-keyword">end</span></pre>

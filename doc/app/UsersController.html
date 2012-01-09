@@ -131,6 +131,8 @@
   
     <li><a href="./JobsHelper.html">JobsHelper</a>
   
+    <li><a href="./PagerHelper.html">PagerHelper</a>
+  
     <li><a href="./PasswordsController.html">PasswordsController</a>
   
     <li><a href="./PrintReportsController.html">PrintReportsController</a>
@@ -146,6 +148,10 @@
     <li><a href="./ReportEntriesController.html">ReportEntriesController</a>
   
     <li><a href="./ReportEntry.html">ReportEntry</a>
+  
+    <li><a href="./ReportTemplateEntriesController.html">ReportTemplateEntriesController</a>
+  
+    <li><a href="./ReportTemplateEntriesHelper.html">ReportTemplateEntriesHelper</a>
   
     <li><a href="./ReportsController.html">ReportsController</a>
   
@@ -234,7 +240,7 @@ gesperrt.</p>
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 69</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 78</span>
   <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>
 <span class="ruby-comment"># roles/templates muss initialisiert werden für collection_select, falls save fehlschlägt.</span>
     <span class="ruby-ivar">@templates</span> = <span class="ruby-constant">Template</span>.<span class="ruby-identifier">all</span>
@@ -256,29 +262,35 @@ gesperrt.</p>
     <span class="ruby-keyword">end</span>
 
     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>])
-    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">role_id</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
       <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>
     <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
         
         <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save</span>
+          <span class="ruby-constant">UserMailer</span>.<span class="ruby-identifier">welcome_mail</span>(<span class="ruby-ivar">@user</span>, <span class="ruby-ivar">@password</span>).<span class="ruby-identifier">deliver</span>
           <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Benutzer wurde erfolgreich erstellt.'</span>
         <span class="ruby-keyword">else</span>
           <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>
         <span class="ruby-keyword">end</span>
+      
       <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">modify?</span>
-        
-        <span class="ruby-ivar">@role</span> = <span class="ruby-constant">Role</span>.<span class="ruby-identifier">find</span>(<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">role_id</span>)
-        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@role</span>.<span class="ruby-identifier">admin?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@role</span>.<span class="ruby-identifier">modify?</span>
-          <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>     
-        <span class="ruby-keyword">else</span>
-          <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>.<span class="ruby-identifier">build</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>])
-          <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save</span>
-            <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Benutzer wurde erfolgreich erstellt.'</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">role_id</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
+          <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">errors</span>.<span class="ruby-identifier">add</span>(<span class="ruby-value">:role</span>, <span class="ruby-string">&quot;muss ausgewählt werden&quot;</span>)
+          <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>
+        <span class="ruby-keyword">else</span>  
+          <span class="ruby-ivar">@role</span> = <span class="ruby-constant">Role</span>.<span class="ruby-identifier">find</span>(<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">role_id</span>)
+          <span class="ruby-keyword">if</span> <span class="ruby-ivar">@role</span>.<span class="ruby-identifier">admin?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@role</span>.<span class="ruby-identifier">modify?</span>
+            <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>     
           <span class="ruby-keyword">else</span>
-            <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>
+            <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>.<span class="ruby-identifier">build</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>])
+            <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save</span>
+              <span class="ruby-constant">UserMailer</span>.<span class="ruby-identifier">welcome_mail</span>(<span class="ruby-ivar">@user</span>, <span class="ruby-ivar">@password</span>).<span class="ruby-identifier">deliver</span>
+              <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Benutzer wurde erfolgreich erstellt.'</span>
+            <span class="ruby-keyword">else</span>
+              <span class="ruby-identifier">render</span> <span class="ruby-string">'new'</span>
+            <span class="ruby-keyword">end</span>
           <span class="ruby-keyword">end</span>
         <span class="ruby-keyword">end</span>
-        
       <span class="ruby-keyword">else</span> <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span>
     <span class="ruby-keyword">end</span>
     
@@ -312,22 +324,26 @@ Auszubildenden deaktivieren, Auszubildende nur sich selbst deaktivieren.</p>
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 150</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 184</span>
   <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>
   
 <span class="ruby-comment"># Eigenen Account deaktivieren</span>
     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@user</span>
-      <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">deleted</span> = <span class="ruby-keyword">true</span>
-      <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save!</span>
-      <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Ihr Account wurde erfolgreich deaktiviert.'</span>
-      
+      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">adminremovable?</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Benutzer konnte nicht deaktiviert werden. Mindestens ein Administrator im System ist erforderlich.'</span>
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">deleted</span> = <span class="ruby-keyword">true</span>
+        <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save!</span>
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">root_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Ihr Account wurde erfolgreich deaktiviert.'</span>
+        <span class="ruby-identifier">sign_out</span>
+      <span class="ruby-keyword">end</span>
 <span class="ruby-comment"># Anderen Account de-/aktivieren als Administrator</span>
     <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
       <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">deleted</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">false</span>
-        <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">deleted</span> = <span class="ruby-keyword">true</span>
-        <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save!</span>
-        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Benutzer wurde erfolgreich deaktiviert.'</span>
+          <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">deleted</span> = <span class="ruby-keyword">true</span> 
+          <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save!</span>
+          <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">users_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Der Benutzer wurde erfolgreich deaktiviert.'</span>
       <span class="ruby-keyword">else</span>
         <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">deleted</span> = <span class="ruby-keyword">false</span>
         <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">save!</span>
@@ -370,10 +386,13 @@ Auszubildenden deaktivieren, Auszubildende nur sich selbst deaktivieren.</p>
 
           
           <div class="method-source-code" id="edit-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 61</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 67</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
   <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
-  <span class="ruby-ivar">@templates</span> = <span class="ruby-constant">Template</span>.<span class="ruby-identifier">all</span>   
+  <span class="ruby-ivar">@templates</span> = <span class="ruby-constant">Template</span>.<span class="ruby-identifier">all</span>
+  <span class="ruby-ivar">@template</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">template_id</span>
+  <span class="ruby-ivar">@roles</span> = <span class="ruby-constant">Role</span>.<span class="ruby-identifier">all</span>
+  <span class="ruby-ivar">@role</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">role_id</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- edit-source -->
           
@@ -405,10 +424,11 @@ keine Verwendung und ist gesperrt.</p>
           <div class="method-source-code" id="index-source">
             <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 30</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">index</span>
+  <span class="ruby-identifier">setupPager</span>(<span class="ruby-constant">User</span>, <span class="ruby-identifier">params</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
-    <span class="ruby-ivar">@users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">all</span>
+    <span class="ruby-ivar">@users</span> = <span class="ruby-identifier">pager</span>(<span class="ruby-constant">User</span>).<span class="ruby-identifier">search</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:search</span>])
   <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">modify?</span>
-    <span class="ruby-ivar">@users</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>
+    <span class="ruby-ivar">@users</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">apprentices</span>.<span class="ruby-identifier">search</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:search</span>])
     <span class="ruby-keyword">else</span> <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span>
   <span class="ruby-keyword">end</span>    
 <span class="ruby-keyword">end</span></pre>
@@ -439,7 +459,7 @@ Ausbilder ist. Für Auszubildene ist die Methode gesperrt.</p>
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 46</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 52</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">new</span>
   <span class="ruby-ivar">@templates</span> = <span class="ruby-constant">Template</span>.<span class="ruby-identifier">all</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
@@ -478,9 +498,14 @@ Ausbilder ist. Für Auszubildene ist die Methode gesperrt.</p>
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 40</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 41</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
-  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+    <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+    <span class="ruby-ivar">@role</span> = <span class="ruby-constant">Role</span>.<span class="ruby-identifier">find</span>(<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">role_id</span>)
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
+  <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- show-source -->
           
@@ -509,29 +534,48 @@ Daten.</p>
 
           
           <div class="method-source-code" id="update-source">
-            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 121</span>
+            <pre><span class="ruby-comment"># File app/controllers/users_controller.rb, line 136</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">update</span>
+  <span class="ruby-ivar">@roles</span> = <span class="ruby-constant">Role</span>.<span class="ruby-identifier">all</span>
   <span class="ruby-ivar">@templates</span> = <span class="ruby-constant">Template</span>.<span class="ruby-identifier">all</span>
-  <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
-  <span class="ruby-ivar">@attr</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>]
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@attr</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>][<span class="ruby-value">:password</span>] <span class="ruby-operator">!=</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>][<span class="ruby-value">:password_confirmation</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>][<span class="ruby-value">:password</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">8</span>)
-    <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
+    <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-keyword">else</span>
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>][<span class="ruby-value">:role_id</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span>
-      <span class="ruby-ivar">@role</span> = <span class="ruby-constant">Role</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role_id</span>)
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-ivar">@role</span> = <span class="ruby-constant">Role</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>][<span class="ruby-value">:role_id</span>])
-    <span class="ruby-keyword">end</span>
-    <span class="ruby-ivar">@attr</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>].<span class="ruby-identifier">merge</span>(<span class="ruby-value">:role_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@role</span>)
-    <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
+    <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword">nil</span>
+    <span class="ruby-ivar">@attr</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>]
+    <span class="ruby-keyword">if</span> <span class="ruby-ivar">@attr</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>][<span class="ruby-value">:password</span>] <span class="ruby-operator">!=</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>][<span class="ruby-value">:password_confirmation</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>][<span class="ruby-value">:password</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">8</span>)
       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-ivar">@attr</span>))
-      <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">user_path</span>(<span class="ruby-ivar">@user</span>), <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Das Profil wurde erfolgreich bearbeitet.'</span>
-    <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@role</span>.<span class="ruby-identifier">modify?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@role</span>.<span class="ruby-identifier">admin?</span>
-     <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
-     <span class="ruby-keyword">else</span> 
-     <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-ivar">@attr</span>))
-     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">user_path</span>(<span class="ruby-ivar">@user</span>), <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Das Profil wurde erfolgreich bearbeitet.'</span>
-    <span class="ruby-keyword">end</span>     
+      <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
+    <span class="ruby-keyword">else</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>][<span class="ruby-value">:role_id</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword">nil</span> <span class="ruby-operator">||</span> (<span class="ruby-ivar">@user</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">current_user</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>)
+        <span class="ruby-ivar">@role</span> = <span class="ruby-constant">Role</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role_id</span>)
+      <span class="ruby-keyword">else</span>
+        <span class="ruby-ivar">@role</span> = <span class="ruby-constant">Role</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>][<span class="ruby-value">:role_id</span>])
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-ivar">@attr</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>].<span class="ruby-identifier">merge</span>(<span class="ruby-value">:role_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@role</span>.<span class="ruby-identifier">id</span>)
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role_id</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:user</span>][<span class="ruby-value">:role_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">adminremovable?</span> 
+          <span class="ruby-identifier">flash</span>.<span class="ruby-identifier">now</span>[<span class="ruby-value">:error</span>] = <span class="ruby-string">&quot;Das Rechte-Profil kann nicht geändert werden. Mindestens ein Administrator im System ist erforderlich.&quot;</span>
+          <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-ivar">@attr</span>))
+            <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">user_path</span>(<span class="ruby-ivar">@user</span>), <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Das Profil wurde erfolgreich bearbeitet.'</span>
+          <span class="ruby-keyword">else</span>
+            <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">elsif</span> (<span class="ruby-ivar">@role</span>.<span class="ruby-identifier">modify?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">modify?</span> )<span class="ruby-operator">||</span> <span class="ruby-ivar">@role</span>.<span class="ruby-identifier">admin?</span>
+       <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
+       <span class="ruby-keyword">elsif</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-ivar">@user</span>.<span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-ivar">@attr</span>))
+        <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">user_path</span>(<span class="ruby-ivar">@user</span>), <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Das Profil wurde erfolgreich bearbeitet.'</span>
+       <span class="ruby-keyword">else</span>
+        <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
+      <span class="ruby-keyword">end</span>     
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-identifier">render</span> <span class="ruby-string">'edit'</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- update-source -->
