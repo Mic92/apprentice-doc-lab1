@@ -26,7 +26,9 @@
 # und das Freigeben-Recht (commit) für #new, #create, #update, #destroy.
 # #edit, #update und #destroy darf nur vom Autor ausgeführt werden.
 # #show erfordert entweder den Autor, oder einen freigegebenen Bericht und einen Ausbilder.
-# Berichte die bereits akzeptiert wurden, können nicht mehr bearbeitet werden.
+# Berichte die freigegeben oder bereits akzeptiert wurden, können nicht mehr bearbeitet werden.
+# Hat ein Benutzer Ausbildungsbeginn oder Ausbildungsjahr nicht gesetzt, so kann er keine
+# Berichte anlegen, bzw. bearbeiten.
 class ReportsController < ApplicationController
   before_filter :authenticate
   before_filter :read, :only => [ :index, :show ]
@@ -35,11 +37,12 @@ class ReportsController < ApplicationController
   before_filter :not_commited, :only => [ :edit, :update ]
   before_filter :not_accepted, :only => [ :edit, :update ]
   before_filter :correct_user, :only => [ :edit, :update, :destroy ]
+  before_filter :trainingbegin_and_year_set, :only => [ :create, :update ]
 
   # Listet Berichte auf. Welche Bericht angezeigt werden hängt von den Rechten des
   # Benutzers ab:
   # * Freigeben (commit): alle Berichte des Benutzers
-  # * Prüfen (check): alle Berichte der dem Benutzer zugewiesenen Azubis
+  # * Prüfen (check): alle Berichte der dem Benutzer zugewiesenen Azubis oder alle freigegebenen Berichte aller Azubis wenn der Parameter all == true
   def index
     setupPager(current_user.reports,params)
     if current_user.role.commit?
@@ -63,11 +66,8 @@ class ReportsController < ApplicationController
   def new
     @report = Report.new
     # Setze die Werte, mit denen die Felder vorausgefüllt werden.
-#    if Report.all.blank?
     @date = Date.today.beginning_of_day
-#    else
-#      @date = Report.order('period_start asc, period_end asc').last.period_end + 1.month
-#    end
+
     if not current_user.template.nil?
       codegroup = current_user.template.code.codegroup
       if codegroup == PrintReportsHelper::DAILY
@@ -76,8 +76,8 @@ class ReportsController < ApplicationController
         @date = @date.beginning_of_month.beginning_of_week
       end
     end
+
     @report.period_start = @date
-#    @report.period_end = @date.end_of_month
   end
 
   # Zeigt das Formular zum Bearbeiten eines vorhandenen Berichts.
@@ -150,27 +150,32 @@ class ReportsController < ApplicationController
   private
     # Leitet den Benutzer auf die Willkommen-Seite, falls er nicht der Besitzer des Berichts ist.
     def correct_user
-      @user = Report.find(params[:id]).user
-      redirect_to welcome_path unless current_user?(@user)
+      user = Report.find(params[:id]).user
+      redirect_to welcome_path unless current_user?(user)
     end
 
     # Leitet den Benutzer auf die Willkommen-Seite, außer er ist der Autor des Berichts oder der Bericht ist freigegeben und der Benutzer
     # ist ein Ausbilder.
     def correct_user_or_instructor
-      @report = Report.find(params[:id])
-      redirect_to welcome_path unless current_user?(@report.user) || (@report.status.stype == Status.commited && current_user.role.check?)
+      report = Report.find(params[:id])
+      redirect_to welcome_path, :alert => 'Sie haben nicht die Berechtigung diesen Bericht anzuzeigen.' unless current_user?(report.user) || (report.status.stype == Status.commited && current_user.role.check?)
     end
 
     # Leitet den Benutzer auf die Berichtsübersicht-Seite, wenn der Bericht akzeptiert ist.
     def not_accepted
-      @report = Report.find(params[:id])
-      redirect_to reports_path, :alert => 'Da der Bericht schon akzeptiert wurde, sind Änderungen nicht mehr möglich.' if @report.status.stype == Status.accepted
+      report = Report.find(params[:id])
+      redirect_to reports_path, :alert => 'Da der Bericht schon akzeptiert wurde, sind Änderungen nicht mehr möglich.' if report.status.stype == Status.accepted
     end
 
     # Leitet den Benutzer auf die Berichtsübersicht-Seite, wenn der Bericht freigegeben ist.
     def not_commited
       report = Report.find(params[:id])
       redirect_to reports_path, :alert => 'Da der Bericht freigegeben wurde, sind Änderungen nicht mehr möglich.' if report.status.stype == Status.commited
+    end
+
+    # Leitet den Benutzer auf die Berichtsübersicht-Seite, wenn kein Ausbildungsbeginn oder Ausbildungsjahr gesetzt ist.
+    def trainingbegin_and_year_set
+      redirect_to reports_path, :alert => 'Um diese Aktion durchführen zu können müssen sowohl Ausbildungsbeginn als auch Ausbildungsjahr gesetzt sein.' if current_user.trainingbegin.nil? or current_user.trainingyear.nil?
     end
 
     # Validiert, dass es keine zeitlichen Überschneidungen zwischen Berichten gibt.
@@ -194,24 +199,7 @@ class ReportsController < ApplicationController
       return false
     end
 
-    # Berechnet das Enddatum des Zeitraums in Abhängigkeit des Templates
-    def calc_period_end(period_start)
-      period_end = period_start
-
-      if not current_user.template.nil?
-        codegroup = current_user.template.code.codegroup
-        if codegroup == PrintReportsHelper::HOURLY
-          # nothing to do
-        elsif codegroup == PrintReportsHelper::DAILY
-          period_end = period_start + 1.week - 1.day
-        elsif codegroup == PrintReportsHelper::WEEKLY
-          period_end = period_start + 5.weeks - 1.day
-        end
-      end
-      return period_end
-    end
-
-    # Validiert, dass der Zeitraum im Bereich Ausbildungsbegin bis Ausbildungsbegin + Ausbildungsjahr liegt
+    # Validiert, dass der Zeitraum im Bereich Ausbildungsbeginn bis Ausbildungsbeginn + Ausbildungsjahr liegt
     def period_valid(report,error_report)
       if report.period_start and report.period_end and current_user.trainingbegin and current_user.trainingyear
         period_start = report.period_start
@@ -227,5 +215,22 @@ class ReportsController < ApplicationController
         return false
       end
       return false
+    end
+
+    # Berechnet das Enddatum des Zeitraums in Abhängigkeit des Templates
+    def calc_period_end(period_start)
+      period_end = period_start
+
+      if not current_user.template.nil?
+        codegroup = current_user.template.code.codegroup
+        if codegroup == PrintReportsHelper::HOURLY
+          # nothing to do
+        elsif codegroup == PrintReportsHelper::DAILY
+          period_end = period_start + 1.week - 1.day
+        elsif codegroup == PrintReportsHelper::WEEKLY
+          period_end = period_start + 5.weeks - 1.day
+        end
+      end
+      return period_end
     end
 end

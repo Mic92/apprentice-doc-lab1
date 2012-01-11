@@ -25,6 +25,12 @@ describe ReportsController do
     @user = User.create valid_attributes_user.merge(:trainingbegin => '2011-01-01', :trainingyear => 2)
     @user.create_template valid_attributes_template
     @user.template.create_code valid_attributes_code
+    @daily_user = User.create valid_attributes_user.merge(:trainingbegin => '2011-01-01', :trainingyear => 2)
+    @daily_user.create_template valid_attributes_template
+    @daily_user.template.create_code valid_attributes_code.merge(:codegroup => PrintReportsHelper::DAILY)
+    @hourly_user = User.create valid_attributes_user.merge(:trainingbegin => '2011-01-01', :trainingyear => 2)
+    @hourly_user.create_template valid_attributes_template
+    @hourly_user.template.create_code valid_attributes_code.merge(:codegroup => PrintReportsHelper::HOURLY)
     @role = Role.create valid_attributes_role_azubi
     @role.users << @user
   end
@@ -111,10 +117,32 @@ describe ReportsController do
       assigns(:report).should be_new_record
     end
 
-    describe "without existing reports" do
-      it "should provide the beginning and the end of the current month as pre-selected values" do
+    describe "for a weekly report" do
+      it "should provide the beginning of the current month as pre-selected value" do
         get 'new'
         assigns(:report).period_start.should eq(Date.today.beginning_of_month.beginning_of_week)
+      end
+    end
+
+    describe "for a daily report" do
+      before(:each) do
+        test_sign_in(@daily_user)
+      end
+
+      it "should provide the beginning of the current week as pre-selected value" do
+        get 'new'
+        assigns(:report).period_start.should eq(Date.today.beginning_of_week)
+      end
+    end
+
+    describe "for a hourly report" do
+      before(:each) do
+        test_sign_in(@hourly_user)
+      end
+
+      it "should provide the beginning of the current day as pre-selected value" do
+        get 'new'
+        assigns(:report).period_start.should eq(Date.today.beginning_of_day)
       end
     end
   end
@@ -376,6 +404,23 @@ describe ReportsController do
         end
       end
 
+      describe "and commited reports" do
+        before(:each) do
+          @report.status.update_attribute(:stype, Status.commited)
+          test_sign_in(@user)
+        end
+
+        it "should deny access to 'edit'" do
+          get 'edit', :id => @report
+          response.should redirect_to(reports_path)
+        end
+
+        it "should deny access to 'update'" do
+          put 'update', :id => @report, :report => valid_attributes_report.merge(:period_start => '2011-09-01')
+          response.should redirect_to(reports_path)
+        end
+      end
+
       describe "without the read right" do
         before(:each) do
           @no_read_role = Role.create valid_attributes_role.merge(:read => false)
@@ -419,6 +464,29 @@ describe ReportsController do
         it "should deny access to 'destroy'" do
           delete 'destroy', :id => @report
           response.should redirect_to(welcome_path)
+        end
+      end
+
+      describe "without trainingbegin or trainingyear" do
+        before(:each) do
+          @notrainingbeginyearuser = User.create valid_attributes_user.merge(:email => 'ntby@user.de')
+          @user.create_template valid_attributes_template
+          @user.template.create_code valid_attributes_code
+          @role.users << @notrainingbeginyearuser
+          @report = @notrainingbeginyearuser.reports.new valid_attributes_report
+          @report.create_status valid_attributes_status
+          @report.save
+          test_sign_in(@notrainingbeginyearuser)
+        end
+
+        it "should deny access to 'create'" do
+          post 'create', :report => valid_attributes_report
+          response.should redirect_to(reports_path)
+        end
+
+        it "should deny access to 'update'" do
+          put 'update', :id => @report, :report => valid_attributes_report.merge(:period_start => '2011-09-01')
+          response.should redirect_to(reports_path)
         end
       end
     end
