@@ -206,7 +206,7 @@ class ReportBotController < ApplicationController
             end
             i += 1
           end
-          if Time.now - apprentice.trainingbegin.to_time < ReportBotController.apprentice_period_inmonths.months
+          if Time.now - apprentice.trainingbegin.to_time < ReportBotController.apprentice_period_inmonths.months && apprentice.trainingbegin.to_time < @date_v
             #whileloop ist zu ende, für den verbleibenden Zeitraum, anfangend vom Ausbildungsbeginn prüfen
             @daycount = workdays( apprentice.trainingbegin.to_time, @date_v)
             @reports.each do |report|
