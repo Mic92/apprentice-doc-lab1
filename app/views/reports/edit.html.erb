@@ -1,24 +1,6 @@
 <h1>Bericht bearbeiten</h1>
 
-<%= form_for @report do |f| %>
-  <% if @report.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= t('errors.template.header', :model=> 'Bericht', :count=> @report.errors.count) %></h2>
-      <h2><%= t('errors.template.body') %></h2>
-      <ul>
-        <% @report.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <%= f.label "Von:" %><br />
-  <%= f.date_select :period_start %><br />
-  <%= f.label "Bis:" %><br />
-  <%= f.date_select :period_end %><br />
-  <%= f.submit('Änderungen speichern') %>
-<% end %>
+<%= render 'form' %>
 
 <br />
 
