@@ -15,6 +15,7 @@ module PrintReportsHelper
     @simpleFunctions['reportmonth'] = :reportmonth
     @simpleFunctions['reportyear'] = :reportyear
     @simpleFunctions['currentdate'] = :currentdate
+    @simpleFunctions['statusdate'] = :statusdate
     @simpleFunctions['trainingyear'] = :trainingyear
     @simpleFunctions['reportnumber'] = :reportnumber
     @simpleFunctions['reportweekstart'] = :reportweekstart
@@ -162,6 +163,14 @@ module PrintReportsHelper
 
   def currentdate
     DateTime.now.strftime('%d.%m.%Y')
+  end
+
+  def statusdate
+    if not @report.status.date.nil?
+      @report.status.date.strftime('%d.%m.%Y')
+    else
+      @report.status.updated_at.strftime('%d.%m.%Y')
+    end
   end
 
   def entry(group, number, value)

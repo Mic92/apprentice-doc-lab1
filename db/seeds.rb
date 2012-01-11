@@ -194,11 +194,11 @@ code = Code.create(
               </colgroup>
               <tr>
               <td><br /><br />
-              <u>[v]currentdate[/v]</u><br />
+              <u>[v]statusdate[/v]</u><br />
               Datum, Unterschrift des Auszubildenden
               </td>
               <td><br /><br />
-              <u>[v]currentdate[/v]</u><br />
+              <u>[v]statusdate[/v]</u><br />
               Datum, Unterschrift des Ausbildenden bzw. Ausbilders
               </td>
               </tr>
@@ -370,11 +370,11 @@ code2 = Code.create(
               </colgroup>
               <tr>
               <td><br /><br />
-              <u>[v]currentdate[/v]</u><br />
+              <u>[v]statusdate[/v]</u><br />
               Datum, Unterschrift des Auszubildenden
               </td>
               <td><br /><br />
-              <u>[v]currentdate[/v]</u><br />
+              <u>[v]statusdate[/v]</u><br />
               Datum, Unterschrift des Ausbildenden bzw. Ausbilders
               </td>
               </tr>
