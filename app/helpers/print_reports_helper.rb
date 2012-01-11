@@ -179,7 +179,6 @@ module PrintReportsHelper
   def handleSubmittedReport(params)
     self.init
     fail = 0
-    puts @groupedEntries
 
     params.each { |key, value|
       if key.match('entry_[0-9]+_[0-9]+')
@@ -215,7 +214,7 @@ module PrintReportsHelper
         value.each { |valKey, valValue|
           entryMeth = valKey+"="
           value = valValue
-          # quick fix
+#          quick fix
 #          if valKey.eql?('duration_in_hours')
 #            value = value.to_i
 #            if value == 0
@@ -224,8 +223,15 @@ module PrintReportsHelper
 #          end
           entry.send(entryMeth, value)
         }
-        if not entry.save
-          fail+=1
+        if entry.text.nil? or entry.text.eql?('')
+          if entry.persisted?
+            entry.delete
+          end
+        else
+          if entry.save
+          else
+            fail+=1
+          end
         end
       end
     }

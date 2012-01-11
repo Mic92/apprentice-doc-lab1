@@ -1,3 +1,4 @@
+# encoding: utf-8
 class ReportTemplateEntriesController < ApplicationController
   include PrintReportsHelper
   
@@ -37,12 +38,14 @@ class ReportTemplateEntriesController < ApplicationController
     # freigegeben werden kann.
     @report.status.update_attributes(:stype => Status.personal)
     
-    notice = "Report wurde gespeichert"
     if fail > 0
       notice = "Report wurde nicht vollständig gespeichert"
+      redirect_to report_path(@report), :alert => notice
+    else
+      notice = "Report wurde gespeichert"
+      redirect_to report_path(@report), :notice => notice    
     end
     
-    redirect_to report_path(@report), :notice => notice
   end
 
 end
