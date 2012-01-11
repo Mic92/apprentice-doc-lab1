@@ -11,6 +11,8 @@ describe PrintReportsController do
     @role = Role.create valid_attributes_role_admin.merge(:export => true, :read => true)
     @role.users << @admin
     @report = @admin.reports.create valid_attributes_report
+    @report.build_status(:stype => Status.accepted)
+    @report.save
     @admin.save
   end
   
