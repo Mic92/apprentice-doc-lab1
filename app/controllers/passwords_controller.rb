@@ -61,9 +61,9 @@ class PasswordsController < ApplicationController
         @user.pw_expired_at = Time.now
         @user.save
 
-        redirect_to root_path, :notice => 'Ein zufälliges Passwort wurde erstellt.'
+        redirect_to root_path, :notice => 'Ein zufälliges Passwort wurde erstellt und Ihnen per Mail zugesendet.'
       else
-        redirect_to root_path, :alert => 'Der Link zum Passwortzurücksetzen ist abgelaufen.'
+        redirect_to root_path, :alert => 'Der Link zum Passwortzurücksetzen ist abgelaufen. Fordern Sie bitte ein neues an.'
       end
     end
   end
