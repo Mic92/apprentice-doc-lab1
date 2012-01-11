@@ -48,7 +48,17 @@
       </tr>
     <% end %>
   <% end %>
+  <tr class="main">
+    <td class="main"><b>  <%= f.label "Druckansicht" %> </b></td>
+    <td class="main">  <%= f.label @user.template.name %> </td>
+  </tr>
+  <tr class="main">
+    <td class="main"><b>  <%= f.label "Rechte-Profil" %></b> </td>
+    <td class="main">  <%= f.label @user.role.name %> </td>
+  </tr>   
+  
   </table>
+  
   
 <% end %>
 <%= link_to "Bearbeiten", edit_user_path(@user), :class => 'main' %>
