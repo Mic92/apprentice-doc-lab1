@@ -33,7 +33,9 @@ class ReportTemplateEntriesController < ApplicationController
     self.prepare
     
     self.handleSubmittedReport(params)
-    
+    # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
+    # freigegeben werden kann.
+    @report.status.update_attributes(:stype => Status.personal)
     redirect_to report_path(@report)
   end
 
