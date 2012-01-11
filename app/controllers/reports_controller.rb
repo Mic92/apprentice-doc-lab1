@@ -32,6 +32,7 @@ class ReportsController < ApplicationController
   before_filter :read, :only => [ :index, :show ]
   before_filter :correct_user_or_instructor, :only => :show
   before_filter :commit, :only => [ :new, :create, :update, :destroy ]
+  before_filter :not_commited, :only => [ :edit, :update ]
   before_filter :not_accepted, :only => [ :edit, :update ]
   before_filter :correct_user, :only => [ :edit, :update, :destroy ]
 
@@ -187,9 +188,16 @@ class ReportsController < ApplicationController
     # Leitet den Benutzer auf die Berichtsübersicht-Seite, wenn der Bericht akzeptiert ist.
     def not_accepted
       @report = Report.find(params[:id])
-      redirect_to reports_path, :alert => 'Da der Bericht schon akzeptiert wurde sind Änderungen nicht mehr möglich' if @report.status.stype == Status.accepted
+      redirect_to reports_path, :alert => 'Da der Bericht schon akzeptiert wurde, sind Änderungen nicht mehr möglich.' if @report.status.stype == Status.accepted
     end
 
+    # Leitet den Benutzer auf die Berichtsübersicht-Seite, wenn der Bericht freigegeben ist.
+    def not_commited
+      report = Report.find(params[:id])
+      redirect_to reports_path, :alert => 'Da der Bericht freigegeben wurde, sind Änderungen nicht mehr möglich.' if report.status.stype == Status.commited
+    end
+
+    # Validiert, dass es keine zeitlichen Überschneidungen zwischen Berichten gibt.
     def no_time_overlap(report,update)
       if report.period_start and report.period_end
         reports = current_user.reports.where("(period_start <= :period_start AND period_end >= :period_start) OR

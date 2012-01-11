@@ -33,6 +33,9 @@ class ReportTemplateEntriesController < ApplicationController
     self.prepare
     
     fail = self.handleSubmittedReport(params)
+    # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
+    # freigegeben werden kann.
+    @report.status.update_attributes(:stype => Status.personal)
     
     notice = "Report wurde gespeichert"
     if fail > 0

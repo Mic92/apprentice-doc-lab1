@@ -23,15 +23,17 @@
         <td class="main"><%= report.user.forename + ' ' + report.user.name %></td>
       <% end %>
       <td class="main"><%= report.status.name %></td>
-      <% if current_user.role.commit? %>
+      <% if current_user.role.commit? && (report.status.stype == Status.personal || report.status.stype == Status.rejected) %>
         <td class="main"><%= link_to 'Einträge bearbeiten', edit_report_template_entry_path(report), :class => 'main' %></td>
+        <td class="main"><%= link_to 'Bearbeiten', edit_report_path(report), :class => 'main' %></td>
+      <% elsif report.status.stype == Status.commited %>
+        <td class="main" colspan="2" />
       <% end %>
       <td class="main"><%= link_to 'Anzeigen', report, :class => 'main' %></td>
       <% if current_user.role.export? %>
         <td class="main"><%= link_to 'Druckansicht', print_report_path(report), :class => 'main' %></td>
       <% end %>
       <% if current_user.role.commit? %>
-        <td class="main"><%= link_to 'Bearbeiten', edit_report_path(report), :class => 'main' %></td>
         <td class="main"><%= link_to 'Löschen', report_path(report), :confirm => "Sind Sie sicher?", :method => :delete, :class => 'main' %></td>
         <% if report.status.stype == Status.personal && !report.report_entries.blank? %>
           <td class="main"><%= link_to 'Bericht vorlegen', reviews_path(:report_id => report), :method => :post, :class => 'main' %></td>
