@@ -95,7 +95,7 @@ class ReportsController < ApplicationController
     if !@report.period_start.nil?
       @report.period_end = calc_period_end(@report.period_start)
 
-      if no_time_overlap(@report,false)
+      if no_time_overlap(@report,@report,false) && period_valid(@report,@report)
         if @report.save
           redirect_to reports_path, :notice => 'Bericht wurde erfolgreich erstellt.'
         else
@@ -118,11 +118,12 @@ class ReportsController < ApplicationController
     @new = Report.new(params[:report])
 
     if @new.period_start != nil
+      @new.period_end = calc_period_end(@new.period_start)
       @shift = (@new.period_start - @report.period_start)
-      @report.report_entries.each { |e| e.update_attribute(:date, (e.date + @shift.days)) }
 
-      if no_time_overlap(@report,true)
-        if params[:report] != nil && @report.update_attributes(params[:report].merge(:period_end => calc_period_end(@new.period_start)))
+      if no_time_overlap(@new,@report,true) && period_valid(@new,@report)
+        if params[:report] != nil && @report.update_attributes(params[:report].merge(:period_end => @new.period_end))
+          @report.report_entries.each { |e| e.update_attribute(:date, (e.date + @shift.days)) }
           # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
           # freigegeben werden kann.
           @report.status.update_attributes(:stype => Status.personal)
@@ -173,7 +174,7 @@ class ReportsController < ApplicationController
     end
 
     # Validiert, dass es keine zeitlichen Überschneidungen zwischen Berichten gibt.
-    def no_time_overlap(report,update)
+    def no_time_overlap(report,error_report,update)
       if report.period_start and report.period_end
         reports = current_user.reports.where("(period_start <= :period_start AND period_end >= :period_start) OR
                                              (period_start <= :period_end AND period_end >= :period_end) OR
@@ -181,10 +182,10 @@ class ReportsController < ApplicationController
                                              :period_start => report.period_start,
                                              :period_end => report.period_end)
         if reports.length > 0
-          if update && reports.length == 1 && reports.first.id == report.id
+          if update && reports.length == 1 && reports.first.id == error_report.id
             return true
           end
-          report.errors[:base] << 'Es darf keine zeitlichen Überlappungen mit anderen Berichten geben.'
+          error_report.errors[:base] << 'Es darf keine zeitlichen Überlappungen mit anderen Berichten geben.'
           return false
         else
           return true
@@ -193,6 +194,7 @@ class ReportsController < ApplicationController
       return false
     end
 
+    # Berechnet das Enddatum des Zeitraums in Abhängigkeit des Templates
     def calc_period_end(period_start)
       period_end = period_start
 
@@ -207,5 +209,23 @@ class ReportsController < ApplicationController
         end
       end
       return period_end
+    end
+
+    # Validiert, dass der Zeitraum im Bereich Ausbildungsbegin bis Ausbildungsbegin + Ausbildungsjahr liegt
+    def period_valid(report,error_report)
+      if report.period_start and report.period_end and current_user.trainingbegin and current_user.trainingyear
+        period_start = report.period_start
+        period_end = report.period_end
+        min_date = current_user.trainingbegin
+        max_date = min_date + current_user.trainingyear.years
+
+        if period_start >= min_date && period_start <= max_date && period_end >= min_date && period_end <= max_date
+          return true
+        end
+
+        error_report.errors[:base] << 'Der Bericht muss in Ihrem Ausbildungszeitraum liegen.'
+        return false
+      end
+      return false
     end
 end

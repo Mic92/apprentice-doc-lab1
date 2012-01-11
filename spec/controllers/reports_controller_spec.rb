@@ -22,7 +22,7 @@ require 'spec_helper'
 
 describe ReportsController do
   before(:each) do
-    @user = User.create valid_attributes_user
+    @user = User.create valid_attributes_user.merge(:trainingbegin => '2011-01-01', :trainingyear => 2)
     @user.create_template valid_attributes_template
     @user.template.create_code valid_attributes_code
     @role = Role.create valid_attributes_role_azubi
@@ -216,11 +216,6 @@ describe ReportsController do
         response.should render_template('reports/edit')
         put 'update', :id => @report, :report => nil
         response.should render_template('reports/edit')
-      end
-
-      it "should have a flash message if the change conflicts with entries" do
-        put 'update', :id => @report, :report => { :period_start => '2011-10-04', :period_end => '2011-10-20' }
-        flash[:alert].should =~ /Konflikt/i
       end
     end
 
