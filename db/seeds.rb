@@ -194,11 +194,11 @@ code = Code.create(
               </colgroup>
               <tr>
               <td><br /><br />
-              <u>[v]statusdate[/v]</u><br />
+              <u>[v]currentdate[/v]</u><br />
               Datum, Unterschrift des Auszubildenden
               </td>
               <td><br /><br />
-              <u>[v]statusdate[/v]</u><br />
+              <u>[v]currentdate[/v]</u><br />
               Datum, Unterschrift des Ausbildenden bzw. Ausbilders
               </td>
               </tr>
@@ -370,11 +370,11 @@ code2 = Code.create(
               </colgroup>
               <tr>
               <td><br /><br />
-              <u>[v]statusdate[/v]</u><br />
+              <u>[v]currentdate[/v]</u><br />
               Datum, Unterschrift des Auszubildenden
               </td>
               <td><br /><br />
-              <u>[v]statusdate[/v]</u><br />
+              <u>[v]currentdate[/v]</u><br />
               Datum, Unterschrift des Ausbildenden bzw. Ausbilders
               </td>
               </tr>
@@ -398,7 +398,7 @@ template2 = Template.create(
 admin = User.create(
   :name     => 'Administrator',
   :forename => 'Admin',
-  :email    => 'admin@swt.de',
+  :email    => 'admin@example.org',
   :password => '12345678',
   :password_confirmation => '12345678',
   :role_id  => adminRole.id,
@@ -407,4 +407,3 @@ admin = User.create(
   :pw_expired_at => Time.now.utc,
   :pw_recovery_hash => 'fail'
 )
-
