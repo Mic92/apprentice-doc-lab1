@@ -26,12 +26,14 @@
       <% if current_user.role.commit? && (report.status.stype == Status.personal || report.status.stype == Status.rejected) %>
         <td class="main"><%= link_to 'Einträge bearbeiten', edit_report_template_entry_path(report), :class => 'main' %></td>
         <td class="main"><%= link_to 'Bearbeiten', edit_report_path(report), :class => 'main' %></td>
-      <% elsif report.status.stype == Status.commited %>
+      <% else %>
         <td class="main" colspan="2" />
       <% end %>
       <td class="main"><%= link_to 'Anzeigen', report, :class => 'main' %></td>
-      <% if current_user.role.export? %>
+      <% if current_user.role.export? && report.status.stype == Status.accepted %>
         <td class="main"><%= link_to 'Druckansicht', print_report_path(report), :class => 'main' %></td>
+      <% else %>
+        <td />
       <% end %>
       <% if current_user.role.commit? %>
         <td class="main"><%= link_to 'Löschen', report_path(report), :confirm => "Sind Sie sicher?", :method => :delete, :class => 'main' %></td>
