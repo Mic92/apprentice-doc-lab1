@@ -1,0 +1,9 @@
+Hallo <%= @user.forename %>,<br>
+<br>
+<%= "Sie haben noch " +  @unchecked_reports_num.to_s + " vorgelegte Berichte, die länger als" %>
+<%=ReportBotController.instructor_period/(1.days) %>
+<%= " Tage vorliegen." %>
+<br>
+<br>
+Beste Grüße,
+dein ApprenticeDocLab-Team

@@ -64,15 +64,80 @@ class ReportBotController < ApplicationController
 
   def workdays (startdate, enddate)
     @days = Date.new(enddate.year, enddate.month, enddate.day).ld - Date.new(startdate.year, startdate.month, startdate.day).ld
-    if @days < 0
-      @days = 'ERROR, wrong order of dates'
-    end
-    case startdate.wday
-      when 1  #monday
-        if @days <= 5
-          @w_days = @days
-        else
+    if @days >= 0
+      case startdate.wday
+        when 1  #monday
+          if @days <= 5
+            @w_days = @days
+          else
+            @w_days = 0
+            while @days > 5
+              @days -= 7
+              @w_days += 5
+            end
+            if @days > 0
+              @w_days += @days
+            end
+          end
+        when 2  #tuesday
+          if @days <= 4
+            @w_days = @days
+          else
+            @w_days = 4
+            @days -= 6
+            while @days > 5
+              @days -= 7
+              @w_days += 5
+            end
+            if @days > 0
+              @w_days += @days
+            end
+          end
+        when 3  #wednesday
+          if @days <= 3
+            @w_days = @days
+          else
+            @w_days = 3
+            @days -= 5
+            while @days > 5
+              @days -= 7
+              @w_days += 5
+            end
+            if @days > 0
+              @w_days += @days
+            end
+          end
+        when 4  #thursday
+          if @days <= 2
+            @w_days = @days
+          else
+            @w_days = 2
+            @days -= 4
+            while @days > 5
+              @days -= 7
+              @w_days += 5
+            end
+            if @days > 0
+              @w_days += @days
+            end
+          end
+        when 5  #friday
+          if @days <= 1
+            @w_days = @days
+          else
+            @w_days = 1
+            @days -= 3
+            while @days > 5
+              @days -= 7
+              @w_days += 5
+            end
+            if @days > 0
+              @w_days += @days
+            end
+          end
+        when 6  #saturday
           @w_days = 0
+          @days -= 2
           while @days > 5
             @days -= 7
             @w_days += 5
@@ -80,92 +145,28 @@ class ReportBotController < ApplicationController
           if @days > 0
             @w_days += @days
           end
-        end
-      when 2  #tuesday
-        if @days <= 4
-          @w_days = @days
+        when 0  #sunday
+          @w_days = 0
+          @days -= 1
+          while @days > 5
+            @days -= 7
+            @w_days += 5
+          end
+          if @days > 0
+            @w_days += @days
+          end
         else
-          @w_days = 4
-          @days -= 6
-          while @days > 5
-            @days -= 7
-            @w_days += 5
-          end
-          if @days > 0
-            @w_days += @days
-          end
-        end
-      when 3  #wednesday
-        if @days <= 3
-          @w_days = @days
-        else
-          @w_days = 3
-          @days -= 5
-          while @days > 5
-            @days -= 7
-            @w_days += 5
-          end
-          if @days > 0
-            @w_days += @days
-          end
-        end
-      when 4  #thursday
-        if @days <= 2
-          @w_days = @days
-        else
-          @w_days = 2
-          @days -= 4
-          while @days > 5
-            @days -= 7
-            @w_days += 5
-          end
-          if @days > 0
-            @w_days += @days
-          end
-        end
-      when 5  #friday
-        if @days <= 1
-          @w_days = @days
-        else
-          @w_days = 1
-          @days -= 3
-          while @days > 5
-            @days -= 7
-            @w_days += 5
-          end
-          if @days > 0
-            @w_days += @days
-          end
-        end
-      when 6  #saturday
-        @w_days = 0
-        @days -= 2
-        while @days > 5
-          @days -= 7
-          @w_days += 5
-        end
-        if @days > 0
-          @w_days += @days
-        end
-      when 0  #sunday
-        @w_days = 0
-        @days -= 1
-        while @days > 5
-          @days -= 7
-          @w_days += 5
-        end
-        if @days > 0
-          @w_days += @days
-        end
-      else
-        @w_days = 'ERROR'
+          @w_days = 'ERROR'
+      end
+    else
+      @w_days = 'ERROR, wrong order of dates'
     end
     @w_days
   end
 
   def unwritten
     if request.remote_ip == "127.0.0.1" || !ReportBotController.check_for_localhost || current_user.role.admin?
-      @apprentices = User.joins(:role).where( :roles => {:commit => true} )
+      @apprentices = User.find(:all).select {|user| user.role.commit == true}
       @year = Time.now.year
       @month = Time.now.month
 
@@ -248,7 +249,7 @@ class ReportBotController < ApplicationController
 
   def unchecked
     if request.remote_ip == "127.0.0.1" || !ReportBotController.check_for_localhost || current_user.role.admin?
-    @instructors = User.joins(:role).where( :roles => {:check => true} )
+    @instructors = User.find(:all).select {|user| user.role.check == true}
     #für jeden Ausbilder, der nicht deaktiviert ist
       @instructors.each do |instructor|
         if instructor.deleted != true
