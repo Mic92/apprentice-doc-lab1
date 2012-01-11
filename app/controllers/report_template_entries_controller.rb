@@ -39,8 +39,12 @@ class ReportTemplateEntriesController < ApplicationController
     @report.status.update_attributes(:stype => Status.personal)
     
     if fail > 0
-      notice = "Report wurde nicht vollständig gespeichert"
-      redirect_to report_path(@report), :alert => notice
+      if fail == 1
+        notice = "Report wurde nicht vollständig gespeichert"
+      elsif fail == 2
+        notice = "Dauer der Tätigkeiten überschreitet mögliche Zeiten"
+      end
+      redirect_to edit_report_template_entry_path(@report), :params =>params, :alert => notice
     else
       notice = "Report wurde gespeichert"
       redirect_to report_path(@report), :notice => notice    

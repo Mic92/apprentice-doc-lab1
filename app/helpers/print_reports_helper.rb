@@ -185,9 +185,26 @@ module PrintReportsHelper
     retVal
   end
 
+  def checkTimes(maxTime)
+    valid = true
+    @groupedEntries.each { | value |
+      time = 0
+      value.each { | vvalue |
+        if not vvalue.duration_in_hours.nil?
+          time += vvalue.duration_in_hours
+        end
+      }
+      if time > maxTime
+        valid = false
+      end
+    }
+    valid
+  end
+
   def handleSubmittedReport(params)
     self.init
     fail = 0
+    maxTimes = 0
 
     params.each { |key, value|
       if key.match('entry_[0-9]+_[0-9]+')
@@ -203,17 +220,21 @@ module PrintReportsHelper
 
         if entry.nil?
           entry = @report.report_entries.new
-
+          entriesGroup[entryGroup] = entry
+          
           dtStart = @report.period_start.to_datetime
           dtCur = dtStart #+ 8.hours
           newDate = DateTime.now
           if @code.codegroup == DAILY
+            maxTimes = 24
 #            entry.duration_in_hours = 1.0
             newDate = dtCur + entryNo.days + entryGroup.hours
           elsif @code.codegroup == WEEKLY
+            maxTimes = 24*6
             newDate = dtCur + entryNo.weeks + entryGroup.days
 #            entry.duration_in_hours = 8.0
           elsif @code.codegroup == HOURLY
+            maxTimes = 24
             newDate = dtCur + entryNo.hours + entryGroup.minutes
 #            entry.duration_in_hours = 1.0/60.0
           end
@@ -239,11 +260,14 @@ module PrintReportsHelper
         else
           if entry.save
           else
-            fail+=1
+            fail=1
           end
         end
       end
     }
+    if not checkTimes(maxTimes)
+      fail=2
+    end     
     fail
   end
 end
