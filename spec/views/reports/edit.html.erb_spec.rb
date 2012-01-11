@@ -39,13 +39,6 @@ describe "reports/edit.html.erb" do
                             'id="report_period_start_3i"')
   end
 
-  it "should have a date select for period_end" do
-    render
-    rendered.should include('id="report_period_end_1i"',
-                            'id="report_period_end_2i"',
-                            'id="report_period_end_3i"')
-  end
-
   it "should have a submit button" do
     render
     rendered.should include('type="submit"')

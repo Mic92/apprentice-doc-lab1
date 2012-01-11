@@ -1,0 +1,17 @@
+<%= form_for @report do |f| %>
+  <% if @report.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= t('errors.template.header', :model=> 'Bericht', :count=> @report.errors.count) %></h2>
+      <h2><%= t('errors.template.body') %></h2>
+      <ul>
+        <% @report.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.label "Berichtsanfang:" %><br />
+  <%= f.date_select :period_start %><br />
+  <%= @report.new_record? ? f.submit('Bericht anlegen') : f.submit('Änderungen speichern') %>
+<% end %>

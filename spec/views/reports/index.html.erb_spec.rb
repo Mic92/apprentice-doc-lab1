@@ -38,6 +38,8 @@ describe "reports/index.html.erb" do
     @rejected_status = mock_model(Status, :name => 'abgelehnt', :stype => Status.rejected)
     @personal_entries = mock_model(ReportEntry, :blank? => true)
     @rejected_entries = mock_model(ReportEntry, :blank? => true)
+    @accepted_entries = mock_model(ReportEntry, :blank? => true)
+    @accepted_status = mock_model(Status, :name => 'vorgelegt', :stype => Status.accepted)
     @report1 = mock_model(Report, :period_start => '2011-10-01'.to_date,
                           :period_end => '2011-10-31'.to_date,
                           :user => @apprentice,
@@ -48,7 +50,12 @@ describe "reports/index.html.erb" do
                           :user => @apprentice,
                           :status => @rejected_status,
                           :report_entries => @rejected_entries)
-    assign(:reports, [ @report1, @report2 ])
+    @report3 = mock_model(Report, :period_start => '2011-12-01'.to_date,
+                          :period_end => '2011-12-31'.to_date,
+                          :user => @apprentice,
+                          :status => @accepted_status,
+                          :report_entries => @accepted_entries)
+    assign(:reports, [ @report1, @report2, @report3 ])
     assign(:current_user, @apprentice)
     assign(:pageCount, 1)
     assign(:page, 0)
@@ -56,17 +63,17 @@ describe "reports/index.html.erb" do
 
   it "should display the beginning dates" do
     render
-    rendered.should include((l @report1.period_start),(l @report2.period_start))
+    rendered.should include((l @report1.period_start),(l @report2.period_start),(l @report3.period_start))
   end
 
   it "should display the ending dates" do
     render
-    rendered.should include((l @report1.period_end),(l @report2.period_end))
+    rendered.should include((l @report1.period_end),(l @report2.period_end),(l @report2.period_end))
   end
 
   it "should display the statuses" do
     render
-    rendered.should include('nicht vorgelegt', 'abgelehnt')
+    rendered.should include('nicht vorgelegt', 'abgelehnt', 'vorgelegt')
   end
 
   describe "for users with commit right" do
@@ -77,7 +84,9 @@ describe "reports/index.html.erb" do
 
     it "should have links to delete the reports" do
       render
-      rendered.should include("href=\"/reports/#{@report1.id}\"", "href=\"/reports/#{@report2.id}\"")
+      rendered.should include("href=\"/reports/#{@report1.id}\"",
+                              "href=\"/reports/#{@report2.id}\"",
+                              "href=\"/reports/#{@report3.id}\"")
     end
   end
 
@@ -104,7 +113,7 @@ describe "reports/index.html.erb" do
 
     it "should have links to export the reports" do
       render
-      rendered.should include("href=\"/print_reports/#{@report1.id}\"", "href=\"/print_reports/#{@report2.id}\"")
+      rendered.should include("href=\"/print_reports/#{@report3.id}\"")
     end
   end
 end

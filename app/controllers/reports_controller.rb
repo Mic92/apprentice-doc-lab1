@@ -93,20 +93,7 @@ class ReportsController < ApplicationController
     @report.build_status(:stype => Status.personal)
     @report.reportnumber = current_user.reports.count + 1
     if !@report.period_start.nil?
-      dateStart = @report.period_start
-      dateEnd = dateStart
-
-      if not current_user.template.nil?
-        codegroup = current_user.template.code.codegroup
-        if codegroup == PrintReportsHelper::HOURLY
-          # nothing to do
-        elsif codegroup == PrintReportsHelper::DAILY
-          dateEnd = dateStart + 1.week - 1.day
-        elsif codegroup == PrintReportsHelper::WEEKLY
-          dateEnd = dateStart + 5.weeks - 1.day
-        end
-      end
-      @report.period_end = dateEnd
+      @report.period_end = calc_period_end(@report.period_start)
 
       if no_time_overlap(@report,false)
         if @report.save
@@ -130,24 +117,12 @@ class ReportsController < ApplicationController
     # Hilfsobjekt für den Vergleich der Daten.
     @new = Report.new(params[:report])
 
-    if @new.period_start != nil && @new.period_end != nil
-      if @new.period_start >= @report.period_start && @new.period_end <= @report.period_end
-        @entries = @report.report_entries.order('date asc')
-        if @entries.length > 0
-          if @entries.first.date < @new.period_start || @entries.last.date > @new.period_start
-            # Durch die Änderung würden Einträge nicht mehr im Zeitraum des Berichts liegen.
-            flash.now[:alert] = 'Diese Änderung führt zu einem Konflikt mit den Einträgen dieses Berichts.'
-            render 'edit' and return
-          end
-        end
-      elsif (@new.period_start - @report.period_start) == (@new.period_end - @report.period_end)
-        # Beide Daten wurden um den gleichen Wert verschoben, verschiebe die Einträge auch um diesen Wert.
-        @shift = (@new.period_start - @report.period_start)
-        @report.report_entries.each { |e| e.update_attribute(:date, (e.date + @shift.days)) }
-      end
+    if @new.period_start != nil
+      @shift = (@new.period_start - @report.period_start)
+      @report.report_entries.each { |e| e.update_attribute(:date, (e.date + @shift.days)) }
 
       if no_time_overlap(@report,true)
-        if params[:report] != nil && @report.update_attributes(params[:report])
+        if params[:report] != nil && @report.update_attributes(params[:report].merge(:period_end => calc_period_end(@new.period_start)))
           # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
           # freigegeben werden kann.
           @report.status.update_attributes(:stype => Status.personal)
@@ -216,5 +191,21 @@ class ReportsController < ApplicationController
         end
       end
       return false
+    end
+
+    def calc_period_end(period_start)
+      period_end = period_start
+
+      if not current_user.template.nil?
+        codegroup = current_user.template.code.codegroup
+        if codegroup == PrintReportsHelper::HOURLY
+          # nothing to do
+        elsif codegroup == PrintReportsHelper::DAILY
+          period_end = period_start + 1.week - 1.day
+        elsif codegroup == PrintReportsHelper::WEEKLY
+          period_end = period_start + 5.weeks - 1.day
+        end
+      end
+      return period_end
     end
 end
