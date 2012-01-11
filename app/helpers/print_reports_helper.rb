@@ -178,7 +178,7 @@ module PrintReportsHelper
 
   def handleSubmittedReport(params)
     self.init
-
+    fail = 0
     puts @groupedEntries
 
     params.each { |key, value|
@@ -197,17 +197,17 @@ module PrintReportsHelper
           entry = @report.report_entries.new
 
           dtStart = @report.period_start.to_datetime
-          dtCur = dtStart + 8.hours
+          dtCur = dtStart #+ 8.hours
           newDate = DateTime.now
           if @code.codegroup == DAILY
-            entry.duration_in_hours = 1.0
+#            entry.duration_in_hours = 1.0
             newDate = dtCur + entryNo.days + entryGroup.hours
           elsif @code.codegroup == WEEKLY
             newDate = dtCur + entryNo.weeks + entryGroup.days
-            entry.duration_in_hours = 8.0
+#            entry.duration_in_hours = 8.0
           elsif @code.codegroup == HOURLY
             newDate = dtCur + entryNo.hours + entryGroup.minutes
-            entry.duration_in_hours = 1.0/60.0
+#            entry.duration_in_hours = 1.0/60.0
           end
           entry.date = newDate
         end
@@ -216,16 +216,19 @@ module PrintReportsHelper
           entryMeth = valKey+"="
           value = valValue
           # quick fix
-          if valKey.eql?('duration_in_hours')
-            value = value.to_i
-            if value == 0
-              value = 0.5
-            end
-          end
+#          if valKey.eql?('duration_in_hours')
+#            value = value.to_i
+#            if value == 0
+#              value = 0.5
+#            end
+#          end
           entry.send(entryMeth, value)
         }
-        entry.save
+        if not entry.save
+          fail+=1
+        end
       end
     }
+    fail
   end
 end

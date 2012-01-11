@@ -32,9 +32,14 @@ class ReportTemplateEntriesController < ApplicationController
 
     self.prepare
     
-    self.handleSubmittedReport(params)
+    fail = self.handleSubmittedReport(params)
     
-    redirect_to report_path(@report)
+    notice = "Report wurde gespeichert"
+    if fail > 0
+      notice = "Report wurde nicht vollständig gespeichert"
+    end
+    
+    redirect_to report_path(@report), :notice => notice
   end
 
 end

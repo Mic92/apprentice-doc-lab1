@@ -35,10 +35,10 @@ class ReportEntry < ActiveRecord::Base
 
   validates :report_id, :presence => true
   validates :date, :presence => true
-  validates :duration_in_hours, :presence => true
+#  validates :duration_in_hours, :presence => true
   validates :text, :presence => true
 
-  validate :duration_in_hours_greater_than_zero
+#  validate :duration_in_hours_greater_than_zero
 
   private
     def duration_in_hours_greater_than_zero
