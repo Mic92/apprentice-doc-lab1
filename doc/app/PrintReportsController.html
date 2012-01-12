@@ -82,6 +82,8 @@
 
   <ul class="link-list">
     
+    <li><a href="#method-i-accepted">#accepted</a>
+    
     <li><a href="#method-i-correct_user">#correct_user</a>
     
     <li><a href="#method-i-show">#show</a>
@@ -218,6 +220,37 @@
       <h3 class="section-header">Public Instance Methods</h3>
 
     
+      <div id="method-i-accepted" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">accepted</span><span
+            class="method-args">()</span>
+          <span class="method-click-advice">click to toggle source</span>
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+
+          
+          <div class="method-source-code" id="accepted-source">
+            <pre><span class="ruby-comment"># File app/controllers/print_reports_controller.rb, line 17</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">accepted</span>
+  <span class="ruby-identifier">report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
+  <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:alert</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'Dieser Bericht wurde noch nicht akzeptiert.'</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">stype</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">accepted</span>
+<span class="ruby-keyword">end</span></pre>
+          </div><!-- accepted-source -->
+          
+        </div>
+
+        
+
+        
+      </div><!-- accepted-method -->
+
+    
       <div id="method-i-correct_user" class="method-detail ">
         
         <div class="method-heading">
@@ -234,7 +267,7 @@
 
           
           <div class="method-source-code" id="correct_user-source">
-            <pre><span class="ruby-comment"># File app/controllers/print_reports_controller.rb, line 10</span>
+            <pre><span class="ruby-comment"># File app/controllers/print_reports_controller.rb, line 11</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">correct_user</span>
   <span class="ruby-ivar">@user</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>]).<span class="ruby-identifier">user</span>
   <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">welcome_path</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">current_user?</span>(<span class="ruby-ivar">@user</span>) <span class="ruby-keyword">or</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check?</span>
@@ -266,16 +299,16 @@
 
           
           <div class="method-source-code" id="show-source">
-            <pre><span class="ruby-comment"># File app/controllers/print_reports_controller.rb, line 16</span>
+            <pre><span class="ruby-comment"># File app/controllers/print_reports_controller.rb, line 22</span>
   <span class="ruby-keyword">def</span> <span class="ruby-identifier">show</span>
     <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
     <span class="ruby-ivar">@title</span> = <span class="ruby-string">'Report Druckansicht'</span>
-    
+
     <span class="ruby-ivar">@code</span> = <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">template</span>.<span class="ruby-identifier">code</span>
     <span class="ruby-ivar">@rawCode</span> = <span class="ruby-ivar">@code</span>.<span class="ruby-identifier">code</span>
-    
+
     <span class="ruby-keyword">self</span>.<span class="ruby-identifier">handleRawCode</span>
-    
+
     <span class="ruby-identifier">render</span> <span class="ruby-value">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">'printlayout'</span>
 <span class="ruby-comment">#    respond_to do |format|</span>
 <span class="ruby-comment">#      format.html</span>

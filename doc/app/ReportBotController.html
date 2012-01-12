@@ -405,10 +405,10 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
 
           
           <div class="method-source-code" id="unchecked-source">
-            <pre><span class="ruby-comment"># File app/controllers/report_bot_controller.rb, line 248</span>
+            <pre><span class="ruby-comment"># File app/controllers/report_bot_controller.rb, line 249</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unchecked</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">remote_ip</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;127.0.0.1&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-constant">ReportBotController</span>.<span class="ruby-identifier">check_for_localhost</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
-  <span class="ruby-ivar">@instructors</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:role</span>).<span class="ruby-identifier">where</span>( <span class="ruby-value">:roles</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:check</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>} )
+  <span class="ruby-ivar">@instructors</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-value">:all</span>).<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">user</span><span class="ruby-operator">|</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">check</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">true</span>}
   <span class="ruby-comment">#für jeden Ausbilder, der nicht deaktiviert ist</span>
     <span class="ruby-ivar">@instructors</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">instructor</span><span class="ruby-operator">|</span>
       <span class="ruby-keyword">if</span> <span class="ruby-identifier">instructor</span>.<span class="ruby-identifier">deleted</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword">true</span>
@@ -462,10 +462,10 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
 
           
           <div class="method-source-code" id="unwritten-source">
-            <pre><span class="ruby-comment"># File app/controllers/report_bot_controller.rb, line 165</span>
+            <pre><span class="ruby-comment"># File app/controllers/report_bot_controller.rb, line 166</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unwritten</span>
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">remote_ip</span> <span class="ruby-operator">==</span> <span class="ruby-string">&quot;127.0.0.1&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-constant">ReportBotController</span>.<span class="ruby-identifier">check_for_localhost</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">admin?</span>
-    <span class="ruby-ivar">@apprentices</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">joins</span>(<span class="ruby-value">:role</span>).<span class="ruby-identifier">where</span>( <span class="ruby-value">:roles</span> =<span class="ruby-operator">&gt;</span> {<span class="ruby-value">:commit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword">true</span>} )
+    <span class="ruby-ivar">@apprentices</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-value">:all</span>).<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">user</span><span class="ruby-operator">|</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">role</span>.<span class="ruby-identifier">commit</span> <span class="ruby-operator">==</span> <span class="ruby-keyword">true</span>}
     <span class="ruby-ivar">@year</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">year</span>
     <span class="ruby-ivar">@month</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">month</span>
 
@@ -505,7 +505,7 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
           <span class="ruby-keyword">end</span>
           <span class="ruby-identifier">i</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
         <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">apprentice</span>.<span class="ruby-identifier">trainingbegin</span>.<span class="ruby-identifier">to_time</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">ReportBotController</span>.<span class="ruby-identifier">apprentice_period_inmonths</span>.<span class="ruby-identifier">months</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">apprentice</span>.<span class="ruby-identifier">trainingbegin</span>.<span class="ruby-identifier">to_time</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">ReportBotController</span>.<span class="ruby-identifier">apprentice_period_inmonths</span>.<span class="ruby-identifier">months</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">apprentice</span>.<span class="ruby-identifier">trainingbegin</span>.<span class="ruby-identifier">to_time</span> <span class="ruby-operator">&lt;</span> <span class="ruby-ivar">@date_v</span>
           <span class="ruby-comment">#whileloop ist zu ende, für den verbleibenden Zeitraum, anfangend vom Ausbildungsbeginn prüfen</span>
           <span class="ruby-ivar">@daycount</span> = <span class="ruby-identifier">workdays</span>( <span class="ruby-identifier">apprentice</span>.<span class="ruby-identifier">trainingbegin</span>.<span class="ruby-identifier">to_time</span>, <span class="ruby-ivar">@date_v</span>)
           <span class="ruby-ivar">@reports</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">report</span><span class="ruby-operator">|</span>
@@ -574,15 +574,80 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
             <pre><span class="ruby-comment"># File app/controllers/report_bot_controller.rb, line 64</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">workdays</span> (<span class="ruby-identifier">startdate</span>, <span class="ruby-identifier">enddate</span>)
   <span class="ruby-ivar">@days</span> = <span class="ruby-constant">Date</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">enddate</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">enddate</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">enddate</span>.<span class="ruby-identifier">day</span>).<span class="ruby-identifier">ld</span> <span class="ruby-operator">-</span> <span class="ruby-constant">Date</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">startdate</span>.<span class="ruby-identifier">year</span>, <span class="ruby-identifier">startdate</span>.<span class="ruby-identifier">month</span>, <span class="ruby-identifier">startdate</span>.<span class="ruby-identifier">day</span>).<span class="ruby-identifier">ld</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span>
-    <span class="ruby-ivar">@days</span> = <span class="ruby-string">'ERROR, wrong order of dates'</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">case</span> <span class="ruby-identifier">startdate</span>.<span class="ruby-identifier">wday</span>
-    <span class="ruby-keyword">when</span> <span class="ruby-value">1</span>  <span class="ruby-comment">#monday</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">5</span>
-        <span class="ruby-ivar">@w_days</span> = <span class="ruby-ivar">@days</span>
-      <span class="ruby-keyword">else</span>
+  <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">0</span>
+    <span class="ruby-keyword">case</span> <span class="ruby-identifier">startdate</span>.<span class="ruby-identifier">wday</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-value">1</span>  <span class="ruby-comment">#monday</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">5</span>
+          <span class="ruby-ivar">@w_days</span> = <span class="ruby-ivar">@days</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">0</span>
+          <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
+            <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
+            <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
+          <span class="ruby-keyword">end</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+            <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-value">2</span>  <span class="ruby-comment">#tuesday</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">4</span>
+          <span class="ruby-ivar">@w_days</span> = <span class="ruby-ivar">@days</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">4</span>
+          <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">6</span>
+          <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
+            <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
+            <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
+          <span class="ruby-keyword">end</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+            <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-value">3</span>  <span class="ruby-comment">#wednesday</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">3</span>
+          <span class="ruby-ivar">@w_days</span> = <span class="ruby-ivar">@days</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">3</span>
+          <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">5</span>
+          <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
+            <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
+            <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
+          <span class="ruby-keyword">end</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+            <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-value">4</span>  <span class="ruby-comment">#thursday</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">2</span>
+          <span class="ruby-ivar">@w_days</span> = <span class="ruby-ivar">@days</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">2</span>
+          <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">4</span>
+          <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
+            <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
+            <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
+          <span class="ruby-keyword">end</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+            <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-value">5</span>  <span class="ruby-comment">#friday</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">1</span>
+          <span class="ruby-ivar">@w_days</span> = <span class="ruby-ivar">@days</span>
+        <span class="ruby-keyword">else</span>
+          <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">1</span>
+          <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">3</span>
+          <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
+            <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
+            <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
+          <span class="ruby-keyword">end</span>
+          <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+            <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
+          <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-value">6</span>  <span class="ruby-comment">#saturday</span>
         <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">0</span>
+        <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">2</span>
         <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
           <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
           <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
@@ -590,85 +655,21 @@ href="http://www.gnu.org/licenses/">www.gnu.org/licenses/</a>&gt;.</p>
         <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
           <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
         <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">when</span> <span class="ruby-value">2</span>  <span class="ruby-comment">#tuesday</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">4</span>
-        <span class="ruby-ivar">@w_days</span> = <span class="ruby-ivar">@days</span>
+      <span class="ruby-keyword">when</span> <span class="ruby-value">0</span>  <span class="ruby-comment">#sunday</span>
+        <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">0</span>
+        <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+        <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
+          <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
+          <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
+        <span class="ruby-keyword">end</span>
+        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+          <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
+        <span class="ruby-keyword">end</span>
       <span class="ruby-keyword">else</span>
-        <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">4</span>
-        <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">6</span>
-        <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
-          <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
-          <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
-        <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-          <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
-        <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">when</span> <span class="ruby-value">3</span>  <span class="ruby-comment">#wednesday</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">3</span>
-        <span class="ruby-ivar">@w_days</span> = <span class="ruby-ivar">@days</span>
-      <span class="ruby-keyword">else</span>
-        <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">3</span>
-        <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">5</span>
-        <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
-          <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
-          <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
-        <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-          <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
-        <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">when</span> <span class="ruby-value">4</span>  <span class="ruby-comment">#thursday</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">2</span>
-        <span class="ruby-ivar">@w_days</span> = <span class="ruby-ivar">@days</span>
-      <span class="ruby-keyword">else</span>
-        <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">2</span>
-        <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">4</span>
-        <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
-          <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
-          <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
-        <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-          <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
-        <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">when</span> <span class="ruby-value">5</span>  <span class="ruby-comment">#friday</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">1</span>
-        <span class="ruby-ivar">@w_days</span> = <span class="ruby-ivar">@days</span>
-      <span class="ruby-keyword">else</span>
-        <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">1</span>
-        <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">3</span>
-        <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
-          <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
-          <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
-        <span class="ruby-keyword">end</span>
-        <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-          <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
-        <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">when</span> <span class="ruby-value">6</span>  <span class="ruby-comment">#saturday</span>
-      <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">0</span>
-      <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">2</span>
-      <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
-        <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
-        <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
-      <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-        <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">when</span> <span class="ruby-value">0</span>  <span class="ruby-comment">#sunday</span>
-      <span class="ruby-ivar">@w_days</span> = <span class="ruby-value">0</span>
-      <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
-      <span class="ruby-keyword">while</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">5</span>
-        <span class="ruby-ivar">@days</span> <span class="ruby-operator">-=</span> <span class="ruby-value">7</span>
-        <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-value">5</span>
-      <span class="ruby-keyword">end</span>
-      <span class="ruby-keyword">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-        <span class="ruby-ivar">@w_days</span> <span class="ruby-operator">+=</span> <span class="ruby-ivar">@days</span>
-      <span class="ruby-keyword">end</span>
-    <span class="ruby-keyword">else</span>
-      <span class="ruby-ivar">@w_days</span> = <span class="ruby-string">'ERROR'</span>
+        <span class="ruby-ivar">@w_days</span> = <span class="ruby-string">'ERROR'</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-ivar">@w_days</span> = <span class="ruby-string">'ERROR, wrong order of dates'</span>
   <span class="ruby-keyword">end</span>
   <span class="ruby-ivar">@w_days</span>
 <span class="ruby-keyword">end</span></pre>

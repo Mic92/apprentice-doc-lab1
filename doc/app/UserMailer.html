@@ -333,7 +333,7 @@
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unchecked_reports_mail</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:instructor</span>]
   <span class="ruby-ivar">@unchecked_reports_num</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:unchecked_reports_num</span>]
-  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Apprentice Doc Lab: Sie haben noch &quot;</span> <span class="ruby-operator">+</span>  <span class="ruby-ivar">@unchecked_reports_num</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">&quot; vorgelegte Berichte, die nicht überprüft wurden&quot;</span>)
+  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Apprentice Doc Lab: zu prüfende Berichte&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- unchecked_reports_mail-source -->
           
@@ -364,7 +364,7 @@
             <pre><span class="ruby-comment"># File app/mailers/user_mailer.rb, line 44</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unset_trainingsbegin_mail</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:user</span>]
-  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Sie haben noch nicht ihren Ausbildungsbeginn eingetragen, bitten vervollständigen Sie diesen unter 'Mein Profil'.&quot;</span>)
+  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Apprentice Doc Lab: Bitte Ausbildungsbeginn vervolständigen&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- unset_trainingsbegin_mail-source -->
           
@@ -396,11 +396,11 @@
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">unwritten_reports_mail</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:apprentice</span>]
   <span class="ruby-ivar">@date_array</span> = <span class="ruby-identifier">data</span>[<span class="ruby-value">:date_array</span>]
-  <span class="ruby-ivar">@buffer</span> = <span class="ruby-string">''</span>
-  <span class="ruby-ivar">@date_array</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">year_month</span><span class="ruby-operator">|</span>
-    <span class="ruby-ivar">@buffer</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">year_month</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-operator">+</span> <span class="ruby-string">' - '</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">year_month</span>[<span class="ruby-value">1</span>] <span class="ruby-operator">+</span> <span class="ruby-string">&quot;\n&quot;</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Sie müssen noch einige Berichte nachreichen, unten ist eine Liste mit Jahr und Monat, in welchen noch Berichte nachgereicht werden müssen.\n&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-ivar">@buffer</span>)
+  <span class="ruby-comment">#@buffer = ''</span>
+  <span class="ruby-comment">#@date_array.each do |year_month|</span>
+  <span class="ruby-comment">#  @buffer += year_month[0].to_s + ' - ' + year_month[1] + &quot;\n&quot;</span>
+  <span class="ruby-comment">#end</span>
+  <span class="ruby-identifier">mail</span>(<span class="ruby-value">:to</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span>, <span class="ruby-value">:subject</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&quot;Apprentice Doc Lab: fehlende Berichte&quot;</span>)
 <span class="ruby-keyword">end</span></pre>
           </div><!-- unwritten_reports_mail-source -->
           
