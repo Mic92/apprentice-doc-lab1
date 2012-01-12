@@ -21,14 +21,12 @@
 <table class="main">
   <tr class="main">
     <th class="main">Datum/Uhrzeit</th>
-    <th class="main">Dauer</th>
     <th class="main">Text</th>
   </tr>
   <% @entries.each do |entry| %>
     <tr class="main">
-      <td class="main center"><%= l entry.date, :format => :short %></td>
+      <td class="main center"><%= l entry.date, :format => "%d. %B" %></td>
       <% entry.duration_in_hours = 0 unless not entry.duration_in_hours.nil? %>
-      <td class="main center"><%= entry.duration_in_hours.to_i %> Stunden <%= (entry.duration_in_hours.hours / 1.minute % 60).to_i %> Minuten</td>
       <td class="main"><%= entry.text %></td>
       <% if current_user.role.commit? %>
         <td class="main"><%= link_to 'Löschen', report_report_entry_path(@report, entry), :confirm => "Sind Sie sicher?", :method => :delete, :class => 'main' %></td>

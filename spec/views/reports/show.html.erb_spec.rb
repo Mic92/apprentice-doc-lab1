@@ -73,12 +73,7 @@ describe "reports/show.html.erb" do
 
   it "should display the dates/times" do
     render
-    rendered.should include((l @entry1.date, :format => :short), (l @entry2.date, :format => :short))
-  end
-
-  it "should display the duration" do
-    render
-    rendered.should include(@entry1.duration_in_hours.to_i.to_s, (@entry1.duration_in_hours.hours / 1.minute % 60).to_i.to_s)
+    rendered.should include((l @entry1.date, :format => "%d. %B"), (l @entry2.date, :format => "%d. %B"))
   end
 
   it "should display the text" do

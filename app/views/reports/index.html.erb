@@ -38,6 +38,8 @@
         <% else %>
           <td class="main" />
         <% end %>
+      <% elsif current_user.role.check? %>
+        <td class="main"><%= link_to 'Anzeigen', report, :class => 'main' %></td>
       <% end %>
       <% if report.status.stype == Status.accepted && current_user.role.export? %>
         <td class="main"><%= link_to 'Druckansicht', print_report_path(report), :class => 'main' %></td>
