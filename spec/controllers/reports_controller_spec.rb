@@ -281,6 +281,7 @@ describe ReportsController do
   describe "DELETE 'destroy'" do
     before(:each) do
       @report = @user.reports.create valid_attributes_report
+      @report.create_status valid_attributes_status
       test_sign_in(@user)
     end
 
@@ -417,6 +418,11 @@ describe ReportsController do
 
         it "should deny access to 'update'" do
           put 'update', :id => @report, :report => valid_attributes_report.merge(:period_start => '2011-09-01')
+          response.should redirect_to(reports_path)
+        end
+
+        it "should deny access to 'destroy'" do
+          delete 'destroy', :id => @report
           response.should redirect_to(reports_path)
         end
       end

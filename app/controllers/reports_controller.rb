@@ -34,7 +34,7 @@ class ReportsController < ApplicationController
   before_filter :read, :only => [ :index, :show ]
   before_filter :correct_user_or_instructor, :only => :show
   before_filter :commit, :only => [ :new, :create, :update, :destroy ]
-  before_filter :not_commited, :only => [ :edit, :update ]
+  before_filter :not_commited, :only => [ :edit, :update, :destroy ]
   before_filter :not_accepted, :only => [ :edit, :update ]
   before_filter :correct_user, :only => [ :edit, :update, :destroy ]
   before_filter :trainingbegin_and_year_set, :only => [ :create, :update ]

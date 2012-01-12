@@ -36,10 +36,10 @@ describe "reports/index.html.erb" do
                            :role => @export_role)
     @personal_status = mock_model(Status, :name => 'nicht vorgelegt', :stype => Status.personal)
     @rejected_status = mock_model(Status, :name => 'abgelehnt', :stype => Status.rejected)
+    @accepted_status = mock_model(Status, :name => 'akzeptiert', :stype => Status.accepted)
     @personal_entries = mock_model(ReportEntry, :blank? => true)
     @rejected_entries = mock_model(ReportEntry, :blank? => true)
     @accepted_entries = mock_model(ReportEntry, :blank? => true)
-    @accepted_status = mock_model(Status, :name => 'vorgelegt', :stype => Status.accepted)
     @report1 = mock_model(Report, :period_start => '2011-10-01'.to_date,
                           :period_end => '2011-10-31'.to_date,
                           :user => @apprentice,
@@ -85,8 +85,7 @@ describe "reports/index.html.erb" do
     it "should have links to delete the reports" do
       render
       rendered.should include("href=\"/reports/#{@report1.id}\"",
-                              "href=\"/reports/#{@report2.id}\"",
-                              "href=\"/reports/#{@report3.id}\"")
+                              "href=\"/reports/#{@report2.id}\"")
     end
   end
 
