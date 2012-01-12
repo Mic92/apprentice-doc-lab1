@@ -22,6 +22,10 @@
 
 <%= form_tag({:controller => "report_template_entries", :action => "update"}, :method => "put", :class => "edit_report_form") %>
 
+<% if @report.status.comment? %>
+  <p><strong>Kommentar des Ausbilders:</strong> <%= @report.status.comment%></p>
+<% end %>
+
   <%=raw @displayCode %>
 
   <br />
