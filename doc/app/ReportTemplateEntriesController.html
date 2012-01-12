@@ -274,9 +274,9 @@
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">edit</span>
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
   <span class="ruby-ivar">@title</span> = <span class="ruby-string">'Report Editansicht'</span>
-  
+
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">prepare</span>
-  
+
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">editRawCode</span>
 <span class="ruby-keyword">end</span></pre>
           </div><!-- edit-source -->
@@ -341,12 +341,12 @@
   <span class="ruby-ivar">@report</span> = <span class="ruby-constant">Report</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-value">:id</span>])
 
   <span class="ruby-keyword">self</span>.<span class="ruby-identifier">prepare</span>
-  
+
   <span class="ruby-identifier">fail</span> = <span class="ruby-keyword">self</span>.<span class="ruby-identifier">handleSubmittedReport</span>(<span class="ruby-identifier">params</span>)
   <span class="ruby-comment"># Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder</span>
   <span class="ruby-comment"># freigegeben werden kann.</span>
   <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">status</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-value">:stype</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Status</span>.<span class="ruby-identifier">personal</span>)
-  
+
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">fail</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
     <span class="ruby-keyword">if</span> <span class="ruby-identifier">fail</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
       <span class="ruby-identifier">notice</span> = <span class="ruby-string">&quot;Report wurde nicht vollständig gespeichert&quot;</span>
@@ -356,9 +356,9 @@
     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">edit_report_template_entry_path</span>(<span class="ruby-ivar">@report</span>), <span class="ruby-value">:params</span> =<span class="ruby-operator">&gt;</span><span class="ruby-identifier">params</span>, <span class="ruby-value">:alert</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">notice</span>
   <span class="ruby-keyword">else</span>
     <span class="ruby-identifier">notice</span> = <span class="ruby-string">&quot;Report wurde gespeichert&quot;</span>
-    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">report_path</span>(<span class="ruby-ivar">@report</span>), <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">notice</span>    
+    <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">reports_path</span>, <span class="ruby-value">:notice</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">notice</span>
   <span class="ruby-keyword">end</span>
-  
+
 <span class="ruby-keyword">end</span></pre>
           </div><!-- update-source -->
           
