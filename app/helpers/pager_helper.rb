@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 module PagerHelper
-  MAX_RECORDS_PER_PAGE = 25
+  MAX_RECORDS_PER_PAGE = 25.0
 
   def pager(entityClass)
     offset = @page * MAX_RECORDS_PER_PAGE
