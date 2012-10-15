@@ -55,6 +55,12 @@ class ReportsController < ApplicationController
         @reports = Report.joins(:status, :user).where(:statuses => { :stype => Status.commited }, :user_id => current_user.apprentices).order('period_start asc, period_end asc')
       end
     end
+
+	respond_to do |format|
+       format.html
+       format.json { render json: @reports }
+    end
+
   end
 
   # Zeigt die Einträge eines Berichts.
