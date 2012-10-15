@@ -27,19 +27,23 @@ class SessionsController < ApplicationController
       redirect_to welcome_path
     else
       @title = "Login"
+      if params[:session_email] != nil && params[:session_password] != nil
+        user = User.authenticate(params[:session_email], params[:session_password])
+        sign_in user
+      end
     end
   end
 
   def create
   
     user = User.authenticate(params[:session][:email], params[:session][:password])
-	
+  
     if user.nil? or user.deleted == true 
       # Fehlermeldung
       flash.now[:error] = "Inkorrekte Email/Passwort Kombination"
       @title = "Login"
       render 'new'
-	  else
+    else
       # Einloggen und zur Reportuebersichtsseite leiten
       sign_in user
       redirect_to welcome_path

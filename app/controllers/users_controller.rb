@@ -18,37 +18,53 @@
 # You should have received a copy of the GNU General Public License
 # along with ApprenticeDocLab1.  If not, see <http://www.gnu.org/licenses/>.
 
-
-# UsersController ist verantwortlich für die Benutzerverwaltung. Je nach # Rechtevergabe für den Benutzer sind verschiedene Funktionalitäten zu
-# berücksichtigen. 
+# UsersController ist verantwortlich für die Benutzerverwaltung. Je nach
+# Rechtevergabe für den Benutzer sind verschiedene Funktionalitäten zu
+# berücksichtigen.
 # Die Funktionalität besteht nur für angemeldete Benutzer.
-
 class UsersController < ApplicationController
+  
   before_filter :authenticate
   before_filter :correct_user, :only => [ :show, :edit, :update]
-# Die Methode 'index' zeigt einem Administrator alle Benutzer an, Ausbilder werden ihre Auszubildenden angezeigt.
-# Für Auszubildende hat die Methode keine Verwendung und ist gesperrt.
-  def index
+  
+  # Die Methode 'index' zeigt einem Administrator alle Benutzer an, Ausbilder werden ihre Auszubildenden angezeigt.
+  # Für Auszubildende hat die Methode keine Verwendung und ist gesperrt.
+   def index
     setupPager(User, params)
-    if current_user.role.admin?
-      @users = pager(User).search(params[:search])
-    elsif current_user.role.modify?
-      @users = current_user.apprentices.search(params[:search])
-      else redirect_to welcome_path
-    end    
+    #if current_user.role.admin?
+    #  @users = pager(User).search(params[:search])
+    #elsif current_user.role.modify?
+    #  @users = current_user.apprentices.search(params[:search])
+    #else redirect_to welcome_path
+    #end
+
+    @users = User.all
+    respond_to do |format|
+      format.html
+      format.json { render json: @users }
+    end
+
   end
-# Die Methode 'show' zeigt das eigene Profil an.
+  # Die Methode 'show' zeigt das eigene Profil an.
 
   def show
-    if current_user.role.admin? && current_user != User.find(params[:id])
-      @user = User.find(params[:id])
-      @role = Role.find(@user.role_id)
-    else
-      @user = current_user
+    
+    @user = User.find(params[:id])
+    
+    #if current_user.role.admin? && current_user != User.find(params[:id])
+    #  @user = User.find(params[:id])
+    #  @role = Role.find(@user.role_id)
+    #else
+    #  @user = current_user
+    #end
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @user }
     end
   end
-  
-# Die Methode 'new' erzeugt einen neuen Nutzer, wenn man Administrator oder Ausbilder ist. Für Auszubildene ist die Methode gesperrt.
+
+  # Die Methode 'new' erzeugt einen neuen Nutzer, wenn man Administrator oder Ausbilder ist. Für Auszubildene ist die Methode gesperrt.
 
   def new
     @templates = Template.all
@@ -56,14 +72,14 @@ class UsersController < ApplicationController
       @user = User.new
       @roles = Role.all
     elsif current_user.role.modify?
-        @user = User.new
-        @roles = Role.where(:admin => false, :modify => false, :check => false)
-      else
-        redirect_to welcome_path
+      @user = User.new
+      @roles = Role.where(:admin => false, :modify => false, :check => false)
+    else
+      redirect_to welcome_path
     end
   end
-  
-# Die Methode 'edit' ermöglicht das Editieren des eigenen Profils.
+
+  # Die Methode 'edit' ermöglicht das Editieren des eigenen Profils.
 
   def edit
     @user = User.find(params[:id])
@@ -73,21 +89,20 @@ class UsersController < ApplicationController
     @role = @user.role_id
   end
 
-# Die Methode 'create' erstellt einen neuen Benutzer, sofern dieser über valide Attribute verfügt.
-# Administratoren dürfen jede Art von Benutzer erstellen, Ausbilder nur Auszubildende, Auszubildenden ist die Methode gesperrt.
+  # Die Methode 'create' erstellt einen neuen Benutzer, sofern dieser über valide Attribute verfügt.
+  # Administratoren dürfen jede Art von Benutzer erstellen, Ausbilder nur Auszubildende, Auszubildenden ist die Methode gesperrt.
 
   def create
-# roles/templates muss initialisiert werden für collection_select, falls save fehlschlägt.
+    # roles/templates muss initialisiert werden für collection_select, falls save fehlschlägt.
     @templates = Template.all
     if current_user.role.admin?
       @roles = Role.all
     elsif current_user.role.modify?
       @roles = Role.where(:admin => false, :modify => false, :check => false)
-    end 
+    end
 
-    
-# zufälliges password wird generiert
-    
+    # zufälliges password wird generiert
+
     if params[:user] != nil
       @password = PasswordsController.random_password
       params[:user][:password] = @password
@@ -100,39 +115,38 @@ class UsersController < ApplicationController
     if @user == nil
       render 'new'
     elsif current_user.role.admin?
-        
-        if @user.save
-          UserMailer.welcome_mail(@user, @password).deliver
-          redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich erstellt.'
+
+      if @user.save
+        UserMailer.welcome_mail(@user, @password).deliver
+        redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich erstellt.'
+      else
+        render 'new'
+      end
+
+    elsif current_user.role.modify?
+      if @user.role_id == nil
+        @user.errors.add(:role, "muss ausgewählt werden")
+        render 'new'
+      else
+        @role = Role.find(@user.role_id)
+        if @role.admin? || @role.modify?
+          render 'new'
         else
-          render 'new'
-        end
-      
-      elsif current_user.role.modify?
-        if @user.role_id == nil
-          @user.errors.add(:role, "muss ausgewählt werden")
-          render 'new'
-        else  
-          @role = Role.find(@user.role_id)
-          if @role.admin? || @role.modify?
-            render 'new'     
+          @user = current_user.apprentices.build(params[:user])
+          if @user.save
+            UserMailer.welcome_mail(@user, @password).deliver
+            redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich erstellt.'
           else
-            @user = current_user.apprentices.build(params[:user])
-            if @user.save
-              UserMailer.welcome_mail(@user, @password).deliver
-              redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich erstellt.'
-            else
-              render 'new'
-            end
+            render 'new'
           end
         end
-      else redirect_to welcome_path
+      end
+    else redirect_to welcome_path
     end
-    
-    
+
   end
 
-# Die Methode 'update' aktualisiert das eigene Benutzerprofil mit validen Daten. 
+  # Die Methode 'update' aktualisiert das eigene Benutzerprofil mit validen Daten.
 
   def update
     @roles = Role.all
@@ -155,7 +169,7 @@ class UsersController < ApplicationController
         end
         @attr = params[:user].merge(:role_id => @role.id)
         if current_user.role.admin?
-          if current_user.role_id != params[:user][:role_id].to_i && @user.role.admin? && !adminremovable? 
+          if current_user.role_id != params[:user][:role_id].to_i && @user.role.admin? && !adminremovable?
             flash.now[:error] = "Das Rechte-Profil kann nicht geändert werden. Mindestens ein Administrator im System ist erforderlich."
             render 'edit'
           else
@@ -166,25 +180,24 @@ class UsersController < ApplicationController
             end
           end
         elsif (@role.modify? && !current_user.role.modify? )|| @role.admin?
-         render 'edit'
-         elsif @user.update_attributes(@user.attributes.merge(@attr))
-          redirect_to user_path(@user), :notice => 'Das Profil wurde erfolgreich bearbeitet.'
-         else
           render 'edit'
-        end     
+        elsif @user.update_attributes(@user.attributes.merge(@attr))
+          redirect_to user_path(@user), :notice => 'Das Profil wurde erfolgreich bearbeitet.'
+        else
+          render 'edit'
+        end
       end
     else
       render 'edit'
     end
   end
 
-
-# Die Methode 'destroy' de-/aktiviert einen Benutzer. Administratoren können jeden Benutzer de-/aktivieren.
-# Ausbilder können sich und ihre Auszubildenden deaktivieren, Auszubildende nur sich selbst deaktivieren.    
+  # Die Methode 'destroy' de-/aktiviert einen Benutzer. Administratoren können jeden Benutzer de-/aktivieren.
+  # Ausbilder können sich und ihre Auszubildenden deaktivieren, Auszubildende nur sich selbst deaktivieren.
 
   def destroy
-  
-# Eigenen Account deaktivieren
+
+    # Eigenen Account deaktivieren
     @user = User.find(params[:id])
     if current_user == @user
       if @user.role.admin? && !adminremovable?
@@ -195,35 +208,36 @@ class UsersController < ApplicationController
         redirect_to root_path, :notice => 'Ihr Account wurde erfolgreich deaktiviert.'
         sign_out
       end
-# Anderen Account de-/aktivieren als Administrator
+    # Anderen Account de-/aktivieren als Administrator
     elsif current_user.role.admin?
       if @user.deleted == false
-          @user.deleted = true 
-          @user.save!
-          redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich deaktiviert.'
+        @user.deleted = true
+        @user.save!
+        redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich deaktiviert.'
       else
         @user.deleted = false
         @user.save!
         redirect_to users_path, :notice => 'Der Benutzer wurde erfolgreich aktiviert.'
       end
-# Ausbilder deaktiviert Auszubildenden
+    # Ausbilder deaktiviert Auszubildenden
     elsif current_user.role.modify?
       if current_user.id == @user.instructor_id
-          @user.deleted = true
-          @user.save!
-          redirect_to users_path, :notice => 'Der Auszubildende wurde erfolgreich deaktiviert.'
-      else redirect_to welcome_path  
+        @user.deleted = true
+        @user.save!
+        redirect_to users_path, :notice => 'Der Auszubildende wurde erfolgreich deaktiviert.'
+      else redirect_to welcome_path
       end
-    else redirect_to welcome_path  
-    end  
-  end  
+    else redirect_to welcome_path
+    end
+  end
 
   private
-    def correct_user
-      @user = User.find(params[:id])
-      if !current_user.role.admin?
-        redirect_to welcome_path unless current_user?(@user)
-      end
+
+  def correct_user
+    @user = User.find(params[:id])
+    if !current_user.role.admin?
+      redirect_to welcome_path unless current_user?(@user)
     end
+  end
 
 end

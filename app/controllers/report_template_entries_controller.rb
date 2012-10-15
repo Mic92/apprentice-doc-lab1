@@ -2,7 +2,7 @@
 class ReportTemplateEntriesController < ApplicationController
   include PrintReportsHelper
 
-  before_filter :authenticate
+ before_filter :authenticate
   before_filter :read
 #  before_filter :export
 
@@ -26,6 +26,7 @@ class ReportTemplateEntriesController < ApplicationController
     self.prepare
 
     self.editRawCode
+    
   end
 
   def update

@@ -30,13 +30,14 @@
 # Hat ein Benutzer Ausbildungsbeginn oder Ausbildungsjahr nicht gesetzt, so kann er keine
 # Berichte anlegen, bzw. bearbeiten.
 class ReportsController < ApplicationController
+	
   before_filter :authenticate
   before_filter :read, :only => [ :index, :show ]
   before_filter :correct_user_or_instructor, :only => :show
   before_filter :commit, :only => [ :new, :create, :update, :destroy ]
   before_filter :not_commited, :only => [ :edit, :update, :destroy ]
   before_filter :not_accepted, :only => [ :edit, :update ]
-  before_filter :correct_user, :only => [ :edit, :update, :destroy ]
+  before_filter :correct_user, :only => [ :edit, :update, :destroy, :show ]
   before_filter :trainingbegin_and_year_set, :only => [ :create, :update ]
 
   # Listet Berichte auf. Welche Bericht angezeigt werden hängt von den Rechten des
@@ -60,6 +61,11 @@ class ReportsController < ApplicationController
   def show
     @report = Report.find(params[:id])
     @entries = @report.report_entries.order('date asc')
+    
+    respond_to do |format|
+       format.html
+       format.json { render json: @entries }
+    end
   end
 
   # Zeigt das Formular zum Erstellen eines neuen Berichts.
@@ -78,17 +84,32 @@ class ReportsController < ApplicationController
     end
 
     @report.period_start = @date
+    
+      respond_to do |format|
+       format.html
+       format.json { render json: @report }
+    end
   end
 
   # Zeigt das Formular zum Bearbeiten eines vorhandenen Berichts.
   def edit
     @report = Report.find(params[:id])
+    
+    respond_to do |format|
+       format.html
+       format.json { render json: @report }
+    end
+    
   end
 
   # Legt einen neuen Bericht, sowie dessen initialen Status an und leitet auf #index weiter.
   # Ist der Bericht nicht valid, so wird das Formular erneut gezeigt.
   def create
+  
+	print " create --------------------------------- #{params[:report]} --"
+  
     @report = current_user.reports.build(params[:report])
+    #@report = reports.build(params[:report])
     # Jeder Bericht muss einen Status haben, also erstelle ihn zusammen mit dem Bericht.
     @report.build_status(:stype => Status.personal)
     @report.reportnumber = current_user.reports.count + 1
@@ -113,9 +134,11 @@ class ReportsController < ApplicationController
   # sind die Attribute nicht valid, so wird das Formular erneut gezeigt.
   def update
     @report = Report.find(params[:id])
-
+    
     # Hilfsobjekt für den Vergleich der Daten.
     @new = Report.new(params[:report])
+
+    print "#{current_user.name}--------------------------------- #{@new.period_start} --"
 
     if @new.period_start != nil
       @new.period_end = calc_period_end(@new.period_start)
