@@ -29,9 +29,9 @@ class PrintReportsController < ApplicationController
     self.handleRawCode
 
     render :layout => 'printlayout'
-#    respond_to do |format|
-#      format.html
-#    end
+    respond_to do |format|
+    format.json
+   end
   end
 
 end
