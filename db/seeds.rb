@@ -405,5 +405,10 @@ admin = User.create(
   :business_id => business.id,
   :template_id => template.id,
   :pw_expired_at => Time.now.utc,
-  :pw_recovery_hash => 'fail'
+  :pw_recovery_hash => 'fail',
+  :zipcode => 12345,
+  :street => "Adminallee 3",
+  :city => "Adminhausen",
+  :trainingbegin => Time.now.utc,
+  :trainingyear => 10
 )
