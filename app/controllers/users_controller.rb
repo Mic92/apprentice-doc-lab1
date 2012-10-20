@@ -41,7 +41,7 @@ class UsersController < ApplicationController
     @users = User.all
     respond_to do |format|
       format.html
-      format.json { render json: @users }
+      format.json { render json: @users, except: [:hashed_password, :salt] }
     end
 
   end
