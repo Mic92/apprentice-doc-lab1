@@ -60,7 +60,9 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @user }
+     # format.json { render json: @user }
+      format.json { render json: @user, except: [:hashed_password, :salt, :deleted,
+      	:pw_expired_at, :pw_recovery_hash, :role_id, :template_id]}
     end
   end
 

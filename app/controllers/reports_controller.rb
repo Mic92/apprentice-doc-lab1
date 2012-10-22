@@ -70,7 +70,7 @@ class ReportsController < ApplicationController
     
     respond_to do |format|
        format.html
-       format.json { render json: @entries }
+       format.json { render json: @entries, except: [:duration_in_hours] }
     end
   end
 
