@@ -31,36 +31,20 @@ class UsersController < ApplicationController
   # Für Auszubildende hat die Methode keine Verwendung und ist gesperrt.
    def index
     setupPager(User, params)
-    #if current_user.role.admin?
-    #  @users = pager(User).search(params[:search])
-    #elsif current_user.role.modify?
-    #  @users = current_user.apprentices.search(params[:search])
-    #else redirect_to welcome_path
-    #end
-
+   
     @users = User.all
-    respond_to do |format|
-      format.html
-      format.json { render json: @users, except: [:hashed_password, :salt] }
-    end
-
+    
   end
+  
   # Die Methode 'show' zeigt das eigene Profil an.
-
   def show
     
     @user = User.find(params[:id])
-    
-    #if current_user.role.admin? && current_user != User.find(params[:id])
-    #  @user = User.find(params[:id])
-    #  @role = Role.find(@user.role_id)
-    #else
-    #  @user = current_user
-    #end
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @user }
+      format.json { render json: @user, except: [:hashed_password, :salt, :deleted,
+      	:pw_expired_at, :pw_recovery_hash, :role_id, :template_id]}
     end
   end
 

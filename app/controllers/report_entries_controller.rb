@@ -25,10 +25,10 @@
 # des weiteren benötigen sie das Freigeben-Recht (commit) für alle Aktionen.
 # Wurde der Bericht schon akzeptiert, kann keine Aktion ausgeführt werden.
 class ReportEntriesController < ApplicationController
-  #before_filter :authenticate
-  #before_filter :correct_user
-  #before_filter :commit
-  #before_filter :not_accepted
+  before_filter :authenticate
+  before_filter :correct_user
+  before_filter :commit
+  before_filter :not_accepted
 
   # Zeigt das Formular zum Erstellen eines neuen Eintrags.
   def new
