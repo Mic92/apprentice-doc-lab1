@@ -33,11 +33,7 @@ class UsersController < ApplicationController
     setupPager(User, params)
    
     @users = User.all
-    respond_to do |format|
-      format.html
-      format.json { render json: @users }
-    end
-
+    
   end
   
   # Die Methode 'show' zeigt das eigene Profil an.
