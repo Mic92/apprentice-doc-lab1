@@ -112,8 +112,6 @@ class ReportsController < ApplicationController
   # Ist der Bericht nicht valid, so wird das Formular erneut gezeigt.
   def create
   
-	print " create --------------------------------- #{params[:report]} --"
-  
     @report = current_user.reports.build(params[:report])
     #@report = reports.build(params[:report])
     # Jeder Bericht muss einen Status haben, also erstelle ihn zusammen mit dem Bericht.
@@ -143,8 +141,6 @@ class ReportsController < ApplicationController
     
     # Hilfsobjekt für den Vergleich der Daten.
     @new = Report.new(params[:report])
-
-    print "#{current_user.name}--------------------------------- #{@new.period_start} --"
 
     if @new.period_start != nil
       @new.period_end = calc_period_end(@new.period_start)
