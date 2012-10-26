@@ -406,9 +406,43 @@ admin = User.create(
   :template_id => template.id,
   :pw_expired_at => Time.now.utc,
   :pw_recovery_hash => 'fail',
+  :street => "Mainstreet 100",
+  :city => "Entenhausen",
   :zipcode => 12345,
-  :street => "Adminallee 3",
-  :city => "Adminhausen",
   :trainingbegin => Time.now.utc,
-  :trainingyear => 10
+  :trainingyear => 1
 )
+
+(0..5).each do |i|
+  training_start = Time.utc(2009 + i, 1, 1)
+  azubi = User.create(
+    name: 'Test',
+    forename: 'User',
+    email: "tu#{i}@example.org",
+    password: '12345678',
+    password_confirmation: '12345678',
+    role_id: azubiRole.id,
+    business_id: business.id,
+    template_id: template.id,
+    pw_expired_at: Time.now.utc,
+    pw_recovery_hash: 'fail',
+    street: "Mainstreet 100",
+    city: "Entenhausen",
+    zipcode: 12345,
+    trainingbegin: training_start,
+    trainingyear: 1
+  )
+  report = azubi.reports.build(
+    period_start: training_start,
+    period_end: training_start + 5.weeks - 1.day,
+    reportnumber: (azubi.reports.count + 1)
+  )
+  report.save
+  report.build_status(stype: Status.personal).save
+  3.times do |j|
+    report.report_entries.build(
+      date: training_start + j.days,
+      text: "Bla" * (j+1)
+    ).save
+  end
+end
