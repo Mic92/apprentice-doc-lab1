@@ -53,7 +53,8 @@ class SessionsController < ApplicationController
       sign_in user
       respond_to do |format|
         format.html { redirect_to welcome_path }
-        format.json { render nothing: true }
+        format.json { render json: user, except: [:hashed_password, :salt, :deleted,
+          :pw_expired_at, :pw_recovery_hash, :role_id, :template_id]}
       end
     end
   
