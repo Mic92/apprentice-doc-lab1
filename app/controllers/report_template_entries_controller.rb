@@ -40,17 +40,21 @@ class ReportTemplateEntriesController < ApplicationController
     @report.status.update_attributes(:stype => Status.personal)
 
     if fail > 0
-      if fail == 1
-        notice = "Report wurde nicht vollständig gespeichert"
-      elsif fail == 2
-        notice = "Dauer der Tätigkeiten überschreitet mögliche Zeiten"
+      error = if fail == 1
+                "Report wurde nicht vollständig gespeichert"
+              elsif fail == 2
+                "Dauer der Tätigkeiten überschreitet mögliche Zeiten"
+              end
+      respond_to do |format|
+        format.html { redirect_to edit_report_template_entry_path(@report), params: params, alert: error }
+        format.json { render json: { error: { base: [error] }}, status: :unprocessable_entity }
       end
-      redirect_to edit_report_template_entry_path(@report), :params =>params, :alert => notice
     else
-      notice = "Report wurde gespeichert"
-      redirect_to reports_path, :notice => notice
+      respond_to do |format|
+        format.html { redirect_to reports_path, notice: "Report wurde gespeichert" }
+        format.json { render json: @report.report_entries }
+      end
     end
-
   end
 
 end

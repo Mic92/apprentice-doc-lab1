@@ -56,7 +56,7 @@ class ReportsController < ApplicationController
       end
     end
 
-	respond_to do |format|
+    respond_to do |format|
        format.html
        format.json { render json: @reports }
     end
@@ -91,7 +91,7 @@ class ReportsController < ApplicationController
 
     @report.period_start = @date
     
-      respond_to do |format|
+    respond_to do |format|
        format.html
        format.json { render json: @report }
     end
@@ -111,7 +111,6 @@ class ReportsController < ApplicationController
   # Legt einen neuen Bericht, sowie dessen initialen Status an und leitet auf #index weiter.
   # Ist der Bericht nicht valid, so wird das Formular erneut gezeigt.
   def create
-  
     @report = current_user.reports.build(params[:report])
     #@report = reports.build(params[:report])
     # Jeder Bericht muss einen Status haben, also erstelle ihn zusammen mit dem Bericht.
@@ -122,15 +121,17 @@ class ReportsController < ApplicationController
 
       if no_time_overlap(@report,@report,false) && period_valid(@report,@report)
         if @report.save
-          redirect_to reports_path, :notice => 'Bericht wurde erfolgreich erstellt.'
-        else
-          render 'new'
+          respond_to do |format|
+            format.html { redirect_to reports_path, notice: 'Bericht wurde erfolgreich erstellt.' }
+            format.json { render json: @report }
+          end
+          return
         end
-      else
-        render 'new'
       end
-    else
-      render 'new'
+    end
+    respond_to do |format|
+      format.html { render 'new' }
+      format.json { render json: { error: @report.errors }, status: :unprocessable_entity }
     end
   end
 
@@ -152,15 +153,17 @@ class ReportsController < ApplicationController
           # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
           # freigegeben werden kann.
           @report.status.update_attributes(:stype => Status.personal)
-          redirect_to reports_path, :notice => 'Bericht wurde erfolgreich bearbeitet.'
-        else
-          render 'edit'
+          respond_to do |format|
+            format.html { redirect_to reports_path, notice: 'Bericht wurde erfolgreich erstellt.' }
+            format.json { render json: @report }
+          end
+          return
         end
-      else
-        render 'edit'
       end
-    else
-      render 'edit'
+    end
+    respond_to do |format|
+      format.html { render :edit }
+      format.json { render json: { error: @report.errors }, status: :unprocessable_entity }
     end
   end
 
@@ -169,7 +172,10 @@ class ReportsController < ApplicationController
     @report = Report.find(params[:id])
     @report.destroy
 
-    redirect_to reports_path, :notice => 'Bericht wurde erfolgreich gelöscht.'
+    respond_to do |format|
+      format.html { redirect_to reports_path, :notice => 'Bericht wurde erfolgreich gelöscht.' }
+      format.json { render nothing: true, status: :ok }
+    end
   end
 
   private

@@ -39,14 +39,23 @@ class SessionsController < ApplicationController
     user = User.authenticate(params[:session][:email], params[:session][:password])
   
     if user.nil? or user.deleted == true 
-      # Fehlermeldung
-      flash.now[:error] = "Inkorrekte Email/Passwort Kombination"
-      @title = "Login"
-      render 'new'
+      error_msg = "Inkorrekte Email/Passwort Kombination"
+      respond_to do |format|
+        format.html do
+          @title = "Login"
+          flash.now[:error] = error_msg
+          render 'new'
+        end
+        format.json { render json: { error: error_msg }, status: :unprocessable_entity }
+      end
     else
       # Einloggen und zur Reportuebersichtsseite leiten
       sign_in user
-      redirect_to welcome_path
+      respond_to do |format|
+        format.html { redirect_to welcome_path }
+        format.json { render json: user, except: [:hashed_password, :salt, :deleted,
+          :pw_expired_at, :pw_recovery_hash, :role_id, :template_id]}
+      end
     end
   
   end
