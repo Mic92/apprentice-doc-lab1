@@ -31,7 +31,7 @@
 class ReportEntry < ActiveRecord::Base
   attr_accessible :date, :duration_in_hours, :text
 
-  belongs_to :report
+  belongs_to :report, :counter_cache => true
 
   validates :report_id, :presence => true
   validates :date, :presence => true
