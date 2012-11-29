@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111217153106) do
+ActiveRecord::Schema.define(:version => 20121128213448) do
 
   create_table "businesses", :force => true do |t|
     t.string   "name"
@@ -57,9 +57,10 @@ ActiveRecord::Schema.define(:version => 20111217153106) do
     t.date     "period_start"
     t.date     "period_end"
     t.integer  "user_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
     t.integer  "reportnumber"
+    t.integer  "report_entries_count", :default => 0
   end
 
   add_index "reports", ["user_id"], :name => "index_reports_on_user_id"
