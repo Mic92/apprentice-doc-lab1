@@ -34,7 +34,8 @@ class ReportEntry < ActiveRecord::Base
   belongs_to :report, :counter_cache => true
 
   validates :report_id, :presence => true
-  validates :date, :presence => true
+  validates :date, :presence => true, uniqueness: { scope: :report_id }
+
 #  validates :duration_in_hours, :presence => true
   validates :text, :presence => true
 

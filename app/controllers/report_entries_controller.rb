@@ -71,14 +71,21 @@ class ReportEntriesController < ApplicationController
           # Der Status des Berichts wird durch das Erstellen wieder auf personal gesetzt, damit er wieder
           # freigegeben werden kann.
           @report.status.update_attributes(:stype => Status.personal)
-          redirect_to @report, :notice => 'Eintrag wurde erfolgreich erstellt.' and return
+          respond_to do |format|
+            format.html { redirect_to @report, :notice => 'Eintrag wurde erfolgreich erstellt.' }
+            format.json { render json: @entry }
+          end
+          return
         end
       else
         @entry.errors.add(:date, 'muss im Zeitraum des Berichts liegen')
       end
     end
 
-    render 'new'
+    respond_to do |format|
+      format.html { render 'new' }
+      format.json { render json: { error: @entry.errors }, status: :unprocessable_entity }
+    end
   end
 
   # Ändert die Attribute des Eintrags und leitet auf ReportsController#show weiter.
@@ -106,7 +113,11 @@ class ReportEntriesController < ApplicationController
             # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
             # freigegeben werden kann.
             @entry.report.status.update_attributes(:stype => Status.personal)
-            redirect_to @entry.report, :notice => 'Eintrag wurde erfolgreich bearbeitet.' and return
+            respond_to do |format|
+              format.html { redirect_to @entry.report, :notice => 'Eintrag wurde erfolgreich bearbeitet.' }
+              format.json { render json: @entry }
+            end
+            return
           end
         else
           @entry.errors.add(:date, 'muss im Zeitraum des Berichts liegen')
@@ -114,7 +125,10 @@ class ReportEntriesController < ApplicationController
       end
     end
 
-    render 'edit'
+    respond_to do |format|
+      format.html { render 'edit' }
+      format.json { render json: { error: @entry.errors }, status: :unprocessable_entity }
+    end
   end
 
   # Löschte einen Eintrag aus dem System und leitet auf ReportsController#show weiter.
@@ -126,7 +140,10 @@ class ReportEntriesController < ApplicationController
     # freigegeben werden kann.
     @report.status.update_attributes(:stype => Status.personal)
 
-    redirect_to @report, :notice => 'Eintrag wurde erfolgreich gelöscht.'
+    respond_to do |format|
+      format.html { redirect_to @report, :notice => 'Eintrag wurde erfolgreich gelöscht.' }
+      format.json { render nothing: true, status: :ok }
+    end
   end
 
   private
