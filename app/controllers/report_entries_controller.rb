@@ -64,6 +64,8 @@ class ReportEntriesController < ApplicationController
       @entry = @report.report_entries.build(params[:report_entry])
     end
 
+
+
     if @entry.date != nil
       # Einträge müssen im Zeitraum des Berichts liegen.
       if @entry.date.to_date >= @report.period_start && @entry.date.to_date <= @report.period_end
@@ -103,26 +105,15 @@ class ReportEntriesController < ApplicationController
       @attr = params[:report_entry]
     end
 
-    if @attr != nil
-      # Erzeuge aus den Formulardaten das Datum zum vergleichen.
-      @date = ReportEntry.new(@attr).date
-      if @date != nil
-        # Einträge müssen im Zeitraum des Berichts liegen.
-        if @date >= @entry.report.period_start && @date <= @entry.report.period_end
-          if @entry.update_attributes(@attr)
-            # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
-            # freigegeben werden kann.
-            @entry.report.status.update_attributes(:stype => Status.personal)
-            respond_to do |format|
-              format.html { redirect_to @entry.report, :notice => 'Eintrag wurde erfolgreich bearbeitet.' }
-              format.json { render json: @entry }
-            end
-            return
-          end
-        else
-          @entry.errors.add(:date, 'muss im Zeitraum des Berichts liegen')
-        end
+    if @attr != nil and @entry.update_attributes(@attr)
+      # Der Status des Berichts wird durch das Bearbeiten wieder auf personal gesetzt, damit er wieder
+      # freigegeben werden kann.
+      @entry.report.status.update_attributes(:stype => Status.personal)
+      respond_to do |format|
+        format.html { redirect_to @entry.report, :notice => 'Eintrag wurde erfolgreich bearbeitet.' }
+        format.json { render json: @entry }
       end
+      return
     end
 
     respond_to do |format|

@@ -34,10 +34,13 @@ class ReportEntry < ActiveRecord::Base
   belongs_to :report, :counter_cache => true
 
   validates :report_id, :presence => true
-  validates :date, :presence => true, uniqueness: { scope: :report_id }
+  validates :date, :presence => true
+  validates_uniqueness_of :date, scope: :report_id, if: lambda { date_changed? }
 
 #  validates :duration_in_hours, :presence => true
   validates :text, :presence => true
+
+  validate :is_in_report_period
 
 #  validate :duration_in_hours_greater_than_zero
 
@@ -45,6 +48,12 @@ class ReportEntry < ActiveRecord::Base
     def duration_in_hours_greater_than_zero
       if duration_in_hours
         errors[:base] << 'Dauer muss größer als 0 sein' if duration_in_hours <= 0
+      end
+    end
+
+    def is_in_report_period
+      unless date >= report.period_start && date <= report.period_end
+        errors.add(:date, 'muss im Zeitraum des Berichts liegen')
       end
     end
 end
